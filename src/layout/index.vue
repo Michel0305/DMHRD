@@ -40,6 +40,7 @@ export default {
   mixins: [ResizeMixin],
   created(){
     basedata().then((base)=>{//窗体创建时候 加载基本数据源   
+      console.log(base)
       let tmpUserData = [] = base.data.resUsers;    
       let tmpTimes = [] = base.data.resTimes;
       let tmpJobs = [] = base.data.resJobs;

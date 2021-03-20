@@ -115,7 +115,7 @@
 
 <script>
 import { mapGetters,mapState } from "vuex";
-import { users } from '@/api/user'
+// import { users } from '@/api/user'
 import edituser from '@/views/dmpersonnel/components/edituser'
 import store from '@/store';
 export default {
@@ -144,7 +144,7 @@ export default {
   created() {
     window.addEventListener('resize', this.getHeight);
     this.getHeight()   
-    this.tableData = [] = this.$store.state.departmentjob.personals 
+    this.tableData = [] = store.state.departmentjob.personals 
     // console.log(this.$store.getters)
     // this.tableData = 
 
