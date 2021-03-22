@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var sequelizeConn = require('../dbConnection');
 
 
-ResUserTimesDB = () =>{};
+ResUserTimesDB = () => { };
 
 /**
  * 人员资讯表
@@ -11,12 +11,24 @@ var resUserTimes = sequelizeConn.define('res_usertimes', {
     id: { type: Sequelize.BIGINT, autoIncrement: true, unique: true },
     timesname: { type: Sequelize.CHAR(10), primaryKey: true },//名称 
     timestype: { type: Sequelize.INTEGER, primaryKey: true },//白夜班
-    timesfirst: { type: Sequelize.DATE },//第一次刷卡
-    timessecond: { type: Sequelize.DATE },//第二次刷卡
-    timesthird: { type: Sequelize.DATE },//第三次刷卡
-    timesfourth: { type: Sequelize.DATE },//第四次刷卡
-    timesfifth: { type: Sequelize.DATE },//第五次刷卡
-    thimessixth: { type: Sequelize.DATE },//第六次刷卡
+    timesfirst: {
+        type: Sequelize.DATE
+    },//第一次刷卡
+    timessecond: {
+        type: Sequelize.DATE
+    },//第二次刷卡
+    timesthird: {
+        type: Sequelize.DATE
+    },//第三次刷卡
+    timesfourth: {
+        type: Sequelize.DATE
+    },//第四次刷卡
+    timesfifth: {
+        type: Sequelize.DATE
+    },//第五次刷卡
+    thimessixth: {
+        type: Sequelize.DATE
+    },//第六次刷卡
     ischeck: { type: Sequelize.DATE },//是否启用
     create_time: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {

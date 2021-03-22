@@ -52,6 +52,7 @@ ResDepartment.GetDeptAndJob = () => {
             departJson.push(el)
         })
         jobIds.forEach(el => {
+            console.log(el)
             jobJson.push(el)
         })
         departandjobs.departments = departJson;

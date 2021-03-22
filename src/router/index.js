@@ -103,7 +103,7 @@ export const constantRoutes = [
         path: 'overtime',//加班单
         component: () => import('@/views/example/edit'),
         name: 'overtime',
-        meta: { title: '加班单',icon:'el-icon-guide' }
+        meta: { title: '加班单', icon: 'el-icon-guide' }
       },
       {
         path: 'leaveinlieu',//调休单
@@ -183,7 +183,7 @@ export const asyncRoutes = [
       icon: 'el-icon-date',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
-    children: [      
+    children: [
       {
         path: 'attendancereport',
         component: () => import('@/views/permission/directive'),
@@ -217,9 +217,9 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'tiemstype',
+        path: 'tiemsreport',
         component: () => import('@/views/permission/directive'),
-        name: 'tiemstype',
+        name: 'tiemsreport',
         meta: {
           title: '休假报表',
           roles: ['admin'], // or you can only set roles in sub nav
@@ -285,11 +285,11 @@ export const asyncRoutes = [
           icon: 'el-icon-coffee-cup'
           // if do not set roles, means: this page does not require permission
         }
-      }      
+      }
     ]
   },
-   //系统设定菜单
-   {
+  //系统设定菜单
+  {
     path: '/seeting',
     component: Layout,
     redirect: '/seeting/page',
@@ -318,7 +318,7 @@ export const asyncRoutes = [
         meta: {
           title: '表单维护',
           roles: ['admin'],
-          icon:'lock'
+          icon: 'lock'
           // if do not set roles, means: this page does not require permission
         }
       },
@@ -329,7 +329,7 @@ export const asyncRoutes = [
         meta: {
           title: '流程设定',
           roles: ['admin'],
-          icon:'tree'
+          icon: 'tree'
         }
       }
     ]

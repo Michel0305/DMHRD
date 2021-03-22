@@ -10,6 +10,8 @@ import './styles/element-variables.scss'
 //import cnLang from 'element-ui/lib/locale/lang/zh-CN' 
 import '@/styles/index.scss' // global css
 
+import moment from 'moment'
+
 import App from './App'
 import store from './store'
 import router from './router'
@@ -44,6 +46,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.prototype.$moment = moment;
 
 new Vue({
   el: '#app',

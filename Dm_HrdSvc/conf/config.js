@@ -1,5 +1,6 @@
 module.exports = {
     svc: { prot: 8888, host: "0.0.0.0" },
+    clienthost: { host: `'http://10.83.4.182:9527'` },
     sql: {
         user: "hrd",
         password: "hrd159753",
@@ -14,7 +15,7 @@ module.exports = {
             max: 10,
             idleTimeoutMillis: 30000
         },
-        dialect:'mssql'
+        dialect: 'mssql'
         // options: {
         //     encrypt: true //使用windows azure，需要设置次配置。
         // },     

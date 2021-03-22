@@ -5,7 +5,7 @@ export function login(data) {
   return request({
     url: '/user/login',
     method: 'post',
-    data:Qs.stringify(data)
+    data: Qs.stringify(data)
   })
 }
 
@@ -54,7 +54,6 @@ export function dempartsjobs() {
     method: 'get'
   })
 }
-
 
 export function basedata() {
   return request({

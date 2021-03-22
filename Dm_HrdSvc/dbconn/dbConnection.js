@@ -15,6 +15,7 @@ var sequelize = new Sequelize(config.sql.database, config.sql.user, config.sql.p
         idle: 10000                  // 闲时超时
     },
     port: config.sql.port,
+    timezone: '+08:00'
 });
 (async () => {
     try {

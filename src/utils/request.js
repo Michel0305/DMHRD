@@ -4,6 +4,7 @@ import store from '@/store'
 import { getToken, removeToken } from '@/utils/auth'
 
 // create an axios instance
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
@@ -19,7 +20,7 @@ service.interceptors.request.use(
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
       config.headers['x-Token'] = getToken()
-      config.headers['Authorization'] = `Bearer ${getToken()}` 
+      config.headers['Authorization'] = `Bearer ${getToken()}`
       // config.headers.authorization['Token'] = getToken()
     }
     return config
