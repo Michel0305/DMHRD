@@ -20,64 +20,82 @@
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
-import { mapState } from 'vuex'
-import { basedata } from '@/api/user'
-import store from '@/store'
+import RightPanel from "@/components/RightPanel";
+import { AppMain, Navbar, Settings, Sidebar, TagsView } from "./components";
+import ResizeMixin from "./mixin/ResizeHandler";
+import { mapState } from "vuex";
+import { basedata } from "@/api/user";
+import store from "@/store";
 
 export default {
-  name: 'Layout',
+  name: "Layout",
   components: {
     AppMain,
     Navbar,
     RightPanel,
     Settings,
     Sidebar,
-    TagsView
+    TagsView,
   },
   mixins: [ResizeMixin],
-  created(){
-    basedata().then((base)=>{//窗体创建时候 加载基本数据源   
-      console.log(base)
-      let tmpUserData = [] = base.data.resUsers;    
-      let tmpTimes = [] = base.data.resTimes;
-      let tmpJobs = [] = base.data.resJobs;
-      let tmpDept = [] =  base.data.resDepartments;
-      this.$store.dispatch('departmentjob/defPersonal',tmpUserData);
-      this.$store.dispatch('departmentjob/defDepart',tmpDept);
-      this.$store.dispatch('departmentjob/defeJob',tmpJobs);
-      this.$store.dispatch('departmentjob/defTimes',tmpTimes);
-    })
+  data() {
+    return {
+      contentStyleObj: {
+        height: "",
+        width: "100%",
+      },
+    };
+  },
+  created() {
+    window.addEventListener("resize", this.getHeight);
+    this.getHeight();
+    basedata().then((base) => {
+      //窗体创建时候 加载基本数据源
+      console.log(base);
+      let tmpUserData = ([] = base.data.resUsers);
+      let tmpTimes = ([] = base.data.resTimes);
+      let tmpJobs = ([] = base.data.resJobs);
+      let tmpDept = ([] = base.data.resDepartments);
+      this.$store.dispatch("departmentjob/defPersonal", tmpUserData);
+      this.$store.dispatch("departmentjob/defDepart", tmpDept);
+      this.$store.dispatch("departmentjob/defeJob", tmpJobs);
+      this.$store.dispatch("departmentjob/defTimes", tmpTimes);
+    });
   },
   computed: {
     ...mapState({
-      sidebar: state => state.app.sidebar,
-      device: state => state.app.device,
-      showSettings: state => state.settings.showSettings,
-      needTagsView: state => state.settings.tagsView,
-      fixedHeader: state => state.settings.fixedHeader,
-      departmentjob_personals:state => state.departmentjob.personals,
-      departmentjob_departs:state => state.departmentjob.departs,
-      departmentjob_jobs:state => state.departmentjob.jobs,
-      departmentjob_times:state => state.departmentjob.times,
+      sidebar: (state) => state.app.sidebar,
+      device: (state) => state.app.device,
+      showSettings: (state) => state.settings.showSettings,
+      needTagsView: (state) => state.settings.tagsView,
+      fixedHeader: (state) => state.settings.fixedHeader,
+      departmentjob_personals: (state) => state.departmentjob.personals,
+      departmentjob_departs: (state) => state.departmentjob.departs,
+      departmentjob_jobs: (state) => state.departmentjob.jobs,
+      departmentjob_times: (state) => state.departmentjob.times,
     }),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
-      }
-    }
+        mobile: this.device === "mobile",
+      };
+    },
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
-    }
-  }
-}
+      this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
+    },
+    getHeight() {
+      //此处代码需要优化 全局使用
+      this.$store.dispatch("settings/changHeight", window.innerHeight - 150);
+    },
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.getHeight);
+  },
+};
 </script>
 
 <style lang="scss" scoped>

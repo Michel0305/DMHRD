@@ -5,7 +5,11 @@
         <div class="grid-content bg-purple-dark">
           <el-row>
             <el-col :span="1" :offset="1">
-              <el-button type="primary" icon="el-icon-edit" size="mini"
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                size="mini"
+                @click="NewUserInfo"
                 >入职</el-button
               >
             </el-col>
@@ -42,7 +46,7 @@
                 data.user_id.includes(swhere.toLowerCase())
             )
           "
-          :max-height="contentStyleObj.height"
+          :max-height="$store.getters.locheight"
           style="width: 100%"
         >
           <el-table-column label="姓名" width="100">
@@ -180,7 +184,9 @@ export default {
   methods: {
     handleEdit(index, row) {
       //显示
+      console.log(row);
       this.rowData = row;
+      this.rowData.isEdit = true;
       this.showstatus = true;
     },
 
@@ -194,6 +200,35 @@ export default {
     getHeight() {
       //此处代码需要优化 全局使用
       this.contentStyleObj.height = window.innerHeight - 150;
+    },
+    NewUserInfo() {
+      let tmpUserData = {
+        isEdit: false,
+        address: null,
+        birthday: "",
+        cardid: "​",
+        cdnumber: "",
+        create_time: "",
+        defpartid: null,
+        dept: "",
+        education: "",
+        email: null,
+        id: null,
+        imgurl: null,
+        indate: "",
+        isline: true,
+        job: "",
+        mastpartid: null,
+        phone: "",
+        position: "",
+        sex: "",
+        timestype: null,
+        user_id: "",
+        user_name: "",
+        workloc: "",
+      };
+      this.rowData = tmpUserData;
+      this.showstatus = true;
     },
   },
   destroyed() {

@@ -11,9 +11,10 @@ const getters = {
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs,
-  departmentjob_personals:state => state.departmentjob.personals,
-  departmentjob_departs:state => state.departmentjob.departs,
-  departmentjob_jobs:state => state.departmentjob.jobs,
-  departmentjob_times:state => state.departmentjob.times,
+  departmentjob_personals: state => state.departmentjob.personals,
+  departmentjob_departs: state => state.departmentjob.departs,
+  departmentjob_jobs: state => state.departmentjob.jobs,
+  departmentjob_times: state => state.departmentjob.times,
+  locheight: state => state.settings.winHeight,
 }
 export default getters

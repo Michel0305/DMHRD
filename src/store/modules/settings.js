@@ -8,7 +8,8 @@ const state = {
   showSettings: showSettings,
   tagsView: tagsView,
   fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo
+  sidebarLogo: sidebarLogo,
+  winHeight: 50,
 }
 
 const mutations = {
@@ -17,12 +18,19 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value
     }
+  },
+  CHNAGE_HEIGHT: (state, height) => {
+    state.winHeight = height
   }
 }
 
 const actions = {
   changeSetting({ commit }, data) {
     commit('CHANGE_SETTING', data)
+  },
+
+  changHeight({ commit }, data) {
+    commit('CHNAGE_HEIGHT', data)
   }
 }
 

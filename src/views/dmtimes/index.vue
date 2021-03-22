@@ -3,94 +3,83 @@
     <div class="grid-content bg-purple-dark">
       <el-row class="bartools">
         <el-col :span="1" :offset="1">
-          <el-button type="primary" icon="el-icon-edit" size="mini"
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            size="mini"
+            @click="createTimes"
             >创建</el-button
           >
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-table :data="timesType" style="width: 100%">
+          <el-table
+            :data="timesType"
+            style="width: 100%"
+            :max-height="$store.getters.locheight"
+          >
             <!-- .filter( (data) =>  !search ||  data.name.toLowerCase().includes(search.toLowerCase())) -->
-            <el-table-column label="班次" prop="timesname" width="80">
+            <el-table-column label="班次" prop="timesname" width="150">
             </el-table-column>
             <el-table-column
               label="类别"
               prop="timestype"
               :formatter="timesTypeFormat"
-              width="80"
+              width="100"
             >
             </el-table-column>
-
-            <el-table-column
-              prop="timesfirst"
-              label="考勤时间1"
-              :formatter="dateFormat"
-              width="120"
-            >
+            <el-table-column prop="timesfirst" label="考勤时间1">
             </el-table-column>
-
-            <el-table-column
-              label="考勤时间2"
-              prop="timessecond"
-              :formatter="dateFormat"
-              width="120"
-            >
+            <el-table-column label="考勤时间2" prop="timessecond">
             </el-table-column>
-            <el-table-column
-              label="考勤时间3"
-              prop="timesthird"
-              :formatter="dateFormat"
-              width="120"
-            >
+            <el-table-column label="考勤时间3" prop="timesthird">
             </el-table-column>
-            <el-table-column
-              label="考勤时间4"
-              prop="timesfourth"
-              :formatter="dateFormat"
-              width="120"
-            >
+            <el-table-column label="考勤时间4" prop="timesfourth">
             </el-table-column>
-            <el-table-column
-              label="考勤时间5"
-              prop="timesfifth"
-              :formatter="dateFormat"
-              width="120"
-            >
+            <el-table-column label="考勤时间5" prop="timesfifth">
             </el-table-column>
             <el-table-column
               label="考勤时间6"
               prop="thimessixth"
-              :formatter="dateFormat"
-              width="120"
+              width="100"
               size="mini"
             >
             </el-table-column>
-            <el-table-column label="启用">
+            <el-table-column label="启用" width="50">
               <template slot-scope="scope">
-                <el-switch v-model="scope.ischeck" disabled> </el-switch>
+                <el-switch
+                  v-model="scope.ischeck"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  size="mini"
+                >
+                </el-switch>
               </template>
             </el-table-column>
-            <el-table-column align="right" width="280">
-              <template slot="header">
+            <el-table-column align="right" width="120">
+              <!-- <template slot="header">
                 <el-input
                   v-model="search"
                   size="mini"
                   placeholder="输入关键字搜索"
                 />
-              </template>
+              </template> -->
               <template slot-scope="scope">
                 <el-button
+                  type="primary"
+                  icon="el-icon-edit"
+                  circle
                   size="mini"
                   @click="handleEdit(scope.$index, scope.row)"
-                  >Edit</el-button
-                >
+                ></el-button>
                 <el-button
-                  size="mini"
                   type="danger"
+                  icon="el-icon-delete"
+                  circle
+                  size="mini"
                   @click="handleDelete(scope.$index, scope.row)"
-                  >Delete</el-button
-                >
+                ></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -131,18 +120,9 @@ export default {
       this.dlgShow = true;
       this.rowData = row;
       this.rowData.isEdit = true;
-      console.log(index, row);
     },
     handleDelete(index, row) {
       console.log(index, row);
-    },
-    dateFormat: function (row, column) {
-      let tmpRow = row;
-      let tmpColumn = column;
-      let dates = tmpRow[tmpColumn.property];
-      if (dates === undefined || dates === null) return "";
-      let tmpDate = dates.replaceAll(/([A-Z])/g, " ");
-      return this.$moment(tmpDate).format("HH:mm");
     },
     timesTypeFormat: (row, column) => {
       switch (row.timestype) {
@@ -153,6 +133,22 @@ export default {
         default:
           return "未知";
       }
+    },
+    createTimes() {
+      let templateData = {
+        isEdit: false,
+        ischeck: true,
+        thimessixth: "",
+        timesfifth: "",
+        timesfirst: "",
+        timesfourth: "",
+        timesname: "",
+        timessecond: "",
+        timesthird: "",
+        timestype: 0,
+      };
+      this.dlgShow = true;
+      this.rowData = templateData;
     },
   },
 };

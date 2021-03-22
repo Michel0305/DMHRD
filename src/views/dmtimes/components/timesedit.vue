@@ -11,15 +11,20 @@
             <el-form-item label="名称">
               <el-input
                 placeholder="请输入内容"
-                v-model="createForm.timesname"
+                v-model="infoRow.timesname"
                 clearable
+                size="mini"
               >
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="10">
             <el-form-item label="类别">
-              <el-select v-model="createForm.timestype" placeholder="请选择">
+              <el-select
+                v-model="infoRow.timestype"
+                placeholder="请选择"
+                size="mini"
+              >
                 <el-option
                   v-for="item in timeTypes"
                   :key="item.id"
@@ -34,88 +39,89 @@
         <el-form-item label="时间点1">
           <el-time-select
             placeholder="起始时间"
-            v-model="createForm.timesfirst"
+            v-model="infoRow.timesfirst"
             :picker-options="{
               start: '07:30',
               step: '00:5',
               end: '21:30',
             }"
+            size="mini"
           >
           </el-time-select>
           <el-time-select
             placeholder="结束时间"
-            v-model="createForm.timessecond"
+            v-model="infoRow.timessecond"
             :picker-options="{
               start: '07:30',
               step: '00:5',
               end: '21:30',
-              minTime: createForm.timesfirst,
+              minTime: infoRow.timesfirst,
             }"
+            size="mini"
           >
           </el-time-select>
         </el-form-item>
         <el-form-item label="时间点2">
           <el-time-select
             placeholder="起始时间"
-            v-model="createForm.timesthird"
+            v-model="infoRow.timesthird"
             :picker-options="{
               start: '07:30',
               step: '00:5',
               end: '21:30',
-              minTime:
-                createForm.timestype !== 0 ? '00:00' : createForm.timessecond,
+              minTime: infoRow.timestype !== 0 ? '00:00' : infoRow.timessecond,
             }"
+            size="mini"
           >
           </el-time-select>
           <el-time-select
             placeholder="结束时间"
-            v-model="createForm.timesfourth"
+            v-model="infoRow.timesfourth"
             :picker-options="{
               start: '07:30',
               step: '00:5',
               end: '21:30',
-              minTime: createForm.timesthird,
+              minTime: infoRow.timesthird,
             }"
+            size="mini"
           >
           </el-time-select>
         </el-form-item>
         <el-form-item label="时间点3">
           <el-time-select
             placeholder="起始时间"
-            v-model="createForm.timesfifth"
+            v-model="infoRow.timesfifth"
             :picker-options="{
               start: '07:30',
               step: '00:5',
               end: '21:30',
-              minTime:
-                createForm.timestype !== 0 ? '00:00' : createForm.timessecond,
+              minTime: infoRow.timestype !== 0 ? '00:00' : infoRow.timessecond,
             }"
+            size="mini"
           >
           </el-time-select>
           <el-time-select
             placeholder="结束时间"
-            v-model="createForm.thimessixth"
+            v-model="infoRow.thimessixth"
             :picker-options="{
               start: '07:30',
               step: '00:5',
               end: '21:30',
-              minTime: createForm.thimessixth,
+              minTime: infoRow.thimessixth,
             }"
+            size="mini"
           >
           </el-time-select>
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="infoRow.ischeck">是否启用</el-checkbox>
         </el-form-item>
-        <!-- <el-form-item label="时间点2"></el-form-item>
-          <el-form-item label="时间点3"></el-form-item>
-          <el-form-item label="时间点4"></el-form-item>
-          <el-form-item label="时间点5"></el-form-item>
-          <el-form-item label="时间点6"></el-form-item> -->
         <el-form-item>
-          <el-col :span="24" :offset="16">
-            <el-button type="primary" @click="dialogForm">保存</el-button>
-            <el-button @click="dialogForm">取消</el-button>
+          <el-col :offset="10" :span="10">
+            <el-button type="primary" @click="dialogForm" size="mini"
+              >保存</el-button
+            >
+            <el-button @click="dialogForm" size="mini">取消</el-button>
           </el-col>
         </el-form-item>
       </el-form>
@@ -136,18 +142,6 @@ export default {
         { id: 0, label: "白班" },
         { id: 1, label: "夜班" },
       ],
-      createForm: {
-        isEdit: true,
-        ischeck: true,
-        thimessixth: "",
-        timesfifth: "",
-        timesfirst: "",
-        timesfourth: "",
-        timesname: "",
-        timessecond: "",
-        timesthird: "",
-        timestype: 0,
-      },
     };
   },
   props: ["dialogStatus", "infoRow"],
@@ -157,16 +151,10 @@ export default {
   mounted: function () {},
   methods: {
     dialogForm() {
-      console.log(this.createForm);
+      console.log(this.infoRow);
       // let tmpUser = this.infodepart;
       this.$emit("commitFormData");
     },
-    // checkDeptName(val) {
-    //     let deptName = this.deptList.find((item) => {
-    //         return item.id === val
-    //     })
-    //     this.infousers.dept = deptName.label;
-    // }
   },
 };
 </script>
