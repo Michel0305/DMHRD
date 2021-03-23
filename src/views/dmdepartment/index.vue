@@ -23,6 +23,7 @@
                 type="primary"
                 icon="el-icon-edit"
                 circle
+                @click="createNewDepart"
               ></el-button>
             </template>
             <template slot-scope="scope">
@@ -46,7 +47,7 @@
     <el-row>
       <el-col :span="18" :offset="2">
         <el-table
-          :max-height="$store.getters.locheight"
+          :max-height="$store.getters.locheight - 320"
           :data="
             jobData.filter(
               (data) =>
@@ -66,7 +67,7 @@
                 size="mini"
                 placeholder="输入创建"
                 clearable
-                @keyup.enter.native="reSave"
+                @keyup.enter.native="reSave(scope)"
               />
             </template>
           </el-table-column>
@@ -94,10 +95,6 @@ export default {
       dlgShow: false,
       test: true,
       rowData: {},
-      contentStyleObj: {
-        height: "",
-        width: "100%",
-      },
       departmentData: [],
       jobData: [],
     };
@@ -125,12 +122,25 @@ export default {
       this.rowData = row;
       this.rowData.edit = true;
       this.dlgShow = true;
-      // console.log(this.dlgShow)
+      console.log(this.rowData);
     },
+    createNewDepart() {
+      this.rowData = {
+        authorized: 0,
+        dept_name: "",
+        deptid: null,
+        deptower: null,
+        edit: false,
+        upbenchid: null,
+        usercount: 0,
+      };
+      this.dlgShow = true;
+    },
+
     handleDelete(index, row) {
       console.log(index, row);
     },
-    reSave() {
+    reSave(val) {
       let tmpData = this.jobData.filter(
         (data) => data.defpartid === this.swhere && data.job === this.jobname
       );

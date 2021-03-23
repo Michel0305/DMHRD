@@ -9,6 +9,7 @@ var conf = require('./conf/config')
 
 var loginRouter = require('./routes/login');
 var resUserRouter = require('./routes/resuser');
+var resLeaveRouter = require('./routes/leave');
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -69,6 +70,7 @@ app.use((err, req, res, next) => {
  */
 app.use('/user', loginRouter);
 app.use('/personnel', resUserRouter);
+app.use('/leave', resLeaveRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container-edituser">
     <el-dialog
-      :title="infoRow.dept_name"
+      :title="infoRow.isEdit ? infoRow.dept_name : '创建'"
       :visible.sync="dialogStatus"
       :before-close="dialogForm"
     >
@@ -29,11 +29,20 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="负责人">
-              <el-input
+              <el-select
                 v-model="infoRow.deptower"
-                placeholder="请输入"
+                placeholder="请选择"
                 size="mini"
-              ></el-input>
+              >
+                <el-option
+                  v-for="el in $store.state.departmentjob.personals"
+                  :key="el.user_id"
+                  :label="`${el.user_id} / ${el.user_name}`"
+                  :value="el.user_id"
+                  :disabled="el.user_id == infoRow.deptower"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -97,15 +106,8 @@ export default {
   mounted: function () {},
   methods: {
     dialogForm() {
-      // let tmpUser = this.infodepart;
       this.$emit("reBackRow");
     },
-    // checkDeptName(val) {
-    //     let deptName = this.deptList.find((item) => {
-    //         return item.id === val
-    //     })
-    //     this.infousers.dept = deptName.label;
-    // }
   },
 };
 </script>

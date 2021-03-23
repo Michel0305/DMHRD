@@ -95,13 +95,13 @@ export const constantRoutes = [
     children: [
       {
         path: 'leave',//请假单
-        component: () => import('@/views/example/create'),
+        component: () => import('@/views/dmleave/index'),
         name: 'leave',
         meta: { title: '请假单', icon: 'skill' }
       },
       {
         path: 'overtime',//加班单
-        component: () => import('@/views/example/edit'),
+        component: () => import('@/views/dmovertime/index'),
         name: 'overtime',
         meta: { title: '加班单', icon: 'el-icon-guide' }
       },
@@ -255,7 +255,7 @@ export const asyncRoutes = [
       },
       {
         path: 'organization',
-        component: () => import('@/views/permission/directive'),
+        component: () => import('@/views/dmorganizationchart/index'),
         name: 'organization',
         meta: {
           title: '组织架构',
