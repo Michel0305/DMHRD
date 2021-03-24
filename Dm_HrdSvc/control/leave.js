@@ -3,8 +3,8 @@
  */
 var Op = require("sequelize").Op;
 var ResLeaveDB = require('../dbconn/dbmodel/res_leave')
-var ResAppleavelogDB = require('../dbconn/dbmodel/res_appleavelog')
-var ResAppleaveStatusDB = require('../dbconn/dbmodel/res_appleavestatus')
+var ResApplovelogDB = require('../dbconn/dbmodel/res_applovelog')
+var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus')
 var ResLeaveTypeDB = require('../dbconn/dbmodel/res_leavetype')
 
 var token = require('./token');
@@ -30,24 +30,25 @@ LeaveStaticFn.BaseData = (parms) => {
                 ]
             }
         });
+
         let leaveBase = [] //获取用户请假记录
         let tmpFormId = [] //获取所有请假单编号
         tmpLeave.forEach(el => {
             leaveBase.push(el.dataValues)
             tmpFormId.push(el.id)
         });
-        let appleaveLog = await ResAppleavelogDB.SelectAll({//根据请假单 查询签核记录
+        let apploveLog = await ResApplovelogDB.SelectAll({//根据请假单 查询签核记录
             where: {
                 [Op.and]: [{ modelname: 'leave' }, { formid: tmpFormId }
                 ]
             }
         })
         let leaveLog = []
-        appleaveLog.forEach(el => {
+        apploveLog.forEach(el => {
             leaveLog.push(el.dataValues)
         })
 
-        let apploveStatus = await ResAppleaveStatusDB.SelectAll({ where: { model: 'leave' } }) //获取设定签核状态
+        let apploveStatus = await ResApploveStatusDB.SelectAll({ where: { model: 'leave' } }) //获取设定签核状态
         let leaveStatus = []
         apploveStatus.forEach(el => {
             leaveStatus.push(el.dataValues)

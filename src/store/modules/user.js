@@ -52,7 +52,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const data = {} = response
-        console.log(response)
         if (data.data.msg) {
           reject('请确认登录用户信息重新登录')
         }

@@ -50,8 +50,8 @@
     <el-row>
       <el-col :span="14" :offset="5">
         <el-form
-          ref="leaveData"
-          :model="tmpleaveData"
+          ref="workData"
+          :model="tmpworkData"
           :rules="rules"
           label-width="80px"
         >
@@ -59,7 +59,9 @@
             <el-col :span="12">
               <el-form-item label="申请人">
                 <el-select
-                  v-model="tmpleaveData.userid"
+                  multiple
+                  :collapse-tags="!checked"
+                  v-model="tmpworkData.userid"
                   placeholder="加班人"
                   size="mini"
                   :disabled="!isEdit"
@@ -71,12 +73,13 @@
                     :value="item.user_id"
                   ></el-option>
                 </el-select>
+                <el-checkbox size="mini" v-model="checked"></el-checkbox>
               </el-form-item>
             </el-col>
             <el-col :span="12"
               ><el-form-item label="加班类别">
                 <el-select
-                  v-model="tmpleaveData.leavetype"
+                  v-model="tmpworkData.worktype"
                   placeholder="请选择类别"
                   size="mini"
                   :disabled="!isEdit"
@@ -96,7 +99,7 @@
             <el-col :span="12">
               <el-form-item label="加班日期">
                 <el-date-picker
-                  v-model="tmpleaveData.workdate"
+                  v-model="tmpworkData.workdate"
                   type="date"
                   placeholder="选择日期"
                   :disabled="!isEdit"
@@ -108,7 +111,7 @@
               <el-form-item label="时间">
                 <el-time-select
                   placeholder="起始时间"
-                  v-model="tmpleaveData.starttime"
+                  v-model="tmpworkData.starttime"
                   :picker-options="{
                     start: '07:30',
                     step: '00:05',
@@ -120,12 +123,12 @@
                 </el-time-select>
                 <el-time-select
                   placeholder="结束时间"
-                  v-model="tmpleaveData.endtime"
+                  v-model="tmpworkData.endtime"
                   :picker-options="{
                     start: '07:30',
                     step: '00:05',
-                    end: '21:30',
-                    minTime: tmpleaveData.starttime,
+                    end: '00:00',
+                    minTime: tmpworkData.starttime,
                   }"
                   size="mini"
                   :disabled="!isEdit"
@@ -135,10 +138,10 @@
             </el-col>
           </el-row>
 
-          <el-form-item label="请假说明">
+          <el-form-item label="加班说明">
             <el-input
               type="textarea"
-              v-model="tmpleaveData.remark"
+              v-model="tmpworkData.remark"
               :disabled="!isEdit"
             ></el-input>
           </el-form-item>
@@ -147,7 +150,7 @@
 
       <el-col :span="22" :offset="1">
         <el-table
-          :data="leaveData"
+          :data="workData"
           :max-height="$store.getters.locheight - 260"
           border
           @row-click="setRowData"
@@ -171,7 +174,7 @@
             prop="leavetype"
             label="类别"
             width="50"
-            :formatter="formatLeaveType"
+            :formatter="formatworkType"
           >
           </el-table-column>
           <el-table-column prop="starttime" label="开始日期"> </el-table-column>
@@ -186,7 +189,7 @@
             prop="applovestatus"
             label="单据状态"
             width="80"
-            :formatter="formatLeaveStatus"
+            :formatter="formatworkStatus"
           >
           </el-table-column>
         </el-table>
@@ -197,25 +200,27 @@
 
 <script>
 // import { fetchList } from '@/api/article'
-import { leavebase } from "@/api/leave";
+import { workbase } from "@/api/overwork";
 export default {
   name: "overtime",
   data() {
     return {
-      tmpleaveData: {
+      checked: false,
+      tmpworkData: {
         userid: "",
-        leavetype: "",
+        worktype: "",
         remark: "",
         starttime: "",
         endtime: "",
-        freedate: [],
+        workdata: "",
+        applovestatus: "",
       },
       isEdit: false,
       fileList: [],
 
-      leaveData: [],
-      leaveLog: [],
-      leaveStatus: [],
+      workData: [],
+      workLog: [],
+      workStatus: [],
       worksTypes: [
         { id: 0, label: "平时" },
         { id: 1, label: "周末" },
@@ -223,10 +228,10 @@ export default {
       ],
       rules: {
         userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],
-        leavetype: [
+        worktype: [
           { required: true, message: "请选择请假类别", trigger: "blur" },
         ],
-        freedate: [
+        workdata: [
           { required: true, message: "请选择请假日期", trigger: "blur" },
         ],
       },
@@ -234,12 +239,12 @@ export default {
   },
   created() {
     console.log(this.$store.state.departmentjob);
-    leavebase().then((baseData) => {
-      this.leaveData = baseData.data.leaveBase;
-      this.leaveLog = baseData.data.leaveLog;
-      this.leaveStatus = baseData.data.leaveStatus;
-      //   this.leaveTypes = baseData.data.leaveType;
+    workbase().then((baseData) => {
       console.log(baseData);
+      this.workData = baseData.data.workBase;
+      this.workLog = baseData.data.workLog;
+      this.workStatus = baseData.data.workStatus;
+      //   this.leaveTypes = baseData.data.leaveType;
     });
   },
   mounted: function () {},
@@ -247,26 +252,30 @@ export default {
     NewUserleave() {
       this.isEdit = true;
       // this.$refs["leaveData"].resetFields();
-      this.tmpleaveData = {
+      this.tmpworkData = {
         userid: "",
-        leavetype: "",
+        worktype: "",
         remark: "",
-        workdate: "",
+        starttime: "",
+        endtime: "",
+        workdata: "",
         applovestatus: "",
       };
     },
     EditUserleave() {
-      if (this.tmpleaveData.userid == "" || this.tmpleaveData.applovestatus > 0)
+      if (this.tmpworkData.userid == "" || this.tmpworkData.applovestatus > 0)
         return;
       this.isEdit = true;
     },
     cancelUserleave() {
       this.isEdit = false;
-      this.tmpleaveData = {
+      this.tmpworkData = {
         userid: "",
-        leavetype: "",
+        worktype: "",
         remark: "",
-        freedate: [],
+        starttime: "",
+        endtime: "",
+        workdata: "",
         applovestatus: "",
       };
     },
@@ -278,11 +287,11 @@ export default {
     },
     setRowData(row, column) {
       if (this.isEdit) return;
-      this.tmpleaveData.userid = parseInt(row.userid);
-      this.tmpleaveData.leavetype = row.leavetype;
-      this.tmpleaveData.remark = row.remark;
-      this.tmpleaveData.freedate = [row.starttime, row.endtime];
-      this.tmpleaveData.applovestatus = row.applovestatus;
+      //   this.tmpleaveData.userid = parseInt(row.userid);
+      //   this.tmpleaveData.leavetype = row.leavetype;
+      //   this.tmpleaveData.remark = row.remark;
+      //   this.tmpleaveData.freedate = [row.starttime, row.endtime];
+      //   this.tmpleaveData.applovestatus = row.applovestatus;
       console.log(row);
       console.log(column);
     },
@@ -299,22 +308,33 @@ export default {
       return tmpUser.length == 0 ? row.userid : tmpUser[0].user_name;
     },
     formatUserDept(row, colum) {
-      //   let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {
-      //     return parseInt(el.user_id) === parseInt(row.userid);
-      //   });
-      //   return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
+      let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {
+        return parseInt(el.user_id) === parseInt(row.userid);
+      });
+      return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
     },
-    formatLeaveType(row, colum) {
+    formatworkType(row, colum) {
+      switch (row.worktype) {
+        case 1:
+          return "周末";
+          break;
+        case 2:
+          return "节假日";
+          break;
+        default:
+          return "平时";
+          break;
+      }
       //   let tmpUser = this.worksType.filter((el) => {
       //     return parseInt(el.id) === parseInt(row.leavetype);
       //   });
       //   return tmpUser.length == 0 ? "未知" : tmpUser[0].leavename;
     },
-    formatLeaveStatus(row, colum) {
-      //   let tmpUser = this.leaveStatus.filter((el) => {
-      //     return parseInt(el.statusid) === parseInt(row.applovestatus);
-      //   });
-      //   return tmpUser.length == 0 ? "未知" : tmpUser[0].msg;
+    formatworkStatus(row, colum) {
+      let tmpUser = this.workStatus.filter((el) => {
+        return parseInt(el.statusid) === parseInt(row.applovestatus);
+      });
+      return tmpUser.length == 0 ? "未知" : tmpUser[0].msg;
     },
   },
 };

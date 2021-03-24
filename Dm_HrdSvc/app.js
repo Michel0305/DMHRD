@@ -10,6 +10,7 @@ var conf = require('./conf/config')
 var loginRouter = require('./routes/login');
 var resUserRouter = require('./routes/resuser');
 var resLeaveRouter = require('./routes/leave');
+var resOverWorkRouter = require('./routes/overwork');
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -38,8 +39,6 @@ app.use((req, res, next) => {//解决跨域问题
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// app.use(logger('dev'));
-// app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -51,12 +50,13 @@ app.use(expressJWT({
   secret: Buffer.from(secretOrPrivateKey),
   algorithms: ['RS256']
 }).unless({//过滤验证URL
-  path: ['/user/login', '/user/logout', '/user/departmentjob', '/public/images/*']
+  path: ['/user/login', '/user/logout', '/public/images/*']
 }));
 
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
-    res.status(50014).send('invalid token...');
+    res.send({ code: 50014, data: "invalid token..." })
+    // res.status(50014).send('');
   } else {
     next();
   }
@@ -71,6 +71,7 @@ app.use((err, req, res, next) => {
 app.use('/user', loginRouter);
 app.use('/personnel', resUserRouter);
 app.use('/leave', resLeaveRouter);
+app.use('/overwork', resOverWorkRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

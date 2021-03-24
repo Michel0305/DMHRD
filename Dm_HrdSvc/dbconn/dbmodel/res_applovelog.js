@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var sequelizeConn = require('../dbConnection');
 
 
-ResAppleavelogDB = () => { }
+ResApplovelogDB = () => { }
 
 /**
  * 签核记录表
@@ -22,7 +22,7 @@ var resApplovelog = sequelizeConn.define('res_applovelog', {
     freezeTableName: true,        // 禁止修改标明为复数
 })
 
-ResAppleavelogDB.SelectAll = async (...swhere) => {
+ResApplovelogDB.SelectAll = async (...swhere) => {
     if (swhere.length == 0) {
         return resApplovelog.findAll();
     } else {
@@ -30,23 +30,23 @@ ResAppleavelogDB.SelectAll = async (...swhere) => {
     }
 }
 
-ResAppleavelogDB.Update = async (fields, ...swhere) => {
+ResApplovelogDB.Update = async (fields, ...swhere) => {
     return resApplovelog.update(fields, swhere[0]);
 }
 
-ResAppleavelogDB.Delete = async (...swhere) => {
+ResApplovelogDB.Delete = async (...swhere) => {
     return resApplovelog.destroy(swhere[0])
 }
 
-ResAppleavelogDB.Insert = async (...swhere) => {
+ResApplovelogDB.Insert = async (...swhere) => {
     return resApplovelog.create(swhere[0])
 }
 
-ResAppleavelogDB.Query = async (swhere) => {
+ResApplovelogDB.Query = async (swhere) => {
     return resApplovelog.query(swhere)
 }
 
-ResAppleavelogDB.Count = async (...swhere) => {
+ResApplovelogDB.Count = async (...swhere) => {
     if (swhere.length == 0) {
         return resApplovelog.count();
     } else {
@@ -55,4 +55,4 @@ ResAppleavelogDB.Count = async (...swhere) => {
 }
 
 // cmsMemberReport.sync()
-module.exports = ResAppleavelogDB;
+module.exports = ResApplovelogDB;

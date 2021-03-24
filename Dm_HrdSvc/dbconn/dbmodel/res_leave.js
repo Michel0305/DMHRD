@@ -5,7 +5,7 @@ var sequelizeConn = require('../dbConnection');
 ResLeaveDB = () => { }
 
 /**
- * 人员资讯表
+ * 请假数据表
  */
 var resLeave = sequelizeConn.define('res_leave', {
     id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, unique: true },
@@ -16,7 +16,7 @@ var resLeave = sequelizeConn.define('res_leave', {
     timetotal: { type: Sequelize.FLOAT },//累计时长
     apploveid: { type: Sequelize.NUMBER },//审核人ID
     applovestatus: { type: Sequelize.NUMBER },//审核状态
-    createuser: { type: Sequelize.STRING(10) },//申请人
+    createuser: { type: Sequelize.NUMBER },//申请人
     leavetype: { type: Sequelize.NUMBER },//请假类别
     remark: { type: Sequelize.STRING },//备注信息
     createdate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间

@@ -47,6 +47,7 @@ service.interceptors.response.use(
   */
   response => {
     const res = response.data
+    console.log(res)
     if (res.code !== 20000) {
       Message({
         message: res.message || 'Error',
@@ -56,11 +57,12 @@ service.interceptors.response.use(
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+        console.log(res.code)
         removeToken();
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+        MessageBox.confirm('哎呀!我 *, 当前登录失效请重新登录', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
+          // cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {

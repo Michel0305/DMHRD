@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var sequelizeConn = require('../dbConnection');
 
 
-ResAppleaveStatusDB = () => { }
+ResApploveStatusDB = () => { }
 
 /**
  * 表单审核状态
@@ -20,7 +20,7 @@ var resApploveStatus = sequelizeConn.define('res_applovestatus', {
     freezeTableName: true,        // 禁止修改标明为复数
 })
 
-ResAppleaveStatusDB.SelectAll = async (...swhere) => {
+ResApploveStatusDB.SelectAll = async (...swhere) => {
     if (swhere.length == 0) {
         return resApploveStatus.findAll();
     } else {
@@ -28,23 +28,23 @@ ResAppleaveStatusDB.SelectAll = async (...swhere) => {
     }
 }
 
-ResAppleaveStatusDB.Update = async (fields, ...swhere) => {
+ResApploveStatusDB.Update = async (fields, ...swhere) => {
     return resApploveStatus.update(fields, swhere[0]);
 }
 
-ResAppleaveStatusDB.Delete = async (...swhere) => {
+ResApploveStatusDB.Delete = async (...swhere) => {
     return resApploveStatus.destroy(swhere[0])
 }
 
-ResAppleaveStatusDB.Insert = async (...swhere) => {
+ResApploveStatusDB.Insert = async (...swhere) => {
     return resApploveStatus.create(swhere[0])
 }
 
-ResAppleaveStatusDB.Query = async (swhere) => {
+ResApploveStatusDB.Query = async (swhere) => {
     return resApploveStatus.query(swhere)
 }
 
-ResAppleaveStatusDB.Count = async (...swhere) => {
+ResApploveStatusDB.Count = async (...swhere) => {
     if (swhere.length == 0) {
         return resApploveStatus.count();
     } else {
@@ -53,4 +53,4 @@ ResAppleaveStatusDB.Count = async (...swhere) => {
 }
 
 // cmsMemberReport.sync()
-module.exports = ResAppleaveStatusDB;
+module.exports = ResApploveStatusDB;
