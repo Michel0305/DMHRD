@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { getLanguage } from '@/lang/index'
 
 const state = {
   sidebar: {
@@ -6,6 +7,7 @@ const state = {
     withoutAnimation: false
   },
   device: 'desktop',
+  language: getLanguage(),
   size: Cookies.get('size') || 'medium'
 }
 
@@ -27,6 +29,10 @@ const mutations = {
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
   },
+  SET_LANGUAGE: (state, language) => {
+    state.language = language
+    Cookies.set('language', language)
+  },
   SET_SIZE: (state, size) => {
     state.size = size
     Cookies.set('size', size)
@@ -34,6 +40,9 @@ const mutations = {
 }
 
 const actions = {
+  setLanguage({ commit }, language) {
+    commit('SET_LANGUAGE', language)
+  },
   toggleSideBar({ commit }) {
     commit('TOGGLE_SIDEBAR')
   },

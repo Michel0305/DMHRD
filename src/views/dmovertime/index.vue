@@ -9,7 +9,7 @@
                 type="primary"
                 icon="el-icon-edit"
                 size="mini"
-                @click="NewUserleave"
+                @click="NewUserwork"
                 :disabled="isEdit"
                 >创建</el-button
               >
@@ -18,7 +18,7 @@
               <el-button
                 icon="el-icon-edit-outline"
                 size="mini"
-                @click="EditUserleave"
+                @click="EditUserwork"
                 :disabled="isEdit"
                 >修改</el-button
               >
@@ -29,7 +29,7 @@
                 icon="el-icon-check"
                 size="mini"
                 :disabled="!isEdit"
-                @click="submitLeave"
+                @click="submitwork"
                 >保存</el-button
               >
             </el-col>
@@ -38,7 +38,7 @@
                 type="info"
                 icon="el-icon-close"
                 size="mini"
-                @click="cancelUserleave"
+                @click="cancelUserwork"
                 :disabled="!isEdit"
                 >取消</el-button
               >
@@ -107,7 +107,9 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+          </el-row>
+          <el-row :gutter="10">
+            <el-col :span="24">
               <el-form-item label="时间">
                 <el-time-select
                   placeholder="起始时间"
@@ -127,7 +129,7 @@
                   :picker-options="{
                     start: '07:30',
                     step: '00:05',
-                    end: '00:00',
+                    end: '24:00',
                     minTime: tmpworkData.starttime,
                   }"
                   size="mini"
@@ -136,15 +138,18 @@
                 </el-time-select>
               </el-form-item>
             </el-col>
-          </el-row>
 
-          <el-form-item label="加班说明">
-            <el-input
-              type="textarea"
-              v-model="tmpworkData.remark"
-              :disabled="!isEdit"
-            ></el-input>
-          </el-form-item>
+            <el-col :span="16">
+              <el-form-item label="加班说明">
+                <el-input
+                  type="textarea"
+                  v-model="tmpworkData.workremark"
+                  :disabled="!isEdit"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row> </el-row>
         </el-form>
       </el-col>
 
@@ -166,24 +171,32 @@
           <el-table-column
             prop="userid"
             label="部门"
-            width="150"
+            width="180"
             :formatter="formatUserDept"
           >
           </el-table-column>
           <el-table-column
             prop="leavetype"
             label="类别"
-            width="50"
+            width="70"
             :formatter="formatworkType"
           >
           </el-table-column>
-          <el-table-column prop="starttime" label="开始日期"> </el-table-column>
-          <el-table-column prop="endtime" label="结束日期"> </el-table-column>
+
           <el-table-column
-            label="长度"
-            width="50"
-            prop="timetotal"
-          ></el-table-column>
+            prop="workdate"
+            label="加班日期"
+            width="120"
+            :formatter="formatworkDate"
+          >
+          </el-table-column>
+
+          <el-table-column prop="starttime" label="开始时间" width="80">
+          </el-table-column>
+          <el-table-column prop="endtime" label="结束时间" width="80">
+          </el-table-column>
+          <el-table-column label="长度(小时)" width="100" prop="timecount">
+          </el-table-column>
           <el-table-column label="请假原因" prop="remark"></el-table-column>
           <el-table-column
             prop="applovestatus"
@@ -199,7 +212,6 @@
 </template>
 
 <script>
-// import { fetchList } from '@/api/article'
 import { workbase } from "@/api/overwork";
 export default {
   name: "overtime",
@@ -207,12 +219,13 @@ export default {
     return {
       checked: false,
       tmpworkData: {
-        userid: "",
+        userid: [],
         worktype: "",
-        remark: "",
+        workremark: "",
         starttime: "",
         endtime: "",
-        workdata: "",
+        workdate: "",
+        timecount: "",
         applovestatus: "",
       },
       isEdit: false,
@@ -249,37 +262,38 @@ export default {
   },
   mounted: function () {},
   methods: {
-    NewUserleave() {
+    NewUserwork() {
       this.isEdit = true;
       // this.$refs["leaveData"].resetFields();
       this.tmpworkData = {
         userid: "",
         worktype: "",
-        remark: "",
+        workremark: "",
         starttime: "",
         endtime: "",
-        workdata: "",
+        workdate: "",
         applovestatus: "",
       };
     },
-    EditUserleave() {
+    EditUserwork() {
       if (this.tmpworkData.userid == "" || this.tmpworkData.applovestatus > 0)
         return;
       this.isEdit = true;
     },
-    cancelUserleave() {
+    cancelUserwork() {
       this.isEdit = false;
       this.tmpworkData = {
         userid: "",
         worktype: "",
-        remark: "",
+        workremark: "",
         starttime: "",
         endtime: "",
-        workdata: "",
+        workdate: "",
         applovestatus: "",
       };
     },
-    submitLeave() {
+    submitwork() {
+      console.log(this.tmpworkData.userid);
       this.isEdit = false;
     },
     submitUpload() {
@@ -287,13 +301,13 @@ export default {
     },
     setRowData(row, column) {
       if (this.isEdit) return;
-      //   this.tmpleaveData.userid = parseInt(row.userid);
-      //   this.tmpleaveData.leavetype = row.leavetype;
-      //   this.tmpleaveData.remark = row.remark;
-      //   this.tmpleaveData.freedate = [row.starttime, row.endtime];
-      //   this.tmpleaveData.applovestatus = row.applovestatus;
-      console.log(row);
-      console.log(column);
+      this.tmpworkData.userid = [row.userid];
+      this.tmpworkData.worktype = row.worktype;
+      this.tmpworkData.workremark = row.workremark;
+      this.tmpworkData.starttime = row.starttime;
+      this.tmpworkData.endtime = row.endtime;
+      this.tmpworkData.workdate = row.workdate;
+      this.tmpworkData.applovestatus = row.applovestatus;
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -325,16 +339,15 @@ export default {
           return "平时";
           break;
       }
-      //   let tmpUser = this.worksType.filter((el) => {
-      //     return parseInt(el.id) === parseInt(row.leavetype);
-      //   });
-      //   return tmpUser.length == 0 ? "未知" : tmpUser[0].leavename;
     },
     formatworkStatus(row, colum) {
       let tmpUser = this.workStatus.filter((el) => {
         return parseInt(el.statusid) === parseInt(row.applovestatus);
       });
       return tmpUser.length == 0 ? "未知" : tmpUser[0].msg;
+    },
+    formatworkDate(row, col) {
+      return this.$moment(row.workdate).format("YYYY-MM-DD");
     },
   },
 };
@@ -362,6 +375,6 @@ export default {
   min-height: 50px;
 }
 .bg-purple-dark {
-  background: #f1f3f7;
+  background: #dbdddf;
 }
 </style>

@@ -26,7 +26,6 @@
     "pbkdf2-sha256": "^1.1.1",
     "pbkdf2-sha512": "^1.1.0",
     "request": "^2.88.2",
-    "sequelize": "^6.5.1",
-    "zklib": "^0.2.11"
+    "sequelize": "^6.6.2"
   }
 }

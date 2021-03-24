@@ -16,5 +16,6 @@ const getters = {
   departmentjob_jobs: state => state.departmentjob.jobs,
   departmentjob_times: state => state.departmentjob.times,
   locheight: state => state.settings.winHeight,
+  language: state => state.app.language,
 }
 export default getters

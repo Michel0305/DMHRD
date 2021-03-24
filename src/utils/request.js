@@ -62,7 +62,7 @@ service.interceptors.response.use(
         // to re-login
         MessageBox.confirm('哎呀!我 *, 当前登录失效请重新登录', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
-          // cancelButtonText: 'Cancel',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {

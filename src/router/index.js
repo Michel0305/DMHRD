@@ -112,15 +112,15 @@ export const constantRoutes = [
         meta: { title: '调休单', icon: 'education' }
       },
       {
-        path: 'abnormal ',//补卡单
-        component: () => import('@/views/example/list'),
-        name: 'abnormal ',
+        path: 'abnormal',//补卡单
+        component: () => import('@/views/dmabnormal/index'),
+        name: 'abnormal',
         meta: { title: '补卡单', icon: 'el-icon-tickets' }
       },
       {
-        path: 'business ',//出差单
+        path: 'business',//出差单
         component: () => import('@/views/example/list'),
-        name: 'business ',
+        name: 'business',
         meta: { title: '出差单', icon: 'el-icon-truck' }
       }
     ]
