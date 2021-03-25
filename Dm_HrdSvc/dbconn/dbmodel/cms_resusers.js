@@ -29,6 +29,13 @@ var resUsers = sequelizeConn.define('res_users', {
     isline: { type: Sequelize.BLOB },//是否在职
     cdnumber: { type: Sequelize.STRING(50) },//考勤门禁卡
     workloc: { type: Sequelize.STRING(50) },//工作地点
+    school: { type: Sequelize.STRING(50) },
+    bankname: { type: Sequelize.STRING(50) },
+    bankson: { type: Sequelize.STRING(50) },
+    bankcard: { type: Sequelize.STRING(50) },
+    documents: { type: Sequelize.STRING(50) },
+    social: { type: Sequelize.STRING(50) },
+    goods: { type: Sequelize.STRING(50) },
     create_time: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {
     createdAt: false,                   // 禁止添加 createdAt 字段

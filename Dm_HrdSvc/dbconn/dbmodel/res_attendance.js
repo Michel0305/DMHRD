@@ -1,6 +1,9 @@
 var Sequelize = require('sequelize');
 var sequelizeConn = require('../dbConnection');
 
+Sequelize.DATE.prototype._stringify = function _stringify(date, options) {
+    return this._applyTimezone(date, options).format('YYYY-MM-DD HH:mm:ss.SSS');
+};
 
 ResAttendanceDB = () => { }
 
@@ -54,33 +57,6 @@ ResAttendanceDB.Count = async (...swhere) => {
 }
 
 ResAttendanceDB.BulkCreate = async (swhere) => {//批量生产
-    console.log(swhere)
-    return resAttendance.bulkCreate([
-        {
-            id: 0,
-            deviceuserId: '1058',
-            recordtime: '2103-08-17T22:29:39.000Z',
-            ip: '10.83.34.10'
-        },
-        {
-            id: 0,
-            deviceuserId: '1058',
-            recordtime: '2103-08-17T22:29:42.000Z',
-            ip: '10.83.34.10'
-        },
-        {
-            id: 0,
-            deviceuserId: '1058',
-            recordtime: '2103-08-17T22:29:44.000Z',
-            ip: '10.83.34.10'
-        },
-        {
-            id: 0,
-            deviceuserId: '1058',
-            recordtime: '2103-08-17T22:29:48.000Z',
-            ip: '10.83.34.10'
-        }
-    ])
+    return resAttendance.bulkCreate(swhere)
 }
-// cmsMemberReport.sync()
 module.exports = ResAttendanceDB;

@@ -196,9 +196,9 @@ export const asyncRoutes = [
         }
       },
       {
-        path: 'abnormal',
+        path: 'abnormalcheck',
         component: () => import('@/views/permission/directive'),
-        name: 'abnormal',
+        name: 'abnormalcheck',
         meta: {
           title: '考勤异常',
           roles: ['admin'], // or you can only set roles in sub nav

@@ -11,6 +11,7 @@ var loginRouter = require('./routes/login');
 var resUserRouter = require('./routes/resuser');
 var resLeaveRouter = require('./routes/leave');
 var resOverWorkRouter = require('./routes/overwork');
+var resAttendanceRouter = require('./routes/attendance');
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -72,6 +73,7 @@ app.use('/user', loginRouter);
 app.use('/personnel', resUserRouter);
 app.use('/leave', resLeaveRouter);
 app.use('/overwork', resOverWorkRouter);
+app.use('/attendance', resAttendanceRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

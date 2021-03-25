@@ -12,38 +12,22 @@ ZkData.download = () => {
     let tmpDate = moment(new Date()).subtract(7, 'days').calendar();
     async function DataDownload() {
         let logData = await ZkDevice.GetAttendanceData();
-        // console.log(logData.code)
-        // // let infoStatus = await ResAttendanceDB.Insert()
         if (logData.code === 404) return logData
         let dbData = [];
-
         for (let i = 0; i < logData.data.data.length; i++) {
             const el = logData.data.data[i];
             if (moment(el.recordTime).isAfter(new Date(`${tmpDate} 00:00:00`).toISOString())) {
-                // let recordtime = el.recordTime
-                // console.log(recordtime)
                 let tmpDeviceData = {
-                    id: 0,
                     deviceuserId: el.deviceUserId,
-                    recordtime: el.recordTime.toISOString(),
+                    recordtime: moment(el.recordTime).format('YYYY-MM-DD HH:mm:ss.SSS'),
                     ip: el.ip
                 }
                 dbData.push(tmpDeviceData)
-                // await ResAttendanceDB.Insert([tmpDeviceData])
-                // dbData.push(tmpDeviceData)
-                // console.log(dbData)
-                // if (i % 10 === 0 || i === logData.data.data.length) {
-
-                //     dbData = [];
-                // }
             }
         }
-        await ResAttendanceDB.Insert(dbData)
-
+        return await ResAttendanceDB.BulkCreate(dbData)
     }
     return DataDownload()
 }
-
-ZkData.download();
 
 module.exports = ZkData;

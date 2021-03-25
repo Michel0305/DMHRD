@@ -116,15 +116,11 @@
         <el-form-item>
           <el-checkbox v-model="infoRow.ischeck">是否启用</el-checkbox>
         </el-form-item>
-        <el-form-item>
-          <el-col :offset="10" :span="10">
-            <el-button type="primary" @click="dialogForm" size="mini"
-              >保存</el-button
-            >
-            <el-button @click="dialogForm" size="mini">取消</el-button>
-          </el-col>
-        </el-form-item>
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogForm">保存</el-button>
+        <el-button @click="dialogForm">取消</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>

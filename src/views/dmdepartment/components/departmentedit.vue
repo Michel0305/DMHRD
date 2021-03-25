@@ -74,16 +74,11 @@
             </el-form-item>
           </el-col>
         </el-row>
-
-        <el-row>
-          <el-col :span="12" :offset="12">
-            <el-form-item>
-              <el-button type="primary" @click="dialogForm">保存</el-button>
-              <el-button @click="dialogForm">取消</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogForm">保存</el-button>
+        <el-button @click="dialogForm">取消</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
