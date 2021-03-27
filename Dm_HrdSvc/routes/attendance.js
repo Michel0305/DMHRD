@@ -17,12 +17,11 @@ router.get('/download', function (req, res, next) {
  * 获取考勤数据
  */
 router.get('/workrecors', (req, res, next) => {
-    // console.log(req.params)
-    // console.log(req.body)
-    ResWorkRecords.getDataByParms(req.query)
-    // console.log(req.query.datewhere ? 0 : req.query.datewhere)
-    // console.log(req.query.dept ? req.query.dept : 1)
-    res.send({ code: 20000 })
+    ResWorkRecords.GetDataByParms(req.query).then((records) => {
+        res.send({ code: 20000, data: records })
+    }).catch((err) => {
+        res.send({ code: 50014, data: err })
+    })
 })
 
 // router.get('/:userid', function(req, res, next) {

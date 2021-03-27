@@ -33,7 +33,12 @@
                 size="mini"
               >
               </el-date-picker>
-              <el-select v-model="swhere.dept" placeholder="部门" size="mini">
+              <el-select
+                v-model="swhere.dept"
+                placeholder="部门"
+                clearable
+                size="mini"
+              >
                 <el-option
                   v-for="item in deptOptions"
                   :key="item.id"
@@ -43,6 +48,7 @@
                 </el-option>
               </el-select>
               <el-button
+                size="mini"
                 icon="el-icon-search"
                 @click="getworkrecordsdata"
               ></el-button>
@@ -51,26 +57,89 @@
           <el-row>
             <el-col :span="24">
               <el-table
-                :data="
-                  tableData.filter(
+                v-loading="loading"
+                element-loading-text="拼命加载中"
+                element-loading-spinner="el-icon-loading"
+                :data="recordsData"
+                style="width: 100%"
+                :max-height="$store.getters.locheight"
+              >
+                <!-- tableData.filter(
                     (data) =>
                       !search ||
                       data.name.toLowerCase().includes(search.toLowerCase())
-                  )
-                "
-                style="width: 100%"
-              >
-                <el-table-column label="日期" prop="date"> </el-table-column>
-                <el-table-column label="姓名" prop="name"> </el-table-column>
-                <el-table-column label="刷卡1" prop="date"> </el-table-column>
-                <el-table-column label="刷卡2" prop="name"> </el-table-column>
-                <el-table-column label="刷卡3" prop="date"> </el-table-column>
-                <el-table-column label="刷卡4" prop="name"> </el-table-column>
-                <el-table-column label="刷卡5" prop="date"> </el-table-column>
-                <el-table-column label="刷卡6" prop="name"> </el-table-column>
-                <el-table-column label="刷卡7" prop="date"> </el-table-column>
-                <el-table-column label="刷卡8" prop="name"> </el-table-column>
-                <el-table-column label="状态" prop="name"> </el-table-column>
+                  ) -->
+                <el-table-column label="日期" prop="recordsData.checkdate">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.checkdate).format("YYYY-MM-DD")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="姓名" prop="recordsData.userid">
+                </el-table-column>
+                <el-table-column label="部门" prop="recordsData.partid">
+                </el-table-column>
+                <el-table-column label="班次" prop="bc"> </el-table-column>
+                <el-table-column label="刷卡1" prop="recordsData.timesone">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timesone).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡2" prop="timestwo">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timestwo).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡3" prop="timesthree">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timesthree).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡4" prop="timefour">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      scope.row.timefour
+                        ? ""
+                        : $moment(scope.row.timefour).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡5" prop="timefive">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timefive).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡6" prop="timesix">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timesix).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡7" prop="timeseven">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timeseven).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="刷卡8" prop="timeseight">
+                  <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{
+                      $moment(scope.row.timeseight).format("HH:mm")
+                    }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="状态"> </el-table-column>
                 <el-table-column align="right" width="80">
                   <template slot-scope="scope">
                     <el-button
@@ -96,6 +165,7 @@ export default {
   name: "abnormal",
   data() {
     return {
+      loading: false,
       swhere: { datewhere: "", dept: "" },
       downloaddate: "",
       pickerOptions: {
@@ -161,18 +231,24 @@ export default {
           address: "上海市普陀区金沙江路 1516 弄",
         },
       ],
+      recordsData: [],
       search: "",
     };
   },
   created() {
+    this.loading = true;
     getworkrecords(this.swhere).then((rs) => {
-      console.log(rs);
+      this.recordsData = rs.data;
+      this.loading = false;
+      console.log(this.recordsData);
     });
     console.log(this.$store);
   },
   methods: {
     getworkrecordsdata() {
-      console.log(this.swhere);
+      getworkrecords(this.swhere).then((rs) => {
+        this.recordsData = rs.data;
+      });
     },
   },
 };
@@ -192,12 +268,12 @@ export default {
 .el-table {
   margin-top: 10px;
 }
-.el-select .el-input {
+/* .el-select .el-input {
   width: 130px;
-}
-.input-with-select .el-input-group__prepend {
+} */
+/* .input-with-select .el-input-group__prepend {
   background-color: #fff;
-}
+} */
 .el-date-editor.el-input {
   width: 130px;
 }

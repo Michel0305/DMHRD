@@ -49,13 +49,13 @@
           :max-height="$store.getters.locheight"
           style="width: 100%"
         >
-          <el-table-column label="姓名" width="70">
+          <el-table-column label="姓名" width="90">
             <template slot-scope="scope">
               <span>{{ scope.row.user_name }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="工号" sortable width="70">
+          <el-table-column label="工号" sortable width="100">
             <template slot-scope="scope">
               <span>{{ scope.row.user_id }}</span>
             </template>
@@ -67,13 +67,13 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="部门" width="100" sortable>
+          <el-table-column label="部门" width="110" sortable>
             <template slot-scope="scope">
               <span>{{ scope.row.dept }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="岗位" width="110">
+          <el-table-column label="岗位" width="120">
             <template slot-scope="scope">
               <span>{{ scope.row.job }}</span>
             </template>

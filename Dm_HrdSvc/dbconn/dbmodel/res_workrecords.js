@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelizeConn = require('../dbConnection');
+var users = require('./cms_resusers');
 
 
 ResWorkRecordsDB = () => { }
@@ -11,6 +12,7 @@ var resWorkRecords = sequelizeConn.define('res_workrecords', {
     id: { type: Sequelize.BIGINT, autoIncrement: true },
     userid: { type: Sequelize.NUMBER, primaryKey: true },//编号
     bc: { type: Sequelize.NUMBER },
+    partid: { type: Sequelize.NUMBER },
     checktimes: { type: Sequelize.NUMBER },
     checkdate: { type: Sequelize.DATE },
     timesone: { type: Sequelize.DATE },
@@ -28,6 +30,7 @@ var resWorkRecords = sequelizeConn.define('res_workrecords', {
     styfi: { type: Sequelize.STRING },
     stys: { type: Sequelize.STRING },
     status: { type: Sequelize.STRING },
+    // bmid: { type: Sequelize.NUMBER, references: 'res_users', referencesKey: 'user_id' },
     createdate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间    
 }, {
     createdAt: false,                   // 禁止添加 createdAt 字段
@@ -37,6 +40,7 @@ var resWorkRecords = sequelizeConn.define('res_workrecords', {
 })
 
 ResWorkRecordsDB.SelectAll = async (...swhere) => {
+    console.log(swhere)
     if (swhere.length == 0) {
         return resWorkRecords.findAll();
     } else {
