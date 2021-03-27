@@ -175,7 +175,7 @@ export const asyncRoutes = [
   {
     path: '/reports',
     component: Layout,
-    redirect: '/reports/page',
+    redirect: '/reports/attendancereport',
     alwaysShow: true, // will always show the root menu
     name: 'reports',
     meta: {
@@ -186,7 +186,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'attendancereport',
-        component: () => import('@/views/permission/directive'),
+        component: () => import('@/views/dmattendance/index'),
         name: 'attendancereport',
         meta: {
           title: '出勤报表',

@@ -26,7 +26,6 @@ export function logout() {
 /**
  * 获取人事资料数据
  */
-
 export function users() {
   return request({
     url: '/personnel/all',
@@ -55,9 +54,25 @@ export function dempartsjobs() {
   })
 }
 
+/**
+ * 获取用户基本数据
+ * @returns 
+ */
 export function basedata() {
   return request({
     url: '/user/basedata',
+    method: 'get'
+  })
+}
+
+/**
+ * 根据id 获取user
+ * @param {*} userid 
+ * @returns 
+ */
+export function userbyid(userid) {
+  return request({
+    url: `/personnel/${userid}`,
     method: 'get'
   })
 }

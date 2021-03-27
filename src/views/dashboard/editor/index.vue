@@ -1,6 +1,8 @@
 <template>
   <div class="dashboard-editor-container">
-    <consumer />
+    <!-- <el-col :span="6">
+      <user-card :user="user" />
+    </el-col> -->
     <!-- <div class="clearfix">
       <pan-thumb :image="avatar" style="float: left">
         Your roles:
@@ -26,12 +28,23 @@
 import { mapGetters } from "vuex";
 import PanThumb from "@/components/PanThumb";
 // import GithubCorner from "@/components/GithubCorner";
-import consumer from "./components/consumer";
+import UserCard from "./components/UserCard";
 export default {
   name: "DashboardEditor",
-  components: { PanThumb, consumer },
+  components: { PanThumb, UserCard },
   data() {
     return {
+      user: {
+        type: Object,
+        default: () => {
+          return {
+            name: "",
+            email: "",
+            avatar: "",
+            role: "",
+          };
+        },
+      },
       emptyGif:
         "https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3",
     };

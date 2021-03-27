@@ -3,7 +3,10 @@ var router = express.Router();
 
 var leaveControl = require('../control/leave');
 
-/* GET home page. */
+/**
+ * 请假单 API数据模块
+ */
+
 router.get('/base', function (req, res, next) {
     let xToken = req.headers['x-token']
     console.log(xToken)

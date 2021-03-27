@@ -19,6 +19,7 @@ var expressJWT = require('express-jwt');
 var fs = require('fs');
 var app = express();
 
+// app.use(cors());
 app.use((req, res, next) => {//解决跨域问题
   res.header("Access-Control-Allow-Credentials", "true");
   var allowedOrigins = ['http://10.83.4.182:9527', 'http://localhost:9527', 'http://127.0.0.1:9527'];
@@ -29,8 +30,10 @@ app.use((req, res, next) => {//解决跨域问题
   res.header('Content-Type', 'application/x-www-form-urlencoded');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild, X-Token');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  res.header('X-Powered-By', '3.2.1')
+  res.header('Content-Type', 'application/json;charset=utf-8');
   if (req.method == 'OPTIONS') {
-    res.send(200);
+    res.send(20000);
   } else {
     next();
   }
@@ -51,7 +54,7 @@ app.use(expressJWT({
   secret: Buffer.from(secretOrPrivateKey),
   algorithms: ['RS256']
 }).unless({//过滤验证URL
-  path: ['/user/login', '/user/logout', '/public/images/*']
+  path: ['/api/user/login', '/api/user/logout', '/api/public/images/*']
 }));
 
 app.use((err, req, res, next) => {
@@ -69,11 +72,11 @@ app.use((err, req, res, next) => {
 /**
  * 用户登录API
  */
-app.use('/user', loginRouter);
-app.use('/personnel', resUserRouter);
-app.use('/leave', resLeaveRouter);
-app.use('/overwork', resOverWorkRouter);
-app.use('/attendance', resAttendanceRouter);
+app.use('/api/user', loginRouter);
+app.use('/api/personnel', resUserRouter);
+app.use('/api/leave', resLeaveRouter);
+app.use('/api/overwork', resOverWorkRouter);
+app.use('/api/attendance', resAttendanceRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

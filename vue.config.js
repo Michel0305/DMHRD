@@ -33,15 +33,33 @@ module.exports = {
     host: '0.0.0.0',
     port: port,
     open: true,
-    overlay: {
-      warnings: false,
-      errors: true
-    },
+    // overlay: {
+    //   warnings: false,
+    //   errors: true
+    // },
+    proxy: { //跨域proxy
+      '/api': {
+        target: 'http://127.0.0.1:8888',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: { 'http://127.0.0.1:8888': '' }
+      }
+    }
+    // proxy: {
+    //   ["/dev-api"]: {
+    //     target: 'http://127.0.0.1:8888',
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       ['^' + "/dev-ap"]: ''
+    //     }
+    //   }
+    // }
+
     // proxy: {
     //   '^/api': {
     //     target: 'http://127.0.0.1:8888',
+    //     changeOrigin: true,
     //     ws: true,
-    //     changeOrigin: true
     //   },
     // }
     // before: require('./mock/mock-server.js')

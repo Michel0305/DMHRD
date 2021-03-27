@@ -5,13 +5,15 @@ ZkDevice = () => { }
  */
 ZkDevice.GetAttendanceData = () => {
     async function ZkDevice() {
-        let zkInstance = new ZKLib('10.83.34.12', 4370, 10000, 4000);//10.83.34.12
+        let zkInstance = new ZKLib('10.83.34.11', 4370, 10000, 4000);//10.83.34.12  10.83.34.11
         try {
             await zkInstance.createSocket()
         } catch (error) {
+            console.log('hello hello hello hello hellohello hellohello hello hello hello hello hello')
             return ({ code: 404, data: error })
         }
         const logs = await zkInstance.getAttendances()
+        console.log(logs)
         await zkInstance.disconnect()
         return { code: 200, data: logs }
     }

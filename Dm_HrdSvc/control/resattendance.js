@@ -30,4 +30,5 @@ ZkData.download = () => {
     return DataDownload()
 }
 
+// ZkData.download(); //测试函数
 module.exports = ZkData;
