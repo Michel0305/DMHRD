@@ -29,7 +29,7 @@
                 icon="el-icon-check"
                 size="mini"
                 :disabled="!isEdit"
-                @click="submitLeave"
+                @click="submitLeave('leaveData')"
                 >保存</el-button
               >
             </el-col>
@@ -57,12 +57,12 @@
         >
           <el-row>
             <el-col :span="12">
-              <el-form-item label="申请人">
+              <el-form-item label="申请人" prop="userid">
                 <el-select
                   v-model="tmpleaveData.userid"
                   placeholder="请假人"
                   size="mini"
-                  :disabled="!isEdit"
+                  :disabled="!isEdit || this.tmpleaveData.userid !== ''"
                 >
                   <el-option
                     v-for="item in $store.state.departmentjob.personals"
@@ -74,7 +74,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12"
-              ><el-form-item label="请假类别">
+              ><el-form-item label="请假类别" prop="leavetype">
                 <el-select
                   v-model="tmpleaveData.leavetype"
                   placeholder="请选择类别"
@@ -93,8 +93,10 @@
           </el-row>
           <el-row>
             <el-col :span="16">
-              <el-form-item label="请假日期">
+              <el-form-item label="请假日期" prop="freedate">
                 <el-date-picker
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  format="yyyy-MM-dd HH:mm:ss"
                   v-model="tmpleaveData.freedate"
                   type="datetimerange"
                   range-separator="至"
@@ -107,7 +109,7 @@
             </el-col>
           </el-row>
 
-          <el-form-item label="请假说明">
+          <el-form-item label="请假说明" prop="remark">
             <el-input
               type="textarea"
               v-model="tmpleaveData.remark"
@@ -159,6 +161,9 @@
           @row-click="setRowData"
           style="width: 100%"
         >
+          <el-table-column prop="id" label="编号" width="100" v-show="false">
+          </el-table-column>
+
           <el-table-column
             prop="userid"
             label="姓名"
@@ -180,8 +185,16 @@
             :formatter="formatLeaveType"
           >
           </el-table-column>
-          <el-table-column prop="starttime" label="开始日期"> </el-table-column>
-          <el-table-column prop="endtime" label="结束日期"> </el-table-column>
+          <el-table-column prop="starttime" label="开始日期">
+            <template slot-scope="scope">{{
+              $moment(scope.row.starttime).utc().format("YYYY-MM-DD HH:mm:ss")
+            }}</template>
+          </el-table-column>
+          <el-table-column prop="endtime" label="结束日期">
+            <template slot-scope="scope">{{
+              $moment(scope.row.endtime).utc().format("YYYY-MM-DD HH:mm:ss")
+            }}</template>
+          </el-table-column>
           <el-table-column
             label="长度"
             width="50"
@@ -203,20 +216,22 @@
 
 <script>
 // import { fetchList } from '@/api/article'
-import { leavebase } from "@/api/leave";
+import { leavebase, leaveapply } from "@/api/leave";
 export default {
   name: "dmleave",
   data() {
     return {
       tmpleaveData: {
+        id: 0,
         userid: "",
         leavetype: "",
         remark: "",
         freedate: [],
+        applovestatus: 0,
       },
+      editClick: false,
       isEdit: false,
       fileList: [],
-
       leaveData: [],
       leaveLog: [],
       leaveStatus: [],
@@ -224,36 +239,33 @@ export default {
       rules: {
         userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],
         leavetype: [
-          { required: true, message: "请选择请假类别", trigger: "blur" },
+          { required: true, message: "请选择请假类别", trigger: "change" },
         ],
         freedate: [
-          { required: true, message: "请选择请假日期", trigger: "blur" },
+          {
+            required: true,
+            message: "请选择日期",
+            trigger: "change",
+          },
         ],
       },
     };
   },
   created() {
-    console.log(this.$store.state.departmentjob);
     leavebase().then((baseData) => {
       this.leaveData = baseData.data.leaveBase;
       this.leaveLog = baseData.data.leaveLog;
       this.leaveStatus = baseData.data.leaveStatus;
       this.leaveTypes = baseData.data.leaveType;
-      console.log(baseData);
     });
   },
   mounted: function () {},
   methods: {
     NewUserleave() {
       this.isEdit = true;
-      // this.$refs["leaveData"].resetFields();
-      this.tmpleaveData = {
-        userid: "",
-        leavetype: "",
-        remark: "",
-        freedate: [],
-        applovestatus: "",
-      };
+      this.editClick = false;
+      this.tmpleaveData.id = 0;
+      this.resetForm("leaveData");
     },
     EditUserleave() {
       if (this.tmpleaveData.userid == "" || this.tmpleaveData.applovestatus > 0)
@@ -262,29 +274,63 @@ export default {
     },
     cancelUserleave() {
       this.isEdit = false;
-      this.tmpleaveData = {
-        userid: "",
-        leavetype: "",
-        remark: "",
-        freedate: [],
-        applovestatus: "",
-      };
+      this.resetForm("leaveData");
     },
-    submitLeave() {
-      this.isEdit = false;
+    submitLeave(formName) {
+      //提交
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          leaveapply(this.tmpleaveData).then((rs) => {
+            console.log(this.tmpleaveData);
+            if (rs.data.code == 200) {
+              this.notifyMsg(
+                "提交成功",
+                "success",
+                `${this.tmpleaveData.userid} -- 请假单提交成功`
+              );
+            } else {
+              this.notifyMsg(
+                "提交失败",
+                "error",
+                `${this.tmpleaveData.userid} -- ${rs.data.msg} `
+              );
+              return;
+            }
+            this.isEdit = false;
+            // this.resetForm("leaveData");
+          });
+        } else {
+          this.notifyMsg(
+            "提交失败",
+            "error",
+            `${this.tmpleaveData.userid} -- 请假单提交失败,请核对申请数据`
+          );
+          return false;
+        }
+      });
+    },
+    notifyMsg(title, type, msg) {
+      const h = this.$createElement;
+      this.$notify({
+        title: title,
+        type: type,
+        message: msg,
+      });
     },
     submitUpload() {
       this.$refs.upload.submit();
     },
     setRowData(row, column) {
       if (this.isEdit) return;
+      this.tmpleaveData.id = row.id;
       this.tmpleaveData.userid = parseInt(row.userid);
       this.tmpleaveData.leavetype = row.leavetype;
       this.tmpleaveData.remark = row.remark;
-      this.tmpleaveData.freedate = [row.starttime, row.endtime];
+      this.tmpleaveData.freedate = [
+        this.$moment(row.starttime).format("YYYY-MM-DD HH:mm:ss"),
+        this.$moment(row.endtime).format("YYYY-MM-DD HH:mm:ss"),
+      ];
       this.tmpleaveData.applovestatus = row.applovestatus;
-      console.log(row);
-      console.log(column);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -316,6 +362,10 @@ export default {
       });
       return tmpUser.length == 0 ? "未知" : tmpUser[0].msg;
     },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    repaceCurFormDate() {},
   },
 };
 </script>
@@ -328,6 +378,7 @@ export default {
 .uploadbtn {
   height: 28px;
   margin-left: 10px;
+  margin-top: 5px;
 }
 .upload-demo {
   display: flex;

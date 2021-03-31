@@ -13,7 +13,7 @@ ResWorkRecords.GetDataByParms = (...parms) => {
             workrecords = await ResWorkRecordsDB.SelectAll({ where: { checkdate: { [Op.between]: parms[0].datewhere } } })
         } else {
             workrecords = await ResWorkRecordsDB.SelectAll(
-                { where: { checkdate: moment().subtract(1, 'days').format('YYYY/MM/DD') } }
+                { where: { checkdate: moment().subtract(2, 'days').format('YYYY/MM/DD') } }
             )
         }
         let workrecordBase = [];

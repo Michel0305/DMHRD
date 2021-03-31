@@ -8,6 +8,8 @@ var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus')
 var ResLeaveTypeDB = require('../dbconn/dbmodel/res_leavetype')
 
 var token = require('./token');
+var Sequelize = require('sequelize');
+var moment = require('moment');
 
 LeaveStaticFn = () => { }
 
@@ -67,6 +69,16 @@ LeaveStaticFn.BaseData = (parms) => {
         return leaveBaseData
     }
     return GetLeaveBaseData();
+}
+
+LeaveStaticFn.ApplyFor = (parms) => {
+    console.log(parms)
+    console.log(moment(parms['freedate[0]']).format('YYYY-MM-DD HH:mm:ss'))
+    async function SaveLeave() {
+        let leaveSaveStatus = await ResLeaveDB.Query('exec LeaveForDB @id = ' + parms.id + ', @userid=' + parms.userid + ',@startDate="' + moment(parms['freedate[0]']).format('YYYY-MM-DD HH:mm:ss') + '", @endDate="' + moment(parms['freedate[1]']).format('YYYY-MM-DD HH:mm:ss') + '",@remark="' + parms.remark + '",@leavetype=' + parms.leavetype + ',@applovestatus=' + parms.applovestatus + ',@curuser="1580";')
+        return leaveSaveStatus[0][0]
+    }
+    return SaveLeave()
 }
 
 module.exports = LeaveStaticFn;

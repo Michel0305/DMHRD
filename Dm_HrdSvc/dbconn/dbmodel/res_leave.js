@@ -48,7 +48,8 @@ ResLeaveDB.Insert = async (...swhere) => {
 }
 
 ResLeaveDB.Query = async (swhere) => {
-    return resLeave.query(swhere)
+    console.log(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResLeaveDB.Count = async (...swhere) => {

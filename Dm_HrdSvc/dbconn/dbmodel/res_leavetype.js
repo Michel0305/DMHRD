@@ -40,7 +40,7 @@ ResLeaveTypeDB.Insert = async (...swhere) => {
 }
 
 ResLeaveTypeDB.Query = async (swhere) => {
-    return resLeaveType.query(swhere)
+    return sequelizeConn.sequelize.query(swhere)
 }
 
 ResLeaveTypeDB.Count = async (...swhere) => {

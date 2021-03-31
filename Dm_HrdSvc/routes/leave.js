@@ -18,4 +18,14 @@ router.get('/base', function (req, res, next) {
 
 });
 
+
+router.post('/apply', (req, res, next) => {
+    leaveControl.ApplyFor(req.body).then((reback) => {
+        res.send({ code: 20000, data: reback })
+    }).catch((err) => {
+        res.send({ code: 50014, data: err })
+    })
+
+})
+
 module.exports = router;

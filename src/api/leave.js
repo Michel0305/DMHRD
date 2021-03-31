@@ -7,3 +7,11 @@ export function leavebase() {
         method: 'get'
     })
 }
+
+export function leaveapply(data) {
+    return request({
+        url: '/leave/apply',
+        method: 'post',
+        data: Qs.stringify(data)
+    })
+}
