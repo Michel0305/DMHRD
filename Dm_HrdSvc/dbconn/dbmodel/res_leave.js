@@ -13,6 +13,7 @@ var resLeave = sequelizeConn.define('res_leave', {
     leavedate: { type: Sequelize.DATE },//请假日期
     starttime: { type: Sequelize.DATE },//开始时间
     endtime: { type: Sequelize.DATE },//结束时间
+    days: { type: Sequelize.NUMBER },//天数
     timetotal: { type: Sequelize.FLOAT },//累计时长
     apploveid: { type: Sequelize.NUMBER },//审核人ID
     applovestatus: { type: Sequelize.NUMBER },//审核状态
