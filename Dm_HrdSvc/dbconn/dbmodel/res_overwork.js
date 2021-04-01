@@ -48,7 +48,7 @@ ResOverWorkDB.Insert = async (...swhere) => {
 }
 
 ResOverWorkDB.Query = async (swhere) => {
-    return resOverWork.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResOverWorkDB.Count = async (...swhere) => {

@@ -9,7 +9,6 @@ ZkDevice.GetAttendanceData = () => {
         try {
             await zkInstance.createSocket()
         } catch (error) {
-            console.log('hello hello hello hello hellohello hellohello hello hello hello hello hello')
             return ({ code: 404, data: error })
         }
         const logs = await zkInstance.getAttendances()

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var qs = require('qs');
 var overWorkControl = require('../control/overwork');
 
 /**
@@ -15,5 +15,19 @@ router.get('/base', function (req, res, next) {
     })
 
 });
+
+
+router.post('/infodb',(req,res,next)=>{
+    let xToken = req.headers['x-token']
+    let  tmpBody= qs.parse(req.body)
+    tmpBody.token = xToken; 
+    overWorkControl.SaveDB(tmpBody).then((rs)=>{
+        res.send({code:20000,data:rs})
+    }).catch((err)=>{
+        res.send({ code: 50014, data: err })
+    })
+    
+})
+
 
 module.exports = router;

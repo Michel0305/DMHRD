@@ -20,5 +20,5 @@ module.exports = {
         //     encrypt: true //使用windows azure，需要设置次配置。
         // },     
     },
-    tokentime: 30 * 60,//5分鐘過期
+    tokentime: 300 * 60,//5分鐘過期
 }

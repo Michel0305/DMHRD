@@ -49,7 +49,6 @@ ResLeaveDB.Insert = async (...swhere) => {
 }
 
 ResLeaveDB.Query = async (swhere) => {
-    console.log(swhere)
     return sequelizeConn.query(swhere)
 }
 

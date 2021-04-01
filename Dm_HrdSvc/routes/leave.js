@@ -18,7 +18,9 @@ router.get('/base', function (req, res, next) {
 
 });
 
-
+/**
+ * 提交数据
+ */
 router.post('/apply', (req, res, next) => {
     leaveControl.ApplyFor(req.body).then((reback) => {
         res.send({ code: 20000, data: reback })

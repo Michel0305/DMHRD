@@ -43,8 +43,7 @@
                 <el-row>
                     <el-col :span="16">
                         <el-form-item label="请假日期" prop="freedate">
-                            <el-date-picker v-model="tmpleaveData.freedate" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" range-separator="至" 
-                            start-placeholder="开始日期" end-placeholder="结束日期" :disabled="!isEdit" @change="verifyDate" :picker-options="pickerOptions">
+                            <el-date-picker v-model="tmpleaveData.freedate" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :disabled="!isEdit" @change="verifyDate" :picker-options="pickerOptions">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -192,6 +191,7 @@ export default {
                                 "error",
                                 `${this.tmpleaveData.userid} -- ${rs.data.msg} `
                             );
+                            this.loading.close();
                             return;
                         }
                         this.isEdit = false;
@@ -294,14 +294,14 @@ export default {
             );
         },
 
-        verifyDate(val){
-          if(val.length !== 0){
-            if(this.$moment(val[0]).isBefore(this.$moment(new Date()).subtract(3, 'days'))){
-              this.$message.error({message:'请假日期非有效期内，过往日期在三天内',duration:10000});
-              this.tmpleaveData.freedate = [];
-              return;
-            }            
-          }            
+        verifyDate(val) {
+            if (val.length !== 0) {
+                if (this.$moment(val[0]).isBefore(this.$moment(new Date()).subtract(3, 'days'))) {
+                    this.$message.error({ message: '请假日期非有效期内，过往日期在三天内', duration: 10000 });
+                    this.tmpleaveData.freedate = [];
+                    return;
+                }
+            }
         },
 
         openFullScreen2() {

@@ -55,6 +55,21 @@ export function dempartsjobs() {
 }
 
 /**
+ * 保存新增用户
+ * @param {*} users 用户信息
+ * @returns 
+ */
+export function createusers(users) {
+  return request({
+    url: '/personnel/infouser',
+    method: 'post',
+    data:Qs.stringify(users)
+  })
+}
+
+
+
+/**
  * 获取用户基本数据
  * @returns 
  */
