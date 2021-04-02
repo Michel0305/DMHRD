@@ -40,7 +40,6 @@ ResAttendanceDB.Delete = async (...swhere) => {
 }
 
 ResAttendanceDB.Insert = async (swhere) => {
-    console.log(swhere)
     return resAttendance.create(swhere[0])
 }
 

@@ -11,6 +11,8 @@ var token = require('./token');
 var Sequelize = require('sequelize');
 var moment = require('moment');
 
+var qs =require('qs');
+
 LeaveStaticFn = () => { }
 
 /**
@@ -72,10 +74,10 @@ LeaveStaticFn.BaseData = (parms) => {
 }
 
 LeaveStaticFn.ApplyFor = (parms) => {
-    console.log(parms)
-    console.log(moment(parms['freedate[0]']).format('YYYY-MM-DD HH:mm:ss'))
+    let tmpLeaveData = qs.parse(parms)
+    console.log(moment(tmpLeaveData.freedate[0]).format('YYYY-MM-DD HH:mm:ss'))
     async function SaveLeave() {
-        let leaveSaveStatus = await ResLeaveDB.Query('exec LeaveForDB @id = ' + parms.id + ', @userid=' + parms.userid + ',@startDate="' + moment(parms['freedate[0]']).format('YYYY-MM-DD HH:mm:ss') + '", @endDate="' + moment(parms['freedate[1]']).format('YYYY-MM-DD HH:mm:ss') + '",@remark="' + parms.remark + '",@leavetype=' + parms.leavetype + ',@applovestatus=' + parms.applovestatus + ',@curuser="1580";')
+        let leaveSaveStatus = await ResLeaveDB.Query('exec LeaveForDB @id = ' + tmpLeaveData.id + ', @userid=' + tmpLeaveData.userid + ',@startDate="' + moment(tmpLeaveData.freedate[0]).format('YYYY-MM-DD HH:mm:ss') + '", @endDate="' + moment(tmpLeaveData.freedate[1]).format('YYYY-MM-DD HH:mm:ss') + '",@remark="' + tmpLeaveData.remark + '",@leavetype=' + tmpLeaveData.leavetype + ',@applovestatus=' + tmpLeaveData.applovestatus + ',@curuser="1580";')
         return leaveSaveStatus[0][0]
     }
     return SaveLeave()

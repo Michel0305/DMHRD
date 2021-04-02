@@ -9,7 +9,6 @@ var leaveControl = require('../control/leave');
 
 router.get('/base', function (req, res, next) {
     let xToken = req.headers['x-token']
-    console.log(xToken)
     leaveControl.BaseData(xToken).then((rs) => {
         res.send({ code: 20000, data: rs })
     }).catch((err) => {

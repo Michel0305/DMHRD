@@ -12,7 +12,6 @@ ResUser.GetAllUser = () => {
         userList.forEach(el => {
             usersJson.push(el.dataValues)
         });
-        // console.log(userList.filter(item=>{return item} ))
         return usersJson;
     }
     return AllUser();
@@ -27,6 +26,11 @@ ResUser.GetUserByID = (id) => {
     return ResUsersDB.SelectAll({ where: { 'user_id': id } })
 }
 
+/**
+ * 用户资料保存
+ * @param {*} parms 
+ * @returns 
+ */
 ResUser.UserDataSave = (parms) =>{
     if(parms.id == 0){ //创建 
         try {

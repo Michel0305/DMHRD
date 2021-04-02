@@ -22,7 +22,7 @@ function GetTempToken() {
         'password': tmpPwd,
         'sha': shaPwd
     }
-    console.log(token.create(tempUsrData))
+    // console.log(token.create(tempUsrData))
 }
 // GetTempToken();
 
@@ -76,7 +76,7 @@ loginUser.GetBeasBata = ()=>{
         let resUser = await ResUsersDB.SelectAll();
         let resUserTimes = await ResUserTimesDB.SelectAll();
         let resUserJob = await resUserjobDB.SelectAll();
-        let resDepartment = await ResDepartmentDB.SelectAll();
+        let resDepartment = await ResDepartmentDB.SelectAll({where:{isDel:false}});
         dataBase.resUsers  = resUser.filter(users => { return users.dataValues });
         dataBase.resTimes  = resUserTimes.filter(times => { return times.dataValues });
         dataBase.resJobs  = resUserJob.filter(jobs => { return jobs.dataValues });

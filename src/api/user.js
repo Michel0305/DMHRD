@@ -67,7 +67,57 @@ export function createusers(users) {
   })
 }
 
+/**
+ * 保存新增修改部门
+ * @param {*} departs 部门资讯
+ * @returns 
+ */
+ export function createdeparts(departs) {
+  return request({
+    url: '/personnel/infodepart',
+    method: 'post',
+    data:Qs.stringify(departs)
+  })
+}
 
+/**
+ * 删除改部门
+ * @param {*} ids 部门id
+ * @returns 
+ */
+ export function removedeparts(ids) {
+  return request({
+    url: '/personnel/deptremove',
+    method: 'post',
+    data:Qs.stringify(ids)
+  })
+}
+
+/**
+ * 新增职位信息
+ * @param {*} data 
+ * @returns 
+ */
+export function createJob(data) {
+  return request({
+    url: '/personnel/infojob',
+    method: 'post',
+    data:Qs.stringify(data)
+  })
+}
+
+/**
+ * 新增考勤班次
+ * @param {*} data 
+ * @returns 
+ */
+export function createWorkTime(data) {
+  return request({
+    url: '/personnel/infotimes',
+    method: 'post',
+    data:Qs.stringify(data)
+  })
+}
 
 /**
  * 获取用户基本数据

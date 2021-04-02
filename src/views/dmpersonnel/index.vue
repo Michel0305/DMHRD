@@ -27,9 +27,7 @@
             tableData.filter(
               (data) =>
                 !swhere ||
-                data.user_name.toLowerCase().includes(swhere.toLowerCase()) ||
-                !swhere ||
-                data.user_id.includes(swhere.toLowerCase())
+                data.user_name.toLowerCase().includes(swhere.toLowerCase()) 
             )
           " :max-height="$store.getters.locheight" style="width: 100%">
                 <el-table-column label="姓名" width="90">
@@ -123,7 +121,7 @@ export default {
         ),
     },
     created() {
-        this.tableData = [] = store.state.departmentjob.personals;
+        this.tableData = [] = store.state.departmentjob.personals;        
     },
     mounted() {},
     methods: {

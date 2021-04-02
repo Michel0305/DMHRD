@@ -40,7 +40,7 @@ var resWorkRecords = sequelizeConn.define('res_workrecords', {
 })
 
 ResWorkRecordsDB.SelectAll = async (...swhere) => {
-    console.log(swhere)
+    // console.log(swhere)
     if (swhere.length == 0) {
         return resWorkRecords.findAll();
     } else {

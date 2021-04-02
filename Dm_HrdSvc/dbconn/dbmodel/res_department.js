@@ -12,6 +12,8 @@ var resDepartment = sequelizeConn.define('res_department',{
     upbenchid:{type:Sequelize.INTEGER},//上阶部门
     deptower:{type:Sequelize.INTEGER},//负责人
     authorized:{type:Sequelize.INTEGER},//编制人数
+    isDel:{type:Sequelize.BOOLEAN},
+    createuser:{type:Sequelize.NUMBER},
     create_time:{type:Sequelize.DATE,defaultValue : Sequelize.NOW},//创建日期时间
 },{
     createdAt: false,                   // 禁止添加 createdAt 字段

@@ -46,7 +46,7 @@
               size="mini"
             >
             </el-table-column>
-            <el-table-column label="启用" width="50">
+            <el-table-column label="启用" width="50" prop="ischeck">
               <template slot-scope="scope">
                 <el-switch
                   v-model="scope.ischeck"
@@ -57,14 +57,7 @@
                 </el-switch>
               </template>
             </el-table-column>
-            <el-table-column align="right" width="120">
-              <!-- <template slot="header">
-                <el-input
-                  v-model="search"
-                  size="mini"
-                  placeholder="输入关键字搜索"
-                />
-              </template> -->
+            <el-table-column align="right" width="120"> 
               <template slot-scope="scope">
                 <el-button
                   type="primary"
@@ -106,11 +99,12 @@ export default {
       timesType: [],
       search: "",
       rowData: {},
+      timesData:[]
     };
   },
   created() {
-    this.timesType = [] = this.$store.state.departmentjob.times;
-    console.log(this.$store.state.departmentjob.times);
+    this.timesType = [] = this.$store.getters.departmentjob_times;
+    //  store.getters.locheight
   },
   methods: {
     reBackRow() {

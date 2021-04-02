@@ -23,7 +23,7 @@ resUserjobDB.SelectAll = async (...swhere) => {
     if (swhere.length == 0) {
         return resUserjob.findAll();
     } else {
-        console.log(swhere[0])
+        // console.log(swhere[0])
         return resUserjob.findAll(swhere[0]);
     }
 }
