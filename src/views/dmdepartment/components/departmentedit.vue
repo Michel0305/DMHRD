@@ -1,6 +1,6 @@
 <template>
 <div class="app-container-edituser">
-    <el-dialog :title="infoRow.isEdit ? infoRow.dept_name : '创建'" :visible.sync="dialogStatus" :before-close="dialogForm">
+    <el-dialog :title="infoRow.isEdit ? infoRow.dept_name : '创建'" :visible.sync="dialogStatus">
         <el-form ref="departform" :model="infoRow" :rules="rules" label-width="80px">
             <el-row>
                 <el-col :span="12">
@@ -91,27 +91,27 @@ export default {
                 this.infoRow.deptid = null;
                 return;
             }
+            if (val == 1) {
+                this.$emit("reBackRow", { isCreate: false });
+                return;
+            }
             this.$refs['departform'].validate((valid) => {
                 if (valid) {
-                    if (val == 0) {
-                        createdeparts(this.infoRow).then((rs) => {
-                            let reBackDepart = rs.data
-                            if(reBackDepart.code == 200){
-                                if(this.infoRow.id == 0){
-                                   reBackDepart.isCreate = true
-                                }else{                                  
-                                   reBackDepart.isCreate = false
-                                }
-                              this.notifyMsg('数据提交','success','数据提交保存成功');
-                              this.$emit("reBackRow",reBackDepart);
-                            }else{
-                              this.$message.error(reBackDepart.backdata);
-                              return
-                            }                            
-                        })
-                    } else {
-                        this.$emit("reBackRow",{isCreate:false});
-                    }
+                    createdeparts(this.infoRow).then((rs) => {
+                        let reBackDepart = rs.data
+                        if (reBackDepart.code == 200) {
+                            if (this.infoRow.id == 0) {
+                                reBackDepart.isCreate = true
+                            } else {
+                                reBackDepart.isCreate = false
+                            }
+                            this.notifyMsg('数据提交', 'success', '数据提交保存成功');
+                            this.$emit("reBackRow", reBackDepart);
+                        } else {
+                            this.$message.error(reBackDepart.backdata);
+                            return
+                        }
+                    })
                 } else {
                     this.$message.error('部门添加失败,验证不通过,请核实输出');
                     return;
