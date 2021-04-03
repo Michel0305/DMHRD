@@ -1,7 +1,7 @@
 <template>
 <div class="app-container-edituser">
-    <el-dialog :title="infoRow.isEdit ? infoRow.timesname : '创建'" :visible.sync="dialogStatus" :before-close="dialogForm">
-        <el-form ref="form" :model="infoRow" :rules="rules" label-width="80px">
+    <el-dialog :title="infoRow.isEdit ? infoRow.timesname : '创建'" :visible.sync="dialogStatus">
+        <el-form ref="timesForm" :model="infoRow" :rules="rules" label-width="80px">
             <el-row>
                 <el-col :span="10">
                     <el-form-item label="名称" prop="timesname">
@@ -70,8 +70,8 @@
             </el-form-item>
         </el-form>
         <div class="footer">
-            <el-button type="primary" @click="dialogForm" class="btnsave" size="mini">保存</el-button>
-            <el-button @click="dialogForm" size="mini">取消</el-button>
+            <el-button type="primary" @click="dialogForm(0)" class="btnsave" size="mini">保存</el-button>
+            <el-button @click="dialogForm(1)" size="mini">取消</el-button>
         </div>
     </el-dialog>
 </div>
@@ -111,13 +111,27 @@ export default {
     },
     mounted: function () {},
     methods: {
-        dialogForm() {
-            createWorkTime(this.infoRow).then((rs)=>{
-              console.log(rs)
-              console.log(this.infoRow);
-              this.$emit("commitFormData");
-            })
-            
+        dialogForm(type) {
+            if (type == 0) {
+                this.$refs['timesForm'].validate((valid) => {
+                    if (valid) {
+                        createWorkTime(this.infoRow).then((rs) => {
+                            if (rs.data.code == 200) {
+                                this.$emit("commitFormData", rs.data.backdata.isupdate ? this.infoRow : rs.data.backdata);
+                                this.$message.success('数据提交成功');
+                            } else {
+                                this.$message.error('数据提交失败');
+                                return
+                            }
+                        })
+                    } else {
+                        this.$message.error('添加班次验证失败请核实资料');
+                        return
+                    }
+                })
+            } else {
+                this.$emit("commitFormData",null);
+            }
         },
     },
 };

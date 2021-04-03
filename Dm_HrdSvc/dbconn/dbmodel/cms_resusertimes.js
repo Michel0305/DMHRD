@@ -12,24 +12,24 @@ var resUserTimes = sequelizeConn.define('res_usertimes', {
     timesname: { type: Sequelize.CHAR(10), primaryKey: true },//名称 
     timestype: { type: Sequelize.INTEGER, primaryKey: true },//白夜班
     timesfirst: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },//第一次刷卡
     timessecond: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },//第二次刷卡
     timesthird: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },//第三次刷卡
     timesfourth: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },//第四次刷卡
     timesfifth: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },//第五次刷卡
     thimessixth: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
     },//第六次刷卡
-    ischeck: { type: Sequelize.DATE },//是否启用
+    ischeck: { type: Sequelize.BOOLEAN },//是否启用
     create_time: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {
     createdAt: false,                   // 禁止添加 createdAt 字段

@@ -11,14 +11,10 @@ WorkTimes.InfoTimes = (parms) => {
         if (parms.id == 0) { //创建
             try {
                 let tmpBackData = await ResUserTimesDB.Insert({
-                    timesname: parms.timesname,
-                    timestype: parms.timestype,
-                    timesfirst: parms.timesfirst,
-                    timessecond: parms.timessecond,
-                    timesthird: parms.timesthird,
-                    timesfourth: parms.timesfourth,
-                    timesfifth: parms.timesfifth,
-                    thimessixth: parms.thimessixth,
+                    timesname: parms.timesname,timestype: parms.timestype,
+                    timesfirst: `${parms.timesfirst}`,timessecond: `${parms.timessecond}`,
+                    timesthird: `${parms.timesthird}`,timesfourth: `${parms.timesfourth}`,
+                    timesfifth: `${parms.timesfifth}`,thimessixth: `${parms.thimessixth}`,
                     ischeck: parms.ischeck
                 })
                 return { code: 200, backdata: tmpBackData }
@@ -27,19 +23,15 @@ WorkTimes.InfoTimes = (parms) => {
             }
         } else {
             try {
-                let tmpBackData = await ResUserTimesDB.Update({
-                    timesname: parms.timesname,
-                    timestype: parms.timestype,
-                    timesfirst: parms.timesfirst,
-                    timessecond: parms.timessecond,
-                    timesthird: parms.timesthird,
-                    timesfourth: parms.timesfourth,
-                    timesfifth: parms.timesfifth,
-                    thimessixth: parms.thimessixth,
-                    ischeck: parms.ischeck
-                },{where:{id:parms.id}})
-                return { code: 200, backdata: tmpBackData }
+                await ResUserTimesDB.Update({
+                    timesname: parms.timesname,timestype: parms.timestype,
+                    timesfirst: `${parms.timesfirst}`,timessecond: `${parms.timessecond}`,
+                    timesthird: `${parms.timesthird}`,timesfourth: `${parms.timesfourth}`,
+                    timesfifth: `${parms.timesfifth}`,thimessixth: `${parms.thimessixth}`,
+                    ischeck: parms.ischeck},{where:{id:parms.id}})
+                return { code: 200, backdata: {isupdate:true} }
             } catch (err) {
+                console.log(err)
                 return { code: 400, backdata: '更新班次失败' }
             }
         }
@@ -48,5 +40,18 @@ WorkTimes.InfoTimes = (parms) => {
 
 }
 
+
+WorkTimes.RemoveTimes = (parms) =>{
+    async function delTimes() {
+        try {
+            await ResUserTimesDB.Delete({where:{id:parms.id}})
+            return { code: 200, backdata: 'Success' }
+        } catch (error) {
+            return { code: 200, backdata: 'Error' }
+        }
+        
+    }
+    return delTimes();
+}
 
 module.exports = WorkTimes;

@@ -88,12 +88,30 @@ router.post('/infojob',(req,res,next)=>{
   })  
 })
 
+/***
+ * 新增修改班次
+ */
 router.post('/infotimes',(req,res,next)=>{
   let tmpTimes = qs.parse(req.body);
-  WorkTimes.InfoTimes(tmpTimes);
-  res.send({code:20000})
+  WorkTimes.InfoTimes(tmpTimes).then((rs)=>{
+    res.send({code:20000,data:rs})
+  }).catch((err)=>{
+    res.send({code:20000,data:err})
+  })
+  
 })
 
+/**\
+ * 删除班次
+ */
+router.post('/deltimes',(req,res,next)=>{
+  let tmpIds = qs.parse(req.body)
+  WorkTimes.RemoveTimes(tmpIds).then((rs)=>{
+    res.send({code:20000,data:rs})
+  }).catch((err)=>{
+    res.send({code:20000,data:err})
+  })
+})
 
 
 module.exports = router;

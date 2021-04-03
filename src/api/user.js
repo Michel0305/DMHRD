@@ -120,6 +120,21 @@ export function createWorkTime(data) {
 }
 
 /**
+ * 删除考勤班次
+ * @param {*} data 
+ * @returns 
+ */
+export function removeWorkTime(data) {
+  return request({
+    url: '/personnel/deltimes',
+    method: 'post',
+    data:Qs.stringify(data)
+  })
+}
+
+
+//
+/**
  * 获取用户基本数据
  * @returns 
  */

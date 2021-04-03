@@ -16,7 +16,21 @@ const mutations = {
     },
     UPDATE_TIMES: (state, data) => {
         state.times = data;
+    },
+    REPLACE_TIME: (state, data) => {
+        let indexID = state.times.findIndex((el) => el.id == data.id)
+        state.times.splice(
+            indexID < 0 ? 0 : indexID,
+            indexID < 0 ? 0 : 1,
+            data
+        );
+    },
+    REMOVE_TIME:(state, data)=> {
+        let indexID = state.times.findIndex((el) => el.id == data.id)
+        state.times.splice(indexID, 1);
     }
+
+
 }
 const actions = {
     defPersonal({ commit }, data) {
@@ -30,6 +44,12 @@ const actions = {
     },
     defTimes({ commit }, data) {
         commit('UPDATE_TIMES', data)
+    },
+    replaceTimes({ commit }, data){
+        commit('REPLACE_TIME', data)
+    },
+    delTimes({ commit }, data){
+        commit('REMOVE_TIME', data)
     }
 }
 

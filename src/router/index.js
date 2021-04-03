@@ -292,7 +292,7 @@ export const asyncRoutes = [
   {
     path: '/seeting',
     component: Layout,
-    redirect: '/seeting/page',
+    redirect: '/seeting/purview',
     alwaysShow: true, // will always show the root menu
     name: 'seeting',
     meta: {
@@ -303,7 +303,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'purview',
-        component: () => import('@/views/permission/page'),
+        component: () => import('@/views/dmpurview/index'),
         name: 'purview',
         meta: {
           title: '权限设置',

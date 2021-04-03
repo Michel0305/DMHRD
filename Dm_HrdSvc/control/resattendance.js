@@ -3,7 +3,7 @@
 var ZkDevice = require('./zk');
 var moment = require('moment');
 var fs = require('fs');
-var ResAttendanceDB = require('../dbconn/dbmodel/res_attendance')//别问那么多,照做就行，不信你提到最上一层你试试！！！
+var ResAttendanceDB = require('../dbconn/dbmodel/res_attendance')
 ZkData = () => { }
 /**
  * 数据下载
