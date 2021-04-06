@@ -77,11 +77,14 @@ loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
             tmpUser = {} = token.verifys(xToken);
             let usrRight = await ResUsersDB.Query(`select * from dbo.getUserRight(${tmpUser.userid})`)
             let tmplistarry = []
+            let tmpPartIds = []
             usrRight.forEach(el => {
                 if(el.length>0){
                     let elRoleIds = el[0].roleids
                     let defUserList = elRoleIds.substr(1,elRoleIds.length-1).split(',')
-                    tmplistarry= [] = unique(defUserList)                
+                    tmplistarry= [] = unique(defUserList)   
+                    let elDepart = el[0].departids
+                    tmpPartIds = [] = unique(elDepart.substr(1,elDepart.length-1).split(','))
                 }        
             });
             tmpUser.roles = tmplistarry
@@ -97,7 +100,8 @@ loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
                     tmpModelActive[el.router]=[] = unique(el.activeid.split(','))
                 }           
             });   
-            tmpUser.rights = tmpModelActive
+            tmpUser.rights = tmpModelActive;  //权限
+            tmpUser.partids = tmpPartIds;  //部门权限
             return tmpUser            
         } catch (error) {
             return {code:400,msg:error}            

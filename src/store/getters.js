@@ -19,5 +19,6 @@ const getters = {
   locheight: state => state.settings.winHeight,
   language: state => state.app.language,
   rights:state=>state.user.right,
+  partids :state=>state.user.partids,
 }
 export default getters

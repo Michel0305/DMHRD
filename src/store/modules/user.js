@@ -10,6 +10,7 @@ const state = {
   roles: [],
   account: '',
   right:{},
+  partids:[]
 }
 
 const mutations = {
@@ -33,6 +34,9 @@ const mutations = {
   },
   SET_RIGHT:(state,rights)=>{
     state.right = rights
+  },
+  SET_PARTIDS:(state,partids)=>{
+    state.partids = partids
   }
 }
 
@@ -74,6 +78,7 @@ const actions = {
         commit('SET_INTRODUCTION', userData.introduction)
         commit('SET_ACCOUNT', userData.userid)
         commit('SET_RIGHT', userData.rights)
+        commit('SET_PARTIDS', userData.partids)        
         resolve(userData)
       }).catch(error => {
         reject(error)

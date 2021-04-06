@@ -27,7 +27,11 @@
                     <el-col :span="12">
                         <el-form-item label="申请人" prop="userid">
                             <el-select v-model="tmpleaveData.userid" placeholder="请假人" size="mini" :disabled="!isEdit || this.tmpleaveData.userid !== ''">
-                                <el-option v-for="item in $store.state.departmentjob.personals" :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
+                                <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
+            if($store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0){
+                return el
+            }
+        })" :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -127,9 +131,12 @@ export default {
                 onPick: (time) => {
                     // console.log(time);
                 },
-                disabledDate: (time) => {
-                    // console.log(time);
+                disabledDate(time) {
+                    return time.getTime() < new Date(new Date().setDate(new Date().getDate()-3));
                 },
+                // disabledDate(time) {
+                //     return time.getTime() > new Date(new Date().setDate(new Date().getDate()+3));
+                // }
             },
             rules: {
                 userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],

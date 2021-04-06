@@ -312,7 +312,7 @@ export const asyncRoutes = [
       },
       {
         path: 'formmaintaining',
-        component: () => import('@/views/permission/directive'),
+        component: () => import('@/views/dmmaintain/index'),
         name: 'Formmaintaining',
         meta: {
           title: '表单维护',

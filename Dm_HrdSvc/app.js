@@ -13,6 +13,7 @@ var resLeaveRouter = require('./routes/leave');
 var resOverWorkRouter = require('./routes/overwork');
 var resAttendanceRouter = require('./routes/attendance');
 var sysUserRightRouter = require('./routes/sysright');
+var sysConfigRouter = require('./routes/syssetting');
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -79,6 +80,7 @@ app.use('/api/leave', resLeaveRouter);
 app.use('/api/overwork', resOverWorkRouter);
 app.use('/api/attendance', resAttendanceRouter);
 app.use('/api/right',sysUserRightRouter);
+app.use('/api/config',sysConfigRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

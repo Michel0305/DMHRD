@@ -39,7 +39,7 @@ router.beforeEach(async(to, from, next) => {
           const { roles } = await store.dispatch('user/getInfo')
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles);
-          accessRoutes.forEach(el => {
+          accessRoutes.forEach(el => { //获取登录用户的权限模块
             if(el.children){              
               el.children.forEach(vel => {
                 for (const key in store.getters.rights){

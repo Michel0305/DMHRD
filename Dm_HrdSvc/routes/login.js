@@ -23,8 +23,7 @@ router.post('/login', function (req, res, next) {
  */
 router.get('/info', function (req, res, next) {
   let xToken = req.headers['x-token']
-  userlogin.GetUserInfo(xToken).then((reback)=>{    
-    console.log(reback)
+  userlogin.GetUserInfo(xToken).then((reback)=>{
     res.send({ code: 20000, 'data': reback })
   })  
 });

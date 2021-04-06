@@ -24,7 +24,7 @@ export function filterAsyncRoutes(routes, roles) {
   routes.forEach(route => {    
     const tmp = { ...route }
     let rights = store.getters.rights;
-    for (const key in rights){
+    for (const key in rights){  //重新赋值路由变更角色权限
       if(tmp.name){
         if(key === tmp.name.toLowerCase()){
           let lowerName = tmp.name.toLowerCase()

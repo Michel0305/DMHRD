@@ -67,8 +67,10 @@ export default {
     },
     methods: {
         reBackRow(val) {
-            this.$store.dispatch("departmentjob/replaceTimes", val);
             this.dlgShow = false;
+            if(val == null) return;
+            this.$store.dispatch("departmentjob/replaceTimes", val);
+            
         },
         handleEdit(index, row) {
             this.dlgShow = true;
@@ -76,6 +78,7 @@ export default {
             this.rowData.isEdit = true;
         },
         handleDelete(index, row) {
+            console.log(row)
            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',

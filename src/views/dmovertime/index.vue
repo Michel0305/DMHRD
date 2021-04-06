@@ -27,7 +27,11 @@
                     <el-col :span="12">
                         <el-form-item label="申请人" prop="userid">
                             <el-select multiple :collapse-tags="!checked" v-model="tmpworkData.userid" placeholder="加班人" size="mini" :disabled="!isEdit">
-                                <el-option v-for="item in $store.state.departmentjob.personals" :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
+                                <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
+            if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0){
+                return el
+            }
+        })  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                             </el-select>
                             <el-checkbox size="mini" v-model="checked"></el-checkbox>
                         </el-form-item>
@@ -45,7 +49,8 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="加班日期" prop="workdate">
-                            <el-date-picker v-model="tmpworkData.workdate" type="date" placeholder="选择日期" :disabled="!isEdit" format="yyyy-MM-dd" value-format="yyyy-MM-dd">
+                            <el-date-picker v-model="tmpworkData.workdate" type="date" placeholder="选择日期" :disabled="!isEdit" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
+                            :picker-options="pickerOptions" >
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -111,6 +116,11 @@ export default {
     name: "overtime",
     data() {
         return {
+            pickerOptions:{
+                disabledDate(time) {
+                    return time.getTime()-5 > new Date(new Date().setDate(new Date().getDate()+2)) || time.getTime() <new Date(new Date().setDate(new Date().getDate()-3)) ;
+                },
+            },
             checked: false,
             tmpworkData: {
                 id: 0,
@@ -147,6 +157,20 @@ export default {
         };
     },
     created() {
+
+        // console.log(this.$store.getters)
+        // // let aaa = this.$store.getters.departmentjob_personals.filter((el)=>{return this.$store.getters.partids.indexOf(el.defpartid)>0})
+        // let personalList = this.$store.getters.departmentjob_personals
+        // personalList.forEach(el => {
+        //     let test = this.$store.getters.partids.findIndex((es) => { return parseInt(el.defpartid) == parseInt(es) })
+        //     console.log(test)
+        //     // if(this.$store.getters.partids.findIndex((es)=>{ return parseInt(el.defpartid) == parseInt(es)} )>=0){
+        //     //     console.log(el)
+        //     // }
+        // });
+
+        // console.log(aaa)
+
         workbase().then((baseData) => {
             this.workData = baseData.data.workBase;
             this.workLog = baseData.data.workLog;
