@@ -69,7 +69,7 @@ ResUsersDB.Insert = async (...swhere) => {
 }
 
 ResUsersDB.Query = async (swhere) => {
-    return resUsers.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResUsersDB.Count = async (...swhere) => {

@@ -44,7 +44,7 @@ ResAttendanceDB.Insert = async (swhere) => {
 }
 
 ResAttendanceDB.Query = async (swhere) => {
-    return resAttendance.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResAttendanceDB.Count = async (...swhere) => {

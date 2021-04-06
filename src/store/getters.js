@@ -18,5 +18,6 @@ const getters = {
   departmentjob_times: state => state.departmentjob.times,
   locheight: state => state.settings.winHeight,
   language: state => state.app.language,
+  rights:state=>state.user.right,
 }
 export default getters

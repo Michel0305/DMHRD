@@ -8,7 +8,8 @@ const state = {
   avatar: '',
   introduction: '',
   roles: [],
-  account: ''
+  account: '',
+  right:{},
 }
 
 const mutations = {
@@ -29,6 +30,9 @@ const mutations = {
   },
   SET_ACCOUNT: (state, account) => {
     state.account = account
+  },
+  SET_RIGHT:(state,rights)=>{
+    state.right = rights
   }
 }
 
@@ -69,6 +73,7 @@ const actions = {
         commit('SET_AVATAR', userData.avatar)
         commit('SET_INTRODUCTION', userData.introduction)
         commit('SET_ACCOUNT', userData.userid)
+        commit('SET_RIGHT', userData.rights)
         resolve(userData)
       }).catch(error => {
         reject(error)

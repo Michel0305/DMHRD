@@ -42,7 +42,7 @@ SysRoleModelDB.Insert = async (...swhere) => {
 }
 
 SysRoleModelDB.Query = async (swhere) => {
-    return sequelizeConn.sequelize.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 SysRoleModelDB.Count = async (...swhere) => {

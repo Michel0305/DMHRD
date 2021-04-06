@@ -61,7 +61,7 @@ ResWorkRecordsDB.Insert = async (...swhere) => {
 }
 
 ResWorkRecordsDB.Query = async (swhere) => {
-    return resWorkRecords.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResWorkRecordsDB.Count = async (...swhere) => {

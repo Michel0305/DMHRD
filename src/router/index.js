@@ -181,7 +181,7 @@ export const asyncRoutes = [
     meta: {
       title: '报表管理',
       icon: 'el-icon-date',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      // roles: ['1','5'] // you can set roles in root nav
     },
     children: [
       {
@@ -190,7 +190,7 @@ export const asyncRoutes = [
         name: 'attendancereport',
         meta: {
           title: '出勤报表',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-document-delete'
           // if do not set roles, means: this page does not require permission
         }
@@ -201,7 +201,7 @@ export const asyncRoutes = [
         name: 'abnormalcheck',
         meta: {
           title: '考勤异常',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-document-delete'
           // if do not set roles, means: this page does not require permission
         }
@@ -212,7 +212,7 @@ export const asyncRoutes = [
         name: 'overtimereport',
         meta: {
           title: '加班报表',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-tickets'
         }
       },
@@ -222,7 +222,7 @@ export const asyncRoutes = [
         name: 'tiemsreport',
         meta: {
           title: '休假报表',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-document-checked'
           // if do not set roles, means: this page does not require permission
         }
@@ -239,8 +239,7 @@ export const asyncRoutes = [
     name: 'personnelfiles',
     meta: {
       title: '人事资料',
-      icon: 'peoples',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      icon: 'peoples'     
     },
     children: [
       {
@@ -249,7 +248,7 @@ export const asyncRoutes = [
         name: 'personnel',
         meta: {
           title: '人员管理',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'people'
         }
       },
@@ -259,7 +258,7 @@ export const asyncRoutes = [
         name: 'organization',
         meta: {
           title: '组织架构',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'tree-table'
           // if do not set roles, means: this page does not require permission
         }
@@ -270,7 +269,7 @@ export const asyncRoutes = [
         name: 'department',
         meta: {
           title: '部门管理',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'list'
           // if do not set roles, means: this page does not require permission
         }
@@ -281,7 +280,7 @@ export const asyncRoutes = [
         name: 'tiemstype',
         meta: {
           title: '考勤班次',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-coffee-cup'
           // if do not set roles, means: this page does not require permission
         }
@@ -298,7 +297,7 @@ export const asyncRoutes = [
     meta: {
       title: '系统设定',
       icon: 'el-icon-setting',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      roles: ['1'] // you can set roles in root nav
     },
     children: [
       {
@@ -307,7 +306,7 @@ export const asyncRoutes = [
         name: 'purview',
         meta: {
           title: '权限设置',
-          roles: ['admin'], // or you can only set roles in sub nav
+          roles: ['1'], // or you can only set roles in sub nav
           icon: 'peoples'
         }
       },
@@ -317,7 +316,7 @@ export const asyncRoutes = [
         name: 'Formmaintaining',
         meta: {
           title: '表单维护',
-          roles: ['admin'],
+          roles: ['1'],
           icon: 'lock'
           // if do not set roles, means: this page does not require permission
         }
@@ -328,7 +327,7 @@ export const asyncRoutes = [
         name: 'Workflow',
         meta: {
           title: '流程设定',
-          roles: ['admin'],
+          roles: ['1'],
           icon: 'tree'
         }
       }

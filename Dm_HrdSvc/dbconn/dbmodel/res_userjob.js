@@ -41,7 +41,7 @@ resUserjobDB.Insert = async (...swhere) => {
 }
 
 resUserjobDB.Query = async (swhere) => {
-    return resUserjob.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 resUserjobDB.Count = async (...swhere) => {

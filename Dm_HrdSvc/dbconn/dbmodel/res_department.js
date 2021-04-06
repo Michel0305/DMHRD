@@ -43,7 +43,7 @@ ResDepartmentDB.Insert = async (...swhere) => {
 }
 
 ResDepartmentDB.Query = async (swhere) => {
-    return resDepartment.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResDepartmentDB.Count = async (...swhere) => {

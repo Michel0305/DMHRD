@@ -1,4 +1,5 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+import store from '../../store'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -20,9 +21,21 @@ function hasPermission(roles, route) {
  */
 export function filterAsyncRoutes(routes, roles) {
   const res = []
-
-  routes.forEach(route => {
+  routes.forEach(route => {    
     const tmp = { ...route }
+    let rights = store.getters.rights;
+    for (const key in rights){
+      if(tmp.name){
+        if(key === tmp.name.toLowerCase()){
+          let lowerName = tmp.name.toLowerCase()
+          let filterActive = store.getters.rights[lowerName]
+          let fCnt = filterActive.filter((rr)=>{ return parseInt(rr) == 1})
+          if(fCnt.length > 0){                        
+            route.meta.roles = [] = store.getters.roles;
+          }
+        }
+      }   
+    }
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, roles)

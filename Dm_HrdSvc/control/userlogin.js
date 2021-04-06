@@ -7,7 +7,7 @@ var fs = require("fs");
 var ResUsersDB = require('../dbconn/dbmodel/cms_resusers'); //用户列表
 var ResUserTimesDB = require('../dbconn/dbmodel/cms_resusertimes'); //班次
 var resUserjobDB = require('../dbconn/dbmodel/res_userjob'); //岗位列表
-var ResDepartmentDB = require('../dbconn/dbmodel/res_department'); //部门列表
+var ResDepartmentDB = require('../dbconn/dbmodel/res_department'); //部门列表 
 
 loginUser = () => { }
 
@@ -61,13 +61,49 @@ loginUser.Verify = (parms) => {
 loginUser.Crypt = (parms) => {
 }
 
+
+
+function unique (arr) {
+    return Array.from(new Set(arr))
+}
 /**
  * 当前登录用户信息
  * @param {*} xToken 
  * @returns 
  */
-loginUser.GetUserInfo = (xToken) => {
-  return tmpUser = {} = token.verifys(xToken);
+loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
+    async function UserInfo() {
+        try {
+            tmpUser = {} = token.verifys(xToken);
+            let usrRight = await ResUsersDB.Query(`select * from dbo.getUserRight(${tmpUser.userid})`)
+            let tmplistarry = []
+            usrRight.forEach(el => {
+                if(el.length>0){
+                    let elRoleIds = el[0].roleids
+                    let defUserList = elRoleIds.substr(1,elRoleIds.length-1).split(',')
+                    tmplistarry= [] = unique(defUserList)                
+                }        
+            });
+            tmpUser.roles = tmplistarry
+            tmpUser.avatar = `http://127.0.0.1:8888/public/images/${tmpUser.userid}.jpeg`;
+            tmpUser.introduction = '当前用户超级用户'
+            let filterArr = await ResUsersDB.Query(`select (select router from sys_model where id=a.modelid ) as router,a.modelid,a.activeid,a.departid from sys_role_model a  where a.roleid in (
+                select roleid from sys_user_right where userid='${tmpUser.userid}')`)
+            let tmpModelActive = {}
+            filterArr[0].forEach(el => {
+                if(tmpModelActive[el.router]){
+                    tmpModelActive[el.router] = []=unique(tmpModelActive[el.router].concat(el.activeid.split(',')))
+                }else{
+                    tmpModelActive[el.router]=[] = unique(el.activeid.split(','))
+                }           
+            });   
+            tmpUser.rights = tmpModelActive
+            return tmpUser            
+        } catch (error) {
+            return {code:400,msg:error}            
+        }        
+    }
+    return UserInfo()
 }
 
 loginUser.GetBeasBata = ()=>{

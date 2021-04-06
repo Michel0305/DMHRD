@@ -40,7 +40,7 @@ SysUserRightDB.Insert = async (...swhere) => {
 }
 
 SysUserRightDB.Query = async (swhere) => {
-    return sequelizeConn.sequelize.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 SysUserRightDB.Count = async (...swhere) => {

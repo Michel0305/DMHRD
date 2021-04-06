@@ -23,12 +23,10 @@ router.post('/login', function (req, res, next) {
  */
 router.get('/info', function (req, res, next) {
   let xToken = req.headers['x-token']
-  console.log(xToken)
-  let reback = {} = userlogin.GetUserInfo(xToken);
-  reback.avatar = `http://127.0.0.1:8888/public/images/${reback.userid}.jpeg`;
-  reback.introduction = '当前用户超级用户'
-  reback.roles = ['admin']
-  res.send({ code: 20000, 'data': reback })
+  userlogin.GetUserInfo(xToken).then((reback)=>{    
+    console.log(reback)
+    res.send({ code: 20000, 'data': reback })
+  })  
 });
 
 

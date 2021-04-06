@@ -40,7 +40,7 @@ SysModelDB.Insert = async (...swhere) => {
 }
 
 SysModelDB.Query = async (swhere) => {
-    return sequelizeConn.sequelize.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 SysModelDB.Count = async (...swhere) => {

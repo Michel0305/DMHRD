@@ -43,7 +43,7 @@ ResApplovelogDB.Insert = async (...swhere) => {
 }
 
 ResApplovelogDB.Query = async (swhere) => {
-    return resApplovelog.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResApplovelogDB.Count = async (...swhere) => {

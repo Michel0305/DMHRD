@@ -41,7 +41,7 @@ ResApploveStatusDB.Insert = async (...swhere) => {
 }
 
 ResApploveStatusDB.Query = async (swhere) => {
-    return resApploveStatus.query(swhere)
+    return sequelizeConn.query(swhere)
 }
 
 ResApploveStatusDB.Count = async (...swhere) => {
