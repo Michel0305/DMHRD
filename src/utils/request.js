@@ -6,12 +6,10 @@ import { getToken, removeToken } from '@/utils/auth'
 // create an axios instance
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const service = axios.create({
-  baseURL: '/api', //process.env.VUE_APP_BASE_API,  
+  baseURL: process.env.NODE_ENV =="development"?'/api':`${process.env.VUE_APP_BASE_API}/api`,  
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
-// console.log(process.env.VUE_APP_BASE_API)
-
 // request interceptor
 service.interceptors.request.use(
   config => {

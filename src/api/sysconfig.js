@@ -7,3 +7,20 @@ export function getHolidays() {
         method: 'get'
     })
 }
+
+
+export function infoHolidays(info) {
+    return request({
+        url: '/config/infoholidays',
+        method: 'post',
+        data:Qs.stringify(info)
+    })
+}
+
+export function removeHolidays(info) {
+    return request({
+        url: '/config/delholidays',
+        method: 'post',
+        data:Qs.stringify(info)
+    })
+}

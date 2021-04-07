@@ -152,12 +152,18 @@ export default {
         };
     },
     created() {
-        this.openFullScreen2();
+        this.openFullScreen2();        
         leavebase().then((baseData) => {
-            this.leaveData = baseData.data.leaveBase;
-            this.leaveLog = baseData.data.leaveLog;
-            this.leaveStatus = baseData.data.leaveStatus;
-            this.leaveTypes = baseData.data.leaveType;
+            if(baseData.data.code == 200){
+                let fliterUser = this.$store.getters.departmentjob_personals.filter((el)=>{if(this.$store.getters.partids.findIndex((es)=>{return el.defpartid == es})>=0 ){ return el.user_id }})
+                this.leaveData = [] = baseData.data.msg.leaveBase.filter((el)=>{if(fliterUser.findIndex((evl)=>{ return parseInt(evl.user_id) == parseInt(el.userid) } )>=0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account ) return el })
+                this.leaveLog = [] = baseData.data.msg.leaveLog;
+                this.leaveStatus = [] =baseData.data.msg.leaveStatus;
+                this.leaveTypes = [] =baseData.data.msg.leaveType;
+            }else{
+                console.log(baseData.data.msg)
+                this.$message.error(`数据初始化失败,请关闭当前页面,刷新试试`)
+            }            
             this.loading.close();
         });
     },

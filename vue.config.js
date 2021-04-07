@@ -39,12 +39,12 @@ module.exports = {
     },
     proxy: { //跨域proxy
       '/api': {
-        target: 'http://127.0.0.1:8888',
+        target: 'http://0.0.0.0:8888',
         ws: true,
         changeOrigin: true,
-        pathRewrite: { 'http://127.0.0.1:8888': '' }
+        pathRewrite: { 'http://0.0.0.0:8888': '' }
       }
-    }
+    },    
     // proxy: {
     //   ["/dev-api"]: {
     //     target: 'http://127.0.0.1:8888',
@@ -56,6 +56,7 @@ module.exports = {
     // }
     // before: require('./mock/mock-server.js')
   },
+  
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.

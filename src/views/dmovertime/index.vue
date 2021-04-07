@@ -28,10 +28,9 @@
                         <el-form-item label="申请人" prop="userid">
                             <el-select multiple :collapse-tags="!checked" v-model="tmpworkData.userid" placeholder="加班人" size="mini" :disabled="!isEdit">
                                 <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
-            if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0){
-                return el
-            }
-        })  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
+                                        if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0){
+                                         return el}})  "
+                                        :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                             </el-select>
                             <el-checkbox size="mini" v-model="checked"></el-checkbox>
                         </el-form-item>
@@ -45,12 +44,11 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="加班日期" prop="workdate">
                             <el-date-picker v-model="tmpworkData.workdate" type="date" placeholder="选择日期" :disabled="!isEdit" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                            :picker-options="pickerOptions" >
+                            :picker-options="pickerOptions"  size="mini">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -82,7 +80,6 @@
                 <el-row> </el-row>
             </el-form>
         </el-col>
-
         <el-col :span="22" :offset="1">
             <el-table :data="workData" :max-height="$store.getters.locheight - 290" border @row-click="setRowData" style="width: 100%">
                 <el-table-column prop="id" label="编号" width="50">
@@ -156,26 +153,17 @@ export default {
             },
         };
     },
-    created() {
-
-        // console.log(this.$store.getters)
-        // // let aaa = this.$store.getters.departmentjob_personals.filter((el)=>{return this.$store.getters.partids.indexOf(el.defpartid)>0})
-        // let personalList = this.$store.getters.departmentjob_personals
-        // personalList.forEach(el => {
-        //     let test = this.$store.getters.partids.findIndex((es) => { return parseInt(el.defpartid) == parseInt(es) })
-        //     console.log(test)
-        //     // if(this.$store.getters.partids.findIndex((es)=>{ return parseInt(el.defpartid) == parseInt(es)} )>=0){
-        //     //     console.log(el)
-        //     // }
-        // });
-
-        // console.log(aaa)
-
+    created() {        
         workbase().then((baseData) => {
-            this.workData = baseData.data.workBase;
-            this.workLog = baseData.data.workLog;
-            this.workStatus = baseData.data.workStatus;
-            //   this.leaveTypes = baseData.data.leaveType;
+            if(baseData.data.code ==200){
+                let fliterUser = this.$store.getters.departmentjob_personals.filter((el)=>{if(this.$store.getters.partids.findIndex((es)=>{return el.defpartid == es})>=0 ){ return el.user_id }})
+                this.workData = [] = baseData.data.msg.workBase.filter((el)=>{if(fliterUser.findIndex((evl)=>{ return parseInt(evl.user_id) == parseInt(el.userid) } )>=0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account ) return el })
+                this.workLog = [] = baseData.data.msg.workLog;
+                this.workStatus = [] = baseData.data.msg.workStatus;
+            }else{
+                console.log(baseData.data.msg)
+                this.$message.error(`数据初始化失败,请重新刷新试试`)
+            }     
         });
     },
     mounted: function () {},

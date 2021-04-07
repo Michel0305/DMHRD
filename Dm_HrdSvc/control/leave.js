@@ -11,7 +11,7 @@ var token = require('./token');
 var Sequelize = require('sequelize');
 var moment = require('moment');
 
-var qs =require('qs');
+var qs = require('qs');
 
 LeaveStaticFn = () => { }
 
@@ -21,54 +21,50 @@ LeaveStaticFn = () => { }
  */
 LeaveStaticFn.BaseData = (parms) => {
     async function GetLeaveBaseData() {
-        let leaveBaseData = {};
+        try {
+            let leaveBaseData = {};
+            let tmpUsers = token.verifys(parms);
+            if (tmpUsers.code) reject({ msg: 'Token Lost' })
+            let tmpLeave = await ResLeaveDB.SelectAll({ //获取申请人跟请假人是当前登录用户数据 
+                where: { createdate: { [Op.gt]: moment().subtract(360, 'days').format('YYYY/MM/DD') } },
+            });
+            let leaveBase = [] //获取用户请假记录
+            let tmpFormId = [] //获取所有请假单编号
+            tmpLeave.forEach(el => {
+                leaveBase.push(el.dataValues)
+                tmpFormId.push(el.id)
+            });
+            let apploveLog = await ResApplovelogDB.SelectAll({//根据请假单 查询签核记录
+                where: {
+                    [Op.and]: [{ modelname: 'leave' }, { formid: tmpFormId }
+                    ]
+                }
+            })
+            let leaveLog = []
+            apploveLog.forEach(el => {
+                leaveLog.push(el.dataValues)
+            })
 
-        let tmpUsers = token.verifys(parms);
-        if (tmpUsers.code) reject({ msg: 'Token Lost' })
+            let apploveStatus = await ResApploveStatusDB.SelectAll({ where: { model: 'leave' } }) //获取设定签核状态
+            let leaveStatus = []
+            apploveStatus.forEach(el => {
+                leaveStatus.push(el.dataValues)
+            })
 
-        let tmpLeave = await ResLeaveDB.SelectAll({ //获取申请人跟请假人是当前登录用户数据
-            where: {
-                [Op.or]: [
-                    { userid: tmpUsers.userid },
-                    { createuser: tmpUsers.userid }
-                ]
-            }
-        });
+            let leaveType = await ResLeaveTypeDB.SelectAll()
+            let tmpLeaveType = []
+            leaveType.forEach(el => {
+                tmpLeaveType.push(el.dataValues)
+            })
+            leaveBaseData.leaveBase = [] = leaveBase;
+            leaveBaseData.leaveLog =[] = leaveLog;
+            leaveBaseData.leaveStatus = [] = leaveStatus;
+            leaveBaseData.leaveType = [] = tmpLeaveType;
+            return { code: 200, msg: leaveBaseData }
+        } catch (error) {
+            return { code: 400, msg: error }
+        }
 
-        let leaveBase = [] //获取用户请假记录
-        let tmpFormId = [] //获取所有请假单编号
-        tmpLeave.forEach(el => {
-            leaveBase.push(el.dataValues)
-            tmpFormId.push(el.id)
-        });
-        let apploveLog = await ResApplovelogDB.SelectAll({//根据请假单 查询签核记录
-            where: {
-                [Op.and]: [{ modelname: 'leave' }, { formid: tmpFormId }
-                ]
-            }
-        })
-        let leaveLog = []
-        apploveLog.forEach(el => {
-            leaveLog.push(el.dataValues)
-        })
-
-        let apploveStatus = await ResApploveStatusDB.SelectAll({ where: { model: 'leave' } }) //获取设定签核状态
-        let leaveStatus = []
-        apploveStatus.forEach(el => {
-            leaveStatus.push(el.dataValues)
-        })
-
-        let leaveType = await ResLeaveTypeDB.SelectAll()
-        let tmpLeaveType = []
-        leaveType.forEach(el => {
-            tmpLeaveType.push(el.dataValues)
-        })
-
-        leaveBaseData.leaveBase = leaveBase;
-        leaveBaseData.leaveLog = leaveLog;
-        leaveBaseData.leaveStatus = leaveStatus;
-        leaveBaseData.leaveType = tmpLeaveType;
-        return leaveBaseData
     }
     return GetLeaveBaseData();
 }

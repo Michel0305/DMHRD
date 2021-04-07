@@ -24,10 +24,10 @@ var app = express();
 // app.use(cors());
 app.use((req, res, next) => {//解决跨域问题
   res.header("Access-Control-Allow-Credentials", "true");
-  var allowedOrigins = ['http://10.83.50.18:9527', 'http://localhost:9527', 'http://127.0.0.1:9527'];
+  var allowedOrigins = ['http://10.83.50.18:8080','http://10.83.50.18:9527', 'http://localhost:9527', 'http://127.0.0.1:9527'];
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
   }
   res.header('Content-Type', 'application/x-www-form-urlencoded');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild, X-Token');
@@ -56,7 +56,7 @@ app.use(expressJWT({
   secret: Buffer.from(secretOrPrivateKey),
   algorithms: ['RS256']
 }).unless({//过滤验证URL
-  path: ['/api/user/login', '/api/user/logout', '/api/public/images/*']
+  path: ['/api/user/login', '/api/user/logout','/api/user/test', '/api/public/images/*']
 }));
 
 app.use((err, req, res, next) => {
@@ -97,7 +97,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.listen(8888, '127.0.0.1', () => {
-  console.log('Server is start for url: http://127.0.0.1:8888');
+app.listen(8888, '0.0.0.0', () => {
+  console.log('Server is start for url: http://0.0.0.0:8888');
 })
 module.exports = app;

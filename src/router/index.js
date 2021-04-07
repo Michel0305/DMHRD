@@ -107,9 +107,15 @@ export const constantRoutes = [
       },
       {
         path: 'leaveinlieu',//调休单
-        component: () => import('@/views/example/list'),
+        component: () => import('@/views/dmswitchwork/index'),
         name: 'leaveinlieu',
         meta: { title: '调休单', icon: 'education' }
+      },
+      {
+        path: 'business',//出差单
+        component: () => import('@/views/dmbusiness/index'),
+        name: 'business',
+        meta: { title: '出差单', icon: 'el-icon-truck' }
       },
       {
         path: 'abnormal',//补卡单
@@ -117,12 +123,7 @@ export const constantRoutes = [
         name: 'abnormal',
         meta: { title: '补卡单', icon: 'el-icon-tickets' }
       },
-      {
-        path: 'business',//出差单
-        component: () => import('@/views/example/list'),
-        name: 'business',
-        meta: { title: '出差单', icon: 'el-icon-truck' }
-      }
+      
     ]
   },
   // {

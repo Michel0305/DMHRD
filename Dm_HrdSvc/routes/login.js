@@ -5,6 +5,11 @@ var express = require('express');
 var router = express.Router();
 var userlogin = require('../control/userlogin');
 
+
+router.get('/test',(req,res,next)=>{
+  res.send({code:20000,msg:'测试API'})
+})
+
 /**
  * 用户登录
  */
@@ -17,7 +22,6 @@ router.post('/login', function (req, res, next) {
   })
 
 });
-
 /**
  * 登录用户信息
  */
