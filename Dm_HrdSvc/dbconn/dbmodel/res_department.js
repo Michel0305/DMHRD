@@ -3,7 +3,7 @@ var sequelizeConn = require('../dbConnection');
 
 ResDepartmentDB = () =>{};
 /**
- * 人员资讯表
+ * 部门资讯表
  */
 var resDepartment = sequelizeConn.define('res_department',{
     id : {type : Sequelize.BIGINT, autoIncrement : true, primaryKey : true, unique : true},

@@ -5,7 +5,7 @@ var sequelizeConn = require('../dbConnection');
 SysHolidaysDB = () => { }
 
 /**
- * 请假数据表
+ * 假日设定
  */
 var sysHolidays = sequelizeConn.define('sys_holidays', {
     id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, unique: true },

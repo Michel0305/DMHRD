@@ -6,7 +6,7 @@ var users = require('./cms_resusers');
 ResWorkRecordsDB = () => { }
 
 /**
- * 请假数据表
+ * 刷卡记录
  */
 var resWorkRecords = sequelizeConn.define('res_workrecords', {
     id: { type: Sequelize.BIGINT, autoIncrement: true },

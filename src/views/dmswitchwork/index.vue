@@ -11,7 +11,7 @@
                         <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
                     </el-col>
                     <el-col :span="1" :offset="1">
-                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays('workData')">保存</el-button>
+                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays('days')">保存</el-button>
                     </el-col>
                     <el-col :span="1" :offset="1">
                         <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>
@@ -22,61 +22,50 @@
     </el-row>
     <el-row :gutter="20">
         <el-col :span="12" :offset="6">
-            <el-form ref="days" :model="daysform" label-width="80px">
-                <el-form-item label="职员">
-                    <el-select v-model="userid" placeholder="请选择" size="mini">
-                        <el-option label="1580" value="项敏"></el-option>
-                        <el-option label="1058" value="阿峰"></el-option>
+            <el-form ref="days" :model="baseForm" :rules="rules" label-width="80px">
+                <el-form-item label="职员" prop="userid">
+                    <el-select v-model="baseForm.userid" placeholder="请选择" size="mini" :disabled="!isEdit">
+                        <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
+                                        if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || el.user_id == $store.getters.account){
+                                         return el}})  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="申请日期">
-                    <el-date-picker
-                        v-model="workdate"
-                        align="right"
-                        type="date"
-                        placeholder="选择日期"
-                        :picker-options="pickerOptions" size="mini">
+                <el-form-item label="申请日期" prop="workdate">
+                    <el-date-picker v-model="baseForm.workdate" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions" size="mini" :disabled="!isEdit">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="调休日期">
-                    <el-date-picker
-                        v-model="freedate"
-                        align="right"
-                        type="date"
-                        placeholder="选择日期" size="mini">
+                <el-form-item label="调休日期" prop="freedate">
+                    <el-date-picker v-model="baseForm.freedate" align="right" type="date" placeholder="选择日期" size="mini" :disabled="!isEdit">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="调休日期" size="mini">
-                    <el-input type="textarea" v-model="workremark" :disabled="!isEdit"></el-input>                      
+                <el-form-item label="备注" size="mini">
+                    <el-input type="textarea" v-model="baseForm.remark" :disabled="!isEdit"></el-input>
                 </el-form-item>
             </el-form>
         </el-col>
     </el-row>
     <el-row :gutter="10">
         <el-col :span="20" :offset="2">
-            <el-table
-            :data="tableData"
-            border
-            style="width: 100%">
-            <el-table-column
-            prop="date"
-            label="姓名"
-            width="180">
-            </el-table-column>
-            <el-table-column
-            prop="date"
-            label="申请日期"
-            width="180">
-            </el-table-column>
-            <el-table-column
-            prop="date"
-            label="调休日期">
-            </el-table-column>
-            <el-table-column
-            prop="date"
-            label="备注">
-            </el-table-column>
-        </el-table>
+            <el-table :data="switchWorkData" border style="width: 100%" @cell-click="setRowData">
+                <el-table-column prop="userid" label="姓名" width="120" :formatter="formatUserName">
+                </el-table-column>
+                <el-table-column label="部门" prop="userid" width="180" :formatter="formatUserDept">
+                </el-table-column>
+                <el-table-column prop="freedate" label="申请日期" width="120">
+                    <template slot-scope="scope">{{
+              $moment(scope.row.freedate).format("YYYY-MM-DD")
+            }}</template>
+                </el-table-column>
+                <el-table-column prop="workdate" label="调休日期" width="120">
+                    <template slot-scope="scope">{{
+              $moment(scope.row.workdate).format("YYYY-MM-DD")
+            }}</template>
+                </el-table-column>
+                <el-table-column prop="remark" label="备注">
+                </el-table-column>
+                <el-table-column prop="appstatus" label="单据状态" width="120">
+                </el-table-column>
+            </el-table>
         </el-col>
     </el-row>
 
@@ -84,52 +73,115 @@
 </template>
 
 <script>
+import { getswitchwork,infoworkdate } from '@/api/switchwork'
 export default {
-    name: "overtime",
+    name: "switchwork",
     data() {
         return {
             isEdit: false,
-            userid:'',
-            daysform:{},
-            workremark:'',
-            workdate:'',
-            freedate:'',
-            pickerOptions:{
+            baseForm: {
+                id: 0,
+                userid: '',
+                workdate: '',
+                freedate: '',
+                remark: ''
+            },
+            pickerOptions: {
                 disabledDate(time) {
-                    return time.getTime()-3 < Date.now();
+                    return time.getTime()< Date.now();
                 },
             },
-            tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+            rules: {
+                userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],
+                workdate: [
+                    { required: true, message: "请选择请假类别", trigger: "blur" },
+                ],
+                freedate: [{
+                    required: true,
+                    message: "请选择日期",
+                    trigger: "blur",
+                }, ],
+            },
+            switchWorkData: []
         }
+    },
+    created() {
+        getswitchwork().then((rs) => {
+            if (rs.data.code == 200) {
+                let fliterUser = this.$store.getters.departmentjob_personals.filter((el) => { if (this.$store.getters.partids.findIndex((es) => { return el.defpartid == es }) >= 0) { return el.user_id } })
+                this.switchWorkData = [] = rs.data.msg.filter((el) => { if (fliterUser.findIndex((evl) => { return parseInt(evl.user_id) == parseInt(el.userid) }) >= 0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account) return el })
+            } else {
+                console.log(rs.data.msg)
+                this.$message.error(`初始化数据发生异常,请关闭窗口,重新刷新网页`)
+            }
+        })
     },
     methods: {
         createNewDays() {
-
+            this.isEdit = true;
+            this.baseForm= {
+                id: 0,
+                userid: '',
+                workdate: '',
+                freedate: '',
+                remark: ''
+            }
         },
         editDays() {
-
+            if (this.baseForm.id == 0) return;
+            this.isEdit = true;
         },
         submitDays(forms) {
-
+            this.$refs[forms].validate((valid) => {
+                if (valid) {
+                    infoworkdate(this.baseForm).then((rs)=>{
+                        if(rs.data.code == 200){    
+                           console.log(rs)                       
+                           this.replaceDefData(rs.data.msg);
+                           this.resetForm(forms);
+                           this.baseForm.id = 0;
+                           this.baseForm.remark = '';
+                           this.$message.success(`数据新增/更新成功`)
+                        }else{
+                            console.log(rs.data.msg)
+                            this.$message.error(`数据新增/更新失败,请刷新网页后重试`)
+                        }                        
+                    })
+                    this.isEdit = false;
+                }else{
+                    this.$message.error(`数据提交异常,检查数据准确性`)
+                }
+            })
         },
         cancelDays() {
-
+            this.isEdit = false;
+        },
+        formatUserName(row, colum) {
+            let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {
+                return parseInt(el.user_id) === parseInt(row.userid);
+            });
+            return tmpUser.length == 0 ? row.userid : tmpUser[0].user_name;
+        },
+        formatUserDept(row, colum) {
+            let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {
+                return parseInt(el.user_id) === parseInt(row.userid);
+            });
+            return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
+        },
+        setRowData(row, col) {
+            this.baseForm = row
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        },
+        replaceDefData(info){
+            console.log(info)
+            let indexID = this.switchWorkData.findIndex(val => parseInt(val.id) == parseInt(info.id))
+            this.switchWorkData.splice(
+                indexID < 0 ? 0 : indexID,
+                indexID < 0 ? 0 : 1,
+                info
+            );
         }
     }
 }
@@ -150,7 +202,8 @@ export default {
 .bg-purple-dark {
     background: #dbdddf;
 }
+
 .el-form-item {
-    margin-bottom: 2px;
+    margin-bottom: 17px;
 }
 </style>

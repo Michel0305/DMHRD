@@ -5,7 +5,7 @@ var sequelizeConn = require('../dbConnection');
 ResUserTimesDB = () => { };
 
 /**
- * 人员资讯表
+ * 人员刷卡考勤班次
  */
 var resUserTimes = sequelizeConn.define('res_usertimes', {
     id: { type: Sequelize.BIGINT, autoIncrement: true, unique: true },

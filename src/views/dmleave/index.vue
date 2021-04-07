@@ -28,7 +28,7 @@
                         <el-form-item label="申请人" prop="userid">
                             <el-select v-model="tmpleaveData.userid" placeholder="请假人" size="mini" :disabled="!isEdit || this.tmpleaveData.userid !== ''">
                                 <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
-            if($store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0){
+            if($store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || el.user_id == $store.getters.account){
                 return el
             }
         })" :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
