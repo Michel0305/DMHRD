@@ -143,10 +143,9 @@ export default {
 
         cdialogFormStatus(val) {
             //接收子主件消息
-            if (!val.cancel) {
-                this.replaceDefData(val)
-            }
             this.showstatus = false;
+            if (val.cancel) return
+            this.replaceDefData(val)            
         },
 
         dialogResignStatus() {
@@ -206,7 +205,7 @@ export default {
         },
 
         replaceDefData(users) {
-            let indexId = this.tableData.findIndex((val) => val.id === users.id)
+            let indexId = this.tableData.findIndex((val) => parseInt(val.id) === parseInt(users.id))
             this.tableData.splice(
                 indexId < 0 ? 0 : indexId,
                 indexId < 0 ? 0 : 1,

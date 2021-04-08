@@ -51,15 +51,19 @@ export default {
     this.getHeight();
     basedata().then((base) => {
       //窗体创建时候 加载基本数据源
-      console.log(base);
-      let tmpUserData = ([] = base.data.resUsers);
-      let tmpTimes = ([] = base.data.resTimes);
-      let tmpJobs = ([] = base.data.resJobs);
-      let tmpDept = ([] = base.data.resDepartments);
-      this.$store.dispatch("departmentjob/defPersonal", tmpUserData);
-      this.$store.dispatch("departmentjob/defDepart", tmpDept);
-      this.$store.dispatch("departmentjob/defeJob", tmpJobs);
-      this.$store.dispatch("departmentjob/defTimes", tmpTimes);
+      if(base.data.code == 200){
+        let tmpUserData = ([] = base.data.msg.resUsers);
+        let tmpTimes = ([] = base.data.msg.resTimes);
+        let tmpJobs = ([] = base.data.msg.resJobs);
+        let tmpDept = ([] = base.data.msg.resDepartments);
+        this.$store.dispatch("departmentjob/defPersonal", tmpUserData);
+        this.$store.dispatch("departmentjob/defDepart", tmpDept);
+        this.$store.dispatch("departmentjob/defeJob", tmpJobs);
+        this.$store.dispatch("departmentjob/defTimes", tmpTimes);
+      }else{
+        console.log(rs.data.msg)
+        this.$message.error(`数据初始化失败,请刷新后重试`)
+      }   
     });
   },
   computed: {

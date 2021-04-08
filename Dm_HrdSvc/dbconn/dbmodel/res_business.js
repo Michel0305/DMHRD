@@ -11,6 +11,7 @@ var resBusiness = sequelizeConn.define('res_business', {
     id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, unique: true },
     userid: { type: Sequelize.BIGINT, primaryKey: true },//编号
     checkdate: { type: Sequelize.DATE ,primaryKey: true},//出差日期
+    toaddressids:{type: Sequelize.STRING},
     toaddress: { type: Sequelize.STRING },//出差地点
     dscaddress: { type: Sequelize.STRING },//具体位置
     carplate: { type: Sequelize.STRING },//车牌

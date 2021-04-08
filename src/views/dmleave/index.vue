@@ -28,10 +28,8 @@
                         <el-form-item label="申请人" prop="userid">
                             <el-select v-model="tmpleaveData.userid" placeholder="请假人" size="mini" :disabled="!isEdit || this.tmpleaveData.userid !== ''">
                                 <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
-            if($store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || el.user_id == $store.getters.account){
-                return el
-            }
-        })" :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
+                            if($store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || parseInt(el.user_id) == parseInt($store.getters.account)){
+                            return el}})" :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -285,7 +283,7 @@ export default {
          * 更新本地显示数据
          */
         repaceCurFormDate(values) {
-            let indexId = this.leaveData.findIndex((val) => val.id === values.id);
+            let indexId = this.leaveData.findIndex((val) => parseInt(val.id) === parseInt(values.id));
             let replaceData = {
                 apploveid: values.apploveid,
                 applovestatus: values.applovestatus,

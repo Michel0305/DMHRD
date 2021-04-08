@@ -19,7 +19,7 @@ ReqBusiness = () => { }
            let tmpBaseData = await ResBusinessDB.SelectAll({ where: { createdate: { [Op.gt]:moment().subtract(360, 'days').format('YYYY/MM/DD')} }})
            return { code: 200, msg: tmpBaseData}
         } catch (error) {
-            return { code: 400, msg: error }
+            return { code: 400, msg: error }            
         }
     }
     return getBusinessData();
@@ -30,22 +30,42 @@ ReqBusiness = () => { }
  * @param {*} params 
  * @returns 
  */
-// SwitchWork.infoSwitchData = (params) =>{
-//     async function infoData() {
-//         try {
-//             if(params.id >0){ //Update
-//                 await ResSwitChworkDB.Update({userid:params.userid,freedate:params.freedate,workdate:params.workdate,remark:params.remark,createuser:'1580'},{where:{id:params.id}})
-//                 return {code:200,msg:params}
-//             }else{//Insert
-//                 let tmpWorkDate = await ResSwitChworkDB.Insert({userid:params.userid,freedate:params.freedate,workdate:params.workdate,remark:params.remark,createuser:'1580'})
-//                 return {code:200,msg:tmpWorkDate}
-//             }
-//         } catch (error) {
-//             return {code:400,msg:error}
-//         }
-//     }
-//     return infoData()
-// }
+ ReqBusiness.infoBusinessData = (params) =>{
+    async function infoData() {        
+        try {
+            if(params.id >0){ //Update
+                await ResBusinessDB.Update({userid:params.userid,
+                    checkdate:params.checkdate,
+                    toaddressids:`${params.toaddressids}`,
+                    toaddress:`${params.toaddress}`,
+                    dscaddress:params.dscaddress,
+                    carplate:params.carplate,
+                    isapply:params.isapply,
+                    remark:params.remark,
+                    actfiles:params.actfiles,
+                    appstatus:0,
+                    createuser:'1580'                
+                },{where:{id:params.id}})
+                return {code:200,msg:params}
+            }else{//Insert
+                let tmpWorkDate = await ResBusinessDB.Insert({userid:params.userid,
+                    checkdate:params.checkdate,
+                    toaddressids:`${params.toaddressids}`,
+                    toaddress:`${params.toaddress}`,
+                    dscaddress:params.dscaddress,
+                    carplate:params.carplate,
+                    isapply:params.isapply,
+                    remark:params.remark,
+                    actfiles:params.actfiles,
+                    createuser:'1580'})
+                return {code:200,msg:tmpWorkDate}
+            }
+        } catch (error) {
+            return {code:400,msg:error}
+        }
+    }
+    return infoData()
+}
 
 
 module.exports = ReqBusiness;

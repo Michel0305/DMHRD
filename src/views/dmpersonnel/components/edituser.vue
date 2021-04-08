@@ -88,12 +88,12 @@
                     </div>
                     <div class="userimg">
                         <el-form-item>
-                            <el-image :src="src" class="userimg">
-                                <div slot="placeholder" class="image-slot">
-                                    加载中<span class="dot">...</span>
-                                </div>
-                            </el-image>
-                            <!-- <el-input v-model="infousers.imgurl"></el-input> -->
+                            <div>
+                                <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="UploadPIC">
+                                    <img v-if="infousers.imgurl" :src="src" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </div>
                         </el-form-item>
                     </div>
                 </div>
@@ -306,16 +306,18 @@
 </template>
 
 <script>
-import { createusers } from '@/api/user'
-// import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { createusers } from '@/api/user';
+import { userpicupload } from '@/api/upload'
 import { mapGetters } from "vuex";
+
 export default {
     name: "edituser",
     data() {
         return {
             innerVisible: false,
             isEdit: false,
-            src: "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+            actionUrl: '',
+            imageUrl: '',
             dayOptions: [{ id: '0', label: '5.5' }, { id: '0', label: '6' }, { id: '0', label: '7' }],
             hoursOptions: [{ id: '0', label: '8' }, { id: '0', label: '10' }, { id: '0', label: '12' }],
             optionsEducation: [
@@ -354,14 +356,6 @@ export default {
                 indate: [{ required: true, message: "入职日期", trigger: "blur" }, ],
                 workday: [{ required: true, message: "周工作", trigger: "blur" }, ],
                 workhour: [{ required: true, message: "工作时数", trigger: "blur" }, ],
-                // customerIdCard: [
-                //     { required: true, message: '请填写证件号码', trigger: 'blur' },
-                //     // {
-                //     //   pattern: /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/,
-                //     //   message: '证件号码格式有误！',
-                //     //   trigger: 'blur'
-                //     // }
-                //   ],
             },
 
         };
@@ -377,16 +371,17 @@ export default {
         ),
     },
     created() {
-        // console.log(this.$store.state.departmentjob.departs);
-        // console.log(this.$store.state.departmentjob);      
+        this.actionUrl = `${process.env.VUE_APP_BASE_API}/api/upload/def`;
+        // this.src = `${process.env.VUE_APP_BASE_API}`
+
     },
     mounted: function () {},
     methods: {
         dialogForm(val) {
-            let tmpUser = this.infousers
-            // console.log(tmpUser)
-            tmpUser.cancel = false
+            let tmpUser = {}
             if (val == 0) {
+                tmpUser = this.infousers
+                tmpUser.cancel = false
                 this.$refs['userForm'].validate((valid) => {
                     if (valid) {
                         if (val == 0) {
@@ -429,7 +424,42 @@ export default {
             });
             this.infousers.dept = deptName.dept_name;
         },
+        handleAvatarSuccess(res, file) {
+            // this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isPNG = file.type === 'image/png';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isJPG && !isPNG) {
+                this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return;
+        },
+        UploadPIC(val) {
+            let fd = new FormData();
+            fd.append('formname', 'user');
+            fd.append('name', this.infousers.user_id);
+            fd.append('file', val.file, val.file.name);
+            userpicupload(fd).then((rs) => {
+                if (rs.data.code == 200) {
+                    this.infousers.imgurl = rs.data.msg
+                } else {
+                    console.log(rs.data.msg);
+                    this.$message.error(`图片上传失败,请刷新重试`)
+                }
+            })
+        }
     },
+    computed: {
+        src: function () {
+            if (this.infousers.imgurl) return process.env.VUE_APP_BASE_API + this.infousers.imgurl
+        }
+    },
+    watch: {}
 };
 </script>
 
@@ -471,7 +501,35 @@ export default {
 .btnsave {
     margin-left: 20px;
 }
-.el-checkbox{
+
+.el-checkbox {
     padding: 0px;
+}
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+
+.avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
 }
 </style>

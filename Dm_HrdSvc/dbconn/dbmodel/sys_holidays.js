@@ -13,6 +13,7 @@ var sysHolidays = sequelizeConn.define('sys_holidays', {
     startdate: { type: Sequelize.DATE,primaryKey: true },//开始日期
     enddate: { type: Sequelize.DATE,primaryKey: true },//结束日期
     remark: { type: Sequelize.STRING },//备注
+    isfilter:{type: Sequelize.BOOLEAN},
     createuser: { type: Sequelize.NUMBER },//创建人
     createdate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {

@@ -170,7 +170,7 @@ export default {
         },
         replaceDefData(val) {
             if (val.isCreate) {
-                let tmpIndex = this.departmentData.findIndex((el) => el.id == val.id)
+                let tmpIndex = this.departmentData.findIndex((el) => parseInt(el.id) == parseInt(val.id))
                 this.departmentData.splice(
                     tmpIndex < 0 ? 0 : tmpIndex,
                     tmpIndex < 0 ? 0 : 1,

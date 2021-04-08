@@ -39,8 +39,6 @@ router.get('/info', function (req, res, next) {
 router.get('/basedata', (req, res, next) => {
   userlogin.GetBeasBata().then((base) => {
     res.send({ code: 20000, 'data': base })
-  }).catch((err) => {
-    res.send({ code: 50012, 'data': err })
   })
 })
 

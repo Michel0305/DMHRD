@@ -28,7 +28,8 @@
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
+          <img :src="src" class="user-avatar" />
+          <!--  + '?imageView2/1/w/80/h/80' -->
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -73,8 +74,16 @@ export default {
     Search,
     LangSelect,
   },
+  created(){
+    // console.log(this.$store.getters)
+    // console.log(this.$store.getters.departmentjob_personals.filter((el)=>{return  parseInt(el.user_id) == (this.$store.getters.account) } ))
+  },
   computed: {
     ...mapGetters(["sidebar", "avatar", "device"]),
+    src:function(){
+      // console.log(this.$store.getters.departmentjob_personals)
+      if(this.avatar) return process.env.VUE_APP_BASE_API+this.avatar
+    }
   },
   methods: {
     toggleSideBar() {

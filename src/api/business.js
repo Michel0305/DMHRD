@@ -11,3 +11,17 @@ export function getBusindessBase() {
         method: 'get'
     })
 }
+
+/**
+ * 保存更新出差单
+ * @param {*} data 
+ * @returns 
+ */
+export function infoBusindessData(data) {
+    return request({
+        url: '/business/infobusiness',
+        method: 'post',
+        data:Qs.stringify(data)
+    })
+}
+

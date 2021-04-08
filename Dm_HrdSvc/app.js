@@ -16,6 +16,7 @@ var sysUserRightRouter = require('./routes/sysright');
 var sysConfigRouter = require('./routes/syssetting');
 var resSwitchworkRouter = require('./routes/switchwork');
 var resBusinessRouter = require('./routes/business');
+var uploadRouter = require('./routes/upload')
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -58,7 +59,7 @@ app.use(expressJWT({
   secret: Buffer.from(secretOrPrivateKey),
   algorithms: ['RS256']
 }).unless({//过滤验证URL
-  path: ['/api/user/login', '/api/user/logout','/api/user/test', '/api/public/images/*']
+  path: ['/api/user/login', '/api/user/logout','/api/user/test','/api/upload/def', '/api/public/images/*']
 }));
 
 app.use((err, req, res, next) => {
@@ -85,6 +86,7 @@ app.use('/api/right',sysUserRightRouter);
 app.use('/api/config',sysConfigRouter);
 app.use('/api/switchwork',resSwitchworkRouter);
 app.use('/api/business',resBusinessRouter);
+app.use('/api/upload',uploadRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

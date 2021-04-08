@@ -26,7 +26,7 @@
                 <el-form-item label="职员" prop="userid">
                     <el-select v-model="baseForm.userid" placeholder="请选择" size="mini" :disabled="!isEdit">
                         <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
-                                        if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || el.user_id == $store.getters.account){
+                                        if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || parseInt(el.user_id) == parseInt($store.getters.account)){
                                          return el}})  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -88,7 +88,7 @@ export default {
             },
             pickerOptions: {
                 disabledDate(time) {
-                    return time.getTime()< Date.now();
+                    return time.getTime() <new Date(new Date().setDate(new Date().getDate()-1));
                 },
             },
             rules: {
@@ -169,6 +169,7 @@ export default {
             return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
         },
         setRowData(row, col) {
+            if(this.isEdit) return;
             this.baseForm = row
         },
         resetForm(formName) {

@@ -45,7 +45,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ "username": username.trim(), "password": password }).then(response => {
+      login({ "username": username.trim(), "password": password }).then(response => {        
         const data = {} = response
         if (data.token == 'null') {
           reject('请确认登录用户信息重新登录')
@@ -62,24 +62,26 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const data = {} = response
-        if (data.data.msg) {
-          reject('请确认登录用户信息重新登录')
-        }
-        let userData = data.data
-        // roles must be a non-empty array 角色设定
-        if (!userData.roles || userData.roles.length <= 0) {
-          reject('用户角色设定错误')
-        }
-        commit('SET_ROLES', userData.roles)
-        commit('SET_NAME', userData.name)
-        commit('SET_AVATAR', userData.avatar)
-        commit('SET_INTRODUCTION', userData.introduction)
-        commit('SET_ACCOUNT', userData.userid)
-        commit('SET_RIGHT', userData.rights)
-        commit('SET_PARTIDS', userData.partids)        
-        resolve(userData)
+      getInfo(state.token).then(response => {        
+        if(response.data.code == 200){
+          const data = {} = response          
+          let userData = data.data.msg
+          // roles must be a non-empty array 角色设定
+          if (!userData.roles || userData.roles.length <= 0) {
+            reject('用户角色设定错误')
+          }          
+          commit('SET_ROLES', userData.roles)
+          commit('SET_NAME', userData.name)
+          commit('SET_AVATAR', userData.avatar)
+          commit('SET_INTRODUCTION', userData.introduction)
+          commit('SET_ACCOUNT', userData.userid)
+          commit('SET_RIGHT', userData.rights)
+          commit('SET_PARTIDS', userData.partids)        
+          resolve(userData)
+        }else{
+          console.log(response.data.msg)
+          reject('请确认登录用户信息重新登录') 
+        }      
       }).catch(error => {
         reject(error)
       })

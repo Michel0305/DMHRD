@@ -92,6 +92,7 @@ ResUser.UserDataSave = (parms) =>{
                 bankcard: parms.bankcard,
                 workday: parms.workday,
                 workhour: parms.workhour,
+                imgurl:parms.imgurl,
                 accountability: parms.accountability,
                 documents:parms.documents === undefined?null:`${parms.documents}`,
                 social:parms.social=== undefined ?null:`${parms.social}`,
