@@ -59,7 +59,7 @@ export default {
   min-height: 50px;
 }
 .bg-purple-dark {
-  background: #f1f3f7;
+  background: #dfe2e4;
 }
 .btndownload {
   margin-left: 20px;

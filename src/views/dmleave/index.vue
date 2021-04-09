@@ -355,6 +355,6 @@ export default {
 }
 
 .bg-purple-dark {
-    background: #f1f3f7;
+    background: #dfe2e4;
 }
 </style>

@@ -80,7 +80,7 @@
 
                 <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
-                        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                        <el-button size="mini" @click="editUserBase(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handleResign(scope.$index, scope.row)">离职</el-button>
                     </template>
                 </el-table-column>
@@ -88,7 +88,7 @@
         </el-col>
     </el-row>
     <edituser :infousers="rowData" :dialogStatus="showstatus" @dialogFormStatus="cdialogFormStatus" />
-    <resignation :infousers="rowData" :dialogStatus="showResignDlg" @dialogFormStatus="dialogResignStatus" />
+    <resignation :infousers="rowData" :LdialogStatus="showResignDlg" @dialogFormStatus="dialogResignStatus" />
 </div>
 </template>
 
@@ -121,12 +121,15 @@ export default {
         ),
     },
     created() {
-        this.tableData = [] = store.state.departmentjob.personals;        
+       this.getPersonal();      
     },
-    mounted() {},
     methods: {
-        handleEdit(index, row) {
+        async getPersonal() {
+            this.tableData = [] =await store.state.departmentjob.personals;
+        },
+        editUserBase(index, row) {
             //显示
+            this.showstatus = true;
             this.rowData = row;
             this.rowData.isEdit = true;
             this.rowData.goods = this.rowData.goods == null ? [] : isArray(this.rowData.goods) ?  this.rowData.goods:this.rowData.goods.split(",");
@@ -134,7 +137,7 @@ export default {
                 this.rowData.documents == null ? [] : isArray(this.rowData.documents) ? this.rowData.documents:this.rowData.documents.split(",") ;
             this.rowData.social =
                 this.rowData.social == null ? [] : isArray(this.rowData.social) ? this.rowData.social:this.rowData.social.split(",") ;
-            this.showstatus = true;
+            
         },
         handleResign(index, row) {
             this.rowData = row;
@@ -224,6 +227,6 @@ export default {
 }
 
 .bg-purple-dark {
-    background: #f1f3f7;
+    background: #dfe2e4;
 }
 </style>

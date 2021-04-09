@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :title="infousers.user_name"
-    :visible.sync="dialogStatus"
+    :visible.sync="LdialogStatus"
     :before-close="dialogForm"
   >
     <el-form ref="form" :model="sizeForm" label-width="80px" size="mini">
@@ -85,7 +85,7 @@ export default {
       },
     };
   },
-  props: ["infousers", "dialogStatus"],
+  props: ["infousers", "LdialogStatus"],
   methods: {
     dialogForm() {
       //   let tmpUser = this.infousers;

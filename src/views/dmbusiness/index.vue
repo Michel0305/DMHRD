@@ -81,7 +81,7 @@
     </el-row>
     <el-row :gutter="10">
         <el-col :span="20" :offset="2">
-            <el-table :data="businessData" border style="width: 100%" @cell-click="setRow">
+            <el-table :data="businessData" border style="width: 100%" @cell-click="setRow" :max-height="$store.getters.locheight - 320">
                 <el-table-column prop="userid" label="姓名" width="80" :formatter="formatUserName">
                 </el-table-column>
                 <el-table-column prop="userid" label="部门" width="140" :formatter="formatUserDept">
@@ -161,7 +161,6 @@ export default {
         }
     },
     created() {
-        console.log(this.$store.getters)
         getBusindessBase().then((rs) => {
             if (rs.data.code == 200) {
                 this.businessData = [] = rs.data.msg
@@ -225,24 +224,24 @@ export default {
         },
         formatAddress(row, col) {
             let address = '';
-            if(isArray(row.toaddressids)){
+            if (isArray(row.toaddressids)) {
                 row.toaddressids.forEach((el) => {
                     address = address + ' ' + CodeToText[el]
                 })
-            }else{
-                let tmp = [] = row.toaddressids.split(',');                
+            } else {
+                let tmp = [] = row.toaddressids.split(',');
                 tmp.forEach((el) => {
                     address = address + ' ' + CodeToText[el]
                 })
             }
-            
+
             return `${address} - ${row.dscaddress}`
         },
         handleChange(value) {},
-        setRow(row, index) { 
-            if(this.isEdit) return;           
-            if(isArray(row.toaddressids)) return this.businessBase = {} = row;
-            let tmp = [] = row.toaddressids.split(','); 
+        setRow(row, index) {
+            if (this.isEdit) return;
+            if (isArray(row.toaddressids)) return this.businessBase = {} = row;
+            let tmp = [] = row.toaddressids.split(',');
             let tmpRow = row
             tmpRow.toaddressids = tmp
             this.businessBase = {} = tmpRow;
@@ -251,7 +250,7 @@ export default {
             this.$refs[formName].resetFields();
         },
         replaceDefData(info) {
-            let indexID = this.businessData.findIndex(val => parseInt(val.id) ==  parseInt(info.id))
+            let indexID = this.businessData.findIndex(val => parseInt(val.id) == parseInt(info.id))
             this.businessData.splice(
                 indexID < 0 ? 0 : indexID,
                 indexID < 0 ? 0 : 1,
@@ -287,7 +286,7 @@ export default {
 }
 
 .bg-purple-dark {
-    background: #dbdddf;
+    background: #dfe2e4;
 }
 
 .el-form-item {

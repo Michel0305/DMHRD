@@ -1,6 +1,6 @@
 <template>
 <div class="app-container-edituser">
-    <el-dialog :title="infousers.isEdit && infousers.id !==0? infousers.user_name : '创建'" :visible.sync="dialogStatus">
+    <el-dialog :title="infousers.isEdit && infousers.id !==0? infousers.user_name : '创建'" :visible.sync="dialogStatus" :before-close="dialogForm">
         <el-form ref="userForm" :model="infousers" :rules="rules" label-width="80px">
             <div class="dialogClass">
                 <div class="usrandimg">
@@ -294,13 +294,10 @@
                 </el-tabs>
             </div>
         </el-form>
-        <!-- <span slot="footer" class="dialog-footer"> -->
         <div class="footer">
             <el-button type="primary" @click="dialogForm(0)" size="mini" class="btnsave">保存</el-button>
             <el-button @click="dialogForm(1)" size="mini">取消</el-button>
         </div>
-
-        <!-- </span>      -->
     </el-dialog>
 </div>
 </template>
@@ -372,10 +369,7 @@ export default {
     },
     created() {
         this.actionUrl = `${process.env.VUE_APP_BASE_API}/api/upload/def`;
-        // this.src = `${process.env.VUE_APP_BASE_API}`
-
     },
-    mounted: function () {},
     methods: {
         dialogForm(val) {
             let tmpUser = {}

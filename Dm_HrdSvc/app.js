@@ -16,7 +16,8 @@ var sysUserRightRouter = require('./routes/sysright');
 var sysConfigRouter = require('./routes/syssetting');
 var resSwitchworkRouter = require('./routes/switchwork');
 var resBusinessRouter = require('./routes/business');
-var uploadRouter = require('./routes/upload')
+var uploadRouter = require('./routes/upload');
+var SignRouter = require('./routes/signform');
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -87,7 +88,9 @@ app.use('/api/config',sysConfigRouter);
 app.use('/api/switchwork',resSwitchworkRouter);
 app.use('/api/business',resBusinessRouter);
 app.use('/api/upload',uploadRouter);
-// catch 404 and forward to error handler
+app.use('/api/sign',SignRouter);
+
+
 app.use(function (req, res, next) {
   next(createError(404));
 });
