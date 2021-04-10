@@ -380,12 +380,17 @@ export default {
                     if (valid) {
                         if (val == 0) {
                             createusers(tmpUser).then((rs) => {
-                                this.notifyMsg(
+                                if(rs.data.code == 200){
+                                    this.notifyMsg(
                                     "提交成功",
                                     "success",
                                     `人员资料已经创建/更新成功`
-                                );
-                                this.$emit("dialogFormStatus", rs.data.id ? rs.data : tmpUser);
+                                    );
+                                    this.$emit("dialogFormStatus",rs.data.msg);
+                                }else{
+                                    console.log(rs.data.msg);
+                                    this.$message.error(`数据保存失败,请刷新重试`);
+                                }                                
                             })
                         } else { //取消退出
                             this.$emit("dialogFormStatus", tmpUser);

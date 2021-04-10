@@ -120,12 +120,12 @@ export default {
             this.currentPage = val; //动态改变
         },
         setRowData(row) {
-            console.log(row)
             ApploveForm(row).then((rs) => {
                 if (rs.data.code == 200) {
                     this.curIds = rs.data.msg;
                     this.curIds.model = row.model
                     this.curIds.modelname = row.modelname
+                    this.curIds.apploveid = row.apploveid
                     this.dlgShow = true;
                 } else {
                     console.log(rs.data.msg)

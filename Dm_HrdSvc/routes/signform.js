@@ -16,9 +16,11 @@ router.post('/formapplove', function (req, res, next) {
   })  
 });
 
-// router.get('/:userid', function (req, res, next) {
-//   console.log(req.params)
-//   res.send({ code: 20000 });
-// });
+
+router.post('/oneapplove',(req,res,next)=>{
+  let tmpQsData = qs.parse(req.body)  
+  SignForm.OnlyApplove(tmpQsData).then((rs)=>{
+    res.send({code:20000})})
+  })
 
 module.exports = router;

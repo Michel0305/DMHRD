@@ -38,7 +38,7 @@ var resUsers = sequelizeConn.define('res_users', {
     goods: { type: Sequelize.STRING(50) },
     workday:{type:Sequelize.FLOAT}, //工作天数
     workhour:{type:Sequelize.FLOAT}, //工作时数
-    accountability:{type:Sequelize.NUMBER}, //责任制
+    accountability:{type:Sequelize.BOOLEAN}, //责任制
     createusr:{type:Sequelize.NUMBER},
     create_time: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {

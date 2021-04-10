@@ -61,4 +61,22 @@ SignForm.ApploveForm = (parms) => {
     return SignById()
 }
 
+SignForm.OnlyApplove = (parms) =>{
+    async function applove() {
+        try {
+            let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${parms.apploveid},${parms.id},${parms.model}`)
+            console.log(backMsg)
+        } catch (error) {
+            
+        }
+
+
+
+        console.log(parms)
+        return 
+    }
+    return applove();
+}
+
+
 module.exports = SignForm;

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { ApploveForm } from '@/api/signform';
+import { ApploveForm,ApploveOnly } from '@/api/signform';
 
 import signleave from "./leave";
 import signoverwork from "./overwork"
@@ -86,6 +86,7 @@ export default ({
                 let tmpcurids  = datas.data.msg
                 tmpcurids.model = info.model;
                 tmpcurids.modelname = info.modelname;
+                tmpcurids.apploveid = info.apploveid
                 this.$emit('changeIds',tmpcurids)
             }else{
                 console.log(datas.data.msg)
@@ -93,11 +94,19 @@ export default ({
             }         
         },
         apploveSign(types){
-            let indexID = this.infoData.findIndex((el)=>{return parseInt(el.id) == parseInt(this.curIds[0].id) && el.model == this.curIds.model })
-            this.infoData[indexID].reApplove = true;
-            this.$message.success(`审核完成`)
-            if(this.infoData.filter((el)=>{ return el.reApplove == false}).length == 0) return this.dialogForm()
-            this.changeData(1);
+            let indoData = {}
+                indoData.apploveUser = this.$store.getters.account
+                indoData.apploveid = this.curIds.apploveid
+                indoData.id=this.curIds[0].id
+                indoData.model = this.curIds.model
+                indoData.apploveType = types
+            ApploveOnly(indoData).then((rs)=>{
+                let indexID = this.infoData.findIndex((el)=>{return parseInt(el.id) == parseInt(this.curIds[0].id) && el.model == this.curIds.model })
+                this.infoData[indexID].reApplove = true;
+                this.$message.success(`审核完成`)
+                if(this.infoData.filter((el)=>{ return el.reApplove == false}).length == 0) return this.dialogForm()
+                this.changeData(1);
+            })            
         }
     },
     mounted() {

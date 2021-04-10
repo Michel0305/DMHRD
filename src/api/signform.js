@@ -16,3 +16,17 @@ export function ApploveForm(data) {
         data:Qs.stringify(data)
     })
 }
+
+/**
+ * 明细签核
+ * @param {*} data 
+ * @returns 
+ */
+export function ApploveOnly(data) {
+    return request({
+        url:'/sign/oneapplove',
+        method:'post',
+        data:Qs.stringify(data)
+    })
+    
+}

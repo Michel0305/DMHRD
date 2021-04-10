@@ -297,8 +297,7 @@ export const asyncRoutes = [
     name: 'seeting',
     meta: {
       title: '系统设定',
-      icon: 'el-icon-setting',
-      roles: ['1'] // you can set roles in root nav
+      icon: 'el-icon-setting',      
     },
     children: [
       {
