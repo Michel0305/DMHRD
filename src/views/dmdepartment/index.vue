@@ -141,6 +141,7 @@ export default {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                 }).then(({ value }) => {
+                    if(value.replace(/(^\s*)|(\s*$)/g, "") == undefined || value.replace(/(^\s*)|(\s*$)/g, "") == null || value.replace(/(^\s*)|(\s*$)/g, "") == "") return;
                     createJob({defpartid:this.swhere,job:value}).then((rs)=>{
                       if(rs.data.code == 200){
                         this.replaceJobData({job:value,usercount:0,defpartid:this.swhere})

@@ -20,7 +20,15 @@ router.post('/formapplove', function (req, res, next) {
 router.post('/oneapplove',(req,res,next)=>{
   let tmpQsData = qs.parse(req.body)  
   SignForm.OnlyApplove(tmpQsData).then((rs)=>{
-    res.send({code:20000})})
+    res.send({code:20000,data:rs})})
+})
+
+router.post('/listapplove',(req,res,next)=>{  
+  let tmpQsData = qs.parse(req.body)
+  SignForm.BatchApplove(tmpQsData).then((rs)=>{
+    res.send({code:20000,data:rs})
   })
+})
+
 
 module.exports = router;

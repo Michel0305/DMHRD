@@ -5,10 +5,10 @@
             <div class="grid-content bg-purple-dark">
                 <el-row>
                     <el-col :span="1" :offset="1">
-                        <el-button type="primary" icon="el-icon-circle-check" size="mini" @click="apploveSign">核准</el-button>
+                        <el-button type="primary" icon="el-icon-circle-check" size="mini" @click="apploveSign(0)" :disabled="lockApplove">核准</el-button>
                     </el-col>
                     <el-col :span="3" :offset="1">
-                        <el-button type="warning" icon="el-icon-refresh-left" size="mini">批退</el-button>
+                        <el-button type="warning" icon="el-icon-refresh-left" size="mini" @click="apploveSign(1)" :disabled="lockApplove">批退</el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -19,7 +19,7 @@
             <el-tabs type="border-card">
                 <el-tab-pane>
                     <span slot="label">
-                        <el-badge :value="signData.filter((el)=>{ return el.reApplove == false}).length" :max="99" class="item">
+                        <el-badge :value="signData.filter((el)=>{ return el.reApplove == false}).length" :max="30" class="item">
                             <i class="el-icon-date"></i></el-badge>签核箱
                     </span>
                     <el-row :gutter="10" class="tableform">
@@ -57,8 +57,11 @@
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="个人表单">
-                    <span slot="label"><i class="el-icon-user"></i>个人表单</span>
-                    我的表单
+                    <span slot="label">
+                        <el-badge :value="7" :max="30" class="item">
+                            <i class="el-icon-notebook-1"></i></el-badge>个人表单
+                    </span>
+                    <userforms/>
                 </el-tab-pane>
             </el-tabs>
 
@@ -74,12 +77,13 @@
 import { mapGetters } from "vuex";
 import PanThumb from "@/components/PanThumb";
 import UserCard from "./components/UserCard";
-import { getSignBaseData, ApploveForm } from "@/api/signform";
+import { getSignBaseData, ApploveForm, BatchApplove } from "@/api/signform";
 import signuser from "./components/signuser";
+import userforms from './components/userforms';
 
 export default {
     name: "DashboardEditor",
-    components: { PanThumb, UserCard, signuser },
+    components: { PanThumb, UserCard, signuser,userforms },
     methods: {
         async getSignBase() {
             let tmpSign = await getSignBaseData({ userid: this.$store.getters.account })
@@ -91,19 +95,23 @@ export default {
                 this.$message.error(`数据初始化失败请刷新当前页面`)
             }
         },
-        apploveSign(){
-
+        apploveSign(types){
+            if(this.selectedList.length == 0) {
+                this.$message.warning(`请确认您有选择核准数据`)
+               return;
+            }
+            this.lockApplove = true;
+            BatchApplove({dataList:this.selectedList,apploveUser:this.$store.getters.account}).then((rs)=>{
+                console.log(rs)
+                this.lockApplove = false;
+            })
         },
         handleSelectionChange(val) {
-            console.log(val)
+           this.selectedList  =  val
         },
         tableRowClassName({ row, rowIndex }) {
-            if (rowIndex % 2 == 1) {
-                return 'success-row';
-            }
-            return '';
-        },
-        handleClick() {},
+           return rowIndex % 2 == 1? 'success-row': '';
+        },        
         formatUserName(row, colum) {
             let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {
                 return parseInt(el.user_id) === parseInt(row.userid);
@@ -146,13 +154,17 @@ export default {
             value: false,
             activeName: '',
             signData: [],
+            lockApplove:false,
             currentPage: 1, //默认显示第一页
             pageSize: 15, //默认每页显示10条
             totalNum: 100,
             curIds: {},
+            selectedList:[]
         };
     },
-    created() {
+    created() {        
+    },
+    mounted(){
         this.getSignBase();
     },
     computed: {
@@ -178,7 +190,7 @@ export default {
 }
 
 .success-row {
-    background: #1cff0017 !important;
+    background: #dbddde !important;
 }
 
 .el-badge__content .el-badge__content--undefined .is-fixed {
@@ -187,6 +199,6 @@ export default {
 
 .el-badge__content.is-fixed {
     margin-top: 10px;
-    right: -30px;
+    right: -40px;
 }
 </style>

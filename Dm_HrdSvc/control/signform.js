@@ -65,17 +65,28 @@ SignForm.OnlyApplove = (parms) =>{
     async function applove() {
         try {
             let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${parms.apploveid},${parms.id},${parms.model}`)
-            console.log(backMsg)
+            return {code:200,msg:backMsg}
         } catch (error) {
-            
-        }
-
-
-
-        console.log(parms)
-        return 
+            return {code:400,msg:error}
+        }         
     }
     return applove();
+}
+
+SignForm.BatchApplove =(parms) =>{
+    async function checkApplove(){      
+        try {
+            let tmpSelectedData = [];
+            for (const el of parms.dataList) {
+                let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${el.apploveid},${el.id},${el.model}`)
+                tmpSelectedData.push(backMsg)
+            }          
+            return {code:200,msg:tmpSelectedData}
+        } catch (error) {
+            return {code:400,msg:error}
+        }
+    }
+    return checkApplove();
 }
 
 

@@ -6,7 +6,7 @@ import { getToken, removeToken } from '@/utils/auth'
 // create an axios instance
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const service = axios.create({
-  baseURL: process.env.NODE_ENV =="development"?'/api':`${process.env.VUE_APP_BASE_API}/api`,  
+  baseURL: process.env.NODE_ENV == 'development' ? '/api' : `${process.env.VUE_APP_BASE_API}/api`,
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -47,21 +47,15 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (res.code !== 20000) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        removeToken();
+        removeToken()
         // to re-login
         MessageBox.confirm('哎呀!我 *, 当前登录失效请重新登录', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
           cancelButtonText: 'Cancel',
           type: 'warning'
-        }).then(() => { //需要处理Token 刷新问题
+        }).then(() => { // 需要处理Token 刷新问题
           store.dispatch('user/resetToken').then(() => {
             location.reload()
           })

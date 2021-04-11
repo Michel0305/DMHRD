@@ -9,8 +9,8 @@ const state = {
   introduction: '',
   roles: [],
   account: '',
-  right:{},
-  partids:[]
+  right: {},
+  partids: []
 }
 
 const mutations = {
@@ -32,10 +32,10 @@ const mutations = {
   SET_ACCOUNT: (state, account) => {
     state.account = account
   },
-  SET_RIGHT:(state,rights)=>{
+  SET_RIGHT: (state, rights) => {
     state.right = rights
   },
-  SET_PARTIDS:(state,partids)=>{
+  SET_PARTIDS: (state, partids) => {
     state.partids = partids
   }
 }
@@ -45,14 +45,17 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ "username": username.trim(), "password": password }).then(response => {        
+      login({ 'username': username.trim(), 'password': password }).then(response => {
         const data = {} = response
-        if (data.token == 'null') {
+        console.log(data)
+        if (data.data.code == 200) {
+          commit('SET_TOKEN', data.data.token.token)
+          setToken(data.data.token.token)
+          resolve()
+        } else {
+          console.log(res.data.token.token)
           reject('请确认登录用户信息重新登录')
         }
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
       }).catch(error => {
         reject(error)
       })
@@ -62,26 +65,26 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {        
-        if(response.data.code == 200){
-          const data = {} = response          
-          let userData = data.data.msg
+      getInfo(state.token).then(response => {
+        if (response.data.code == 200) {
+          const data = {} = response
+          const userData = data.data.msg
           // roles must be a non-empty array 角色设定
           if (!userData.roles || userData.roles.length <= 0) {
             reject('用户角色设定错误')
-          }          
+          }
           commit('SET_ROLES', userData.roles)
           commit('SET_NAME', userData.name)
           commit('SET_AVATAR', userData.avatar)
           commit('SET_INTRODUCTION', userData.introduction)
           commit('SET_ACCOUNT', userData.userid)
           commit('SET_RIGHT', userData.rights)
-          commit('SET_PARTIDS', userData.partids)        
+          commit('SET_PARTIDS', userData.partids)
           resolve(userData)
-        }else{
+        } else {
           console.log(response.data.msg)
-          reject('请确认登录用户信息重新登录') 
-        }      
+          reject('请确认登录用户信息重新登录')
+        }
       }).catch(error => {
         reject(error)
       })

@@ -7,10 +7,10 @@
                     <el-col :span="1" :offset="1">
                         <el-button type="primary" icon="el-icon-edit" size="mini" @click="NewUserInfo">入职</el-button>
                     </el-col>
-                    <el-col :span="3" :offset="1">
+                    <!-- <el-col :span="3" :offset="1">
                         <el-button type="info" icon="el-icon-download" size="mini">Export</el-button>
-                    </el-col>
-                    <el-col :span="6" :offset="11">
+                    </el-col> -->
+                    <el-col :span="6" :offset="15">
                         <div>
                             <el-input size="mini" placeholder="请输入内容" v-model="swhere" class="input-with-select">
                                 <el-button slot="append" icon="el-icon-search"></el-button>

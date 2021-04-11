@@ -15,7 +15,7 @@
                             <el-option v-for="item in $store.getters.departmentjob_departs" :key="item.deptid" :label="item.dept_name" :value="item.deptid">
                             </el-option>
                         </el-select>
-                        <el-button size="mini" icon="el-icon-search" @click="getworkrecordsdata"></el-button>
+                        <el-button size="mini" icon="el-icon-search" @click="getworkrecordsdata" :disabled="lockbtn"></el-button>
                     </el-col>
                 </el-row>
                 <el-row>
@@ -138,6 +138,7 @@ export default {
     data() {
         return {
             loading: false,
+            lockbtn:false,
             swhere: { datewhere: "", dept: "" },
             downloaddate: "",
             pickerOptions: {
@@ -202,8 +203,10 @@ export default {
     },
     methods: {
         getworkrecordsdata() {
+            this.lockbtn = true;
             getworkrecords(this.swhere).then((rs) => {
                 this.recordsData = rs.data;
+                this.lockbtn = false;
             });
         },
         formatUsername(row, colum) {

@@ -65,12 +65,17 @@ OverWorkFn.BaseData = (parms) => {
 
 OverWorkFn.SaveDB = (parms) => {
     async function checkDBData() {
-        let checkDBBack = []
-        for (const el of parms.userid) {
-            const rebackDB = await ResOverWorkDB.Query(`exec OverWorkForDB @id=${parms.id},@userid=${el},@worktype=${parms.worktype},@workDate='${parms.workdate}',@starttime='${parms.starttime}',@endtime ='${parms.endtime}',@remark='${parms.workremark}',@infouser=1580 `)
-            checkDBBack.push(rebackDB[0][0])
-        }
-        return checkDBBack
+        try {
+            let checkDBBack = []
+            for (const el of parms.userid) {
+                const rebackDB = await ResOverWorkDB.Query(`exec OverWorkForDB @id=${parms.id},@userid=${el},@worktype=${parms.worktype},@workDate='${parms.workdate}',@starttime='${parms.starttime}',@endtime ='${parms.endtime}',@remark='${parms.workremark}',@infouser=1580 `)
+                checkDBBack.push(rebackDB[0][0])
+            }
+            return {code:200,msg:checkDBBack}            
+        } catch (error) {
+            return {code:400,msg:error}
+        }       
+         
     }
     return checkDBData();
 }

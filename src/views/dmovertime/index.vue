@@ -29,8 +29,7 @@
                             <el-select multiple :collapse-tags="!checked" v-model="tmpworkData.userid" placeholder="加班人" size="mini" :disabled="!isEdit">
                                 <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
                                         if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || parseInt(el.user_id) == parseInt($store.getters.account)){
-                                         return el}})  "
-                                        :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
+                                         return el}})  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
                             </el-select>
                             <el-checkbox size="mini" v-model="checked"></el-checkbox>
                         </el-form-item>
@@ -47,8 +46,7 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="加班日期" prop="workdate">
-                            <el-date-picker v-model="tmpworkData.workdate" type="date" placeholder="选择日期" :disabled="!isEdit" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
-                            :picker-options="pickerOptions"  size="mini">
+                            <el-date-picker v-model="tmpworkData.workdate" type="date" placeholder="选择日期" :disabled="!isEdit" format="yyyy-MM-dd" value-format="yyyy-MM-dd" :picker-options="pickerOptions" size="mini">
                             </el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -65,7 +63,7 @@
                             <el-time-select placeholder="结束时间" v-model="tmpworkData.endtime" :picker-options="{
                                 start: '07:30',
                                 step: '00:05',
-                                end: '24:00',
+                                end: '23:30',
                                 minTime: tmpworkData.starttime,                    
                                 }" size="mini" :disabled="!isEdit">
                             </el-time-select>
@@ -108,14 +106,17 @@
 </template>
 
 <script>
-import { workbase, workinfodb } from "@/api/overwork";
+import {
+    workbase,
+    workinfodb
+} from "@/api/overwork";
 export default {
     name: "overtime",
     data() {
         return {
-            pickerOptions:{
+            pickerOptions: {
                 disabledDate(time) {
-                    return time.getTime()-5 > new Date(new Date().setDate(new Date().getDate()+2)) || time.getTime() <new Date(new Date().setDate(new Date().getDate()-3)) ;
+                    return time.getTime() - 5 > new Date(new Date().setDate(new Date().getDate() + 2)) || time.getTime() < new Date(new Date().setDate(new Date().getDate() - 3));
                 },
             },
             checked: false,
@@ -135,35 +136,69 @@ export default {
             workData: [],
             workLog: [],
             workStatus: [],
-            worksTypes: [
-                { id: 0, label: "平时" },
-                { id: 1, label: "周末" },
-                { id: 2, label: "节假日" },
+            worksTypes: [{
+                    id: 0,
+                    label: "平时"
+                },
+                {
+                    id: 1,
+                    label: "周末"
+                },
+                {
+                    id: 2,
+                    label: "节假日"
+                },
             ],
             rules: {
-                userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],
-                worktype: [
-                    { required: true, message: "请选择加班类别", trigger: "blur" },
-                ],
-                workdate: [
-                    { required: true, message: "请选择加班日期", trigger: "blur" },
-                ],
-                starttime: [{ required: true, message: "请选择开始时间", trigger: "blur" }, ],
-                endtime: [{ required: true, message: "请选择结束时间", trigger: "blur" }, ]
+                userid: [{
+                    required: true,
+                    message: "请输入申请人",
+                    trigger: "blur"
+                }],
+                worktype: [{
+                    required: true,
+                    message: "请选择加班类别",
+                    trigger: "blur"
+                }, ],
+                workdate: [{
+                    required: true,
+                    message: "请选择加班日期",
+                    trigger: "blur"
+                }, ],
+                starttime: [{
+                    required: true,
+                    message: "请选择开始时间",
+                    trigger: "blur"
+                }, ],
+                endtime: [{
+                    required: true,
+                    message: "请选择结束时间",
+                    trigger: "blur"
+                }, ]
             },
         };
     },
-    created() {        
+    created() {
         workbase().then((baseData) => {
-            if(baseData.data.code ==200){
-                let fliterUser = this.$store.getters.departmentjob_personals.filter((el)=>{if(this.$store.getters.partids.findIndex((es)=>{return el.defpartid == es})>=0 ){ return el.user_id }})
-                this.workData = [] = baseData.data.msg.workBase.filter((el)=>{if(fliterUser.findIndex((evl)=>{ return parseInt(evl.user_id) == parseInt(el.userid) } )>=0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account ) return el })
+            if (baseData.data.code == 200) {
+                let fliterUser = this.$store.getters.departmentjob_personals.filter((el) => {
+                    if (this.$store.getters.partids.findIndex((es) => {
+                            return el.defpartid == es
+                        }) >= 0) {
+                        return el.user_id
+                    }
+                })
+                this.workData = [] = baseData.data.msg.workBase.filter((el) => {
+                    if (fliterUser.findIndex((evl) => {
+                            return parseInt(evl.user_id) == parseInt(el.userid)
+                        }) >= 0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account) return el
+                })
                 this.workLog = [] = baseData.data.msg.workLog;
                 this.workStatus = [] = baseData.data.msg.workStatus;
-            }else{
+            } else {
                 console.log(baseData.data.msg)
                 this.$message.error(`数据初始化失败,请重新刷新试试`)
-            }     
+            }
         });
     },
     mounted: function () {},
@@ -206,26 +241,31 @@ export default {
                     let htmlmsg = '';
                     let isPass = true;
                     workinfodb(this.tmpworkData).then((resback) => {
-                        for (let i = 0; i < resback.data.length; i++) {
-                            const el = resback.data[i];
-                            if (el.code == 400) {
-                                isPass = false
-                                htmlmsg = htmlmsg + `<p> <strong>${el.username}</strong> 加班录入异常信息: </br> &nbsp&nbsp&nbsp&nbsp&nbsp <font size="1" color="red">${el.msg}</font></p>`
-                            } else {
-                                this.replaceDefData(el);
-                                this.notifyMsg(
-                                    "提交成功",
-                                    "success",
-                                    `${el.userid} -- 加班单提交成功`
-                                );
+                        if (resback.data.code == 200) {
+                            for (let i = 0; i < resback.data.msg.length; i++) {
+                                const el = resback.data.msg[i];
+                                if (el.code == 400) {
+                                    isPass = false
+                                    htmlmsg = htmlmsg + `<p> <strong>${el.username}</strong> 加班录入异常信息: </br> &nbsp&nbsp&nbsp&nbsp&nbsp <font size="1" color="red">${el.msg}</font></p>`
+                                } else {
+                                    this.replaceDefData(el);
+                                    this.notifyMsg(
+                                        "提交成功",
+                                        "success",
+                                        `${el.userid} -- 加班单提交成功`
+                                    );
+                                }
                             }
+                            if (!isPass) {
+                                this.$alert(htmlmsg, '提交异常', {
+                                    dangerouslyUseHTMLString: true
+                                });
+                            }
+                            this.resetForm(formName);
+                        }else{
+                            console.log(resback.data.msg)
+                           this.$message.error(`数据保存失败请刷新后再试`) 
                         }
-                        if (!isPass) {
-                            this.$alert(htmlmsg, '提交异常', {
-                                dangerouslyUseHTMLString: true
-                            });
-                        }
-                        this.resetForm(formName);
                     })
                     this.isEdit = false;
                 }

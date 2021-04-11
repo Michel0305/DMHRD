@@ -16,9 +16,8 @@ router.get('/test',(req,res,next)=>{
 router.post('/login', function (req, res, next) {
   let infoUser = {} = req.body;
   infoUser.token = req.headers['x-token'] ? req.headers['x-token'] : undefined;
-  console.log(infoUser)
-  userlogin.Verify(infoUser).then(infoStat => {
-    res.send({ 'code': 20000, 'token': infoStat.token });
+  userlogin.Verify(infoUser).then((infoStat) => {
+    res.send({ 'code': 20000, 'data': infoStat });
   })
 
 });

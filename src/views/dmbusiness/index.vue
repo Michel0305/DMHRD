@@ -108,9 +108,21 @@
 </template>
 
 <script>
-import { provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data';
-import { getBusindessBase, infoBusindessData } from '@/api/business';
-import { isArray } from '@/utils/validate';
+import {
+    provinceAndCityData,
+    regionData,
+    provinceAndCityDataPlus,
+    regionDataPlus,
+    CodeToText,
+    TextToCode
+} from 'element-china-area-data';
+import {
+    getBusindessBase,
+    infoBusindessData
+} from '@/api/business';
+import {
+    isArray
+} from '@/utils/validate';
 export default {
     name: "business",
     data() {
@@ -133,15 +145,33 @@ export default {
                 },
             },
             model: '',
-            caroptions: [{ val: '粤S.12345' }, { val: '粤S.23456' }, { val: '粤S.34567' }, { val: '粤S.45678' }, { val: '自驾' }, { val: '外车' }],
+            caroptions: [{
+                val: '粤S.12345'
+            }, {
+                val: '粤S.23456'
+            }, {
+                val: '粤S.34567'
+            }, {
+                val: '粤S.45678'
+            }, {
+                val: '自驾'
+            }, {
+                val: '外车'
+            }],
             options: regionData,
             selectedOptions: [],
             businessData: [],
             rules: {
-                userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],
-                checkdate: [
-                    { required: true, message: "请选择出差日期", trigger: "blur" },
-                ],
+                userid: [{
+                    required: true,
+                    message: "请输入申请人",
+                    trigger: "blur"
+                }],
+                checkdate: [{
+                    required: true,
+                    message: "请选择出差日期",
+                    trigger: "blur"
+                }, ],
                 toaddressids: [{
                     required: true,
                     message: "请选择出差地",
@@ -210,7 +240,7 @@ export default {
         },
         cancelDays() {
             this.isEdit = false;
-            this.resetForm('days')
+            // this.resetForm('days')
         },
         formatAddressCN() {
             this.businessBase.toaddressids.forEach((el) => {

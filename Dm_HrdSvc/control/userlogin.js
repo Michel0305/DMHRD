@@ -22,7 +22,6 @@ function GetTempToken() {
         'password': tmpPwd,
         'sha': shaPwd
     }
-    // console.log(token.create(tempUsrData))
 }
 // GetTempToken();
 
@@ -33,22 +32,26 @@ function GetTempToken() {
 loginUser.Verify = (parms) => {
     //1. 验证token 有效性   
     async function CheckPwsBySql() {
-        let rowData = await ResUserLoginDB.SelectAll({
-            where: {
-                'account': parms.username
-            }
-        })
-        if (parms.token === undefined) { //第一次登录无Token
-            let pwd = rowData[0].dataValues.pwd
-            let checkStatus = sha.decode(parms.password, pwd)
-            if (checkStatus) {//
-                return token.create({ username: parms.username, password: parms.password, userid: rowData[0].dataValues.userid, name: rowData[0].dataValues.username })
+        try {
+            let rowData = await ResUserLoginDB.SelectAll({
+                where: {
+                    'account': parms.username
+                }
+            })           
+            if (parms.token === undefined) { //第一次登录无Token
+                let pwd = rowData[0].dataValues.pwd;
+                let checkStatus = sha.decode(parms.password, pwd)
+                if (checkStatus) {//
+                    return {'code':200,'token':token.create({ username: parms.username, password: parms.password, userid: rowData[0].dataValues.userid, name: rowData[0].dataValues.username })}
+                } else {
+                    return {'code':400, 'token': null }
+                }
             } else {
-                return { token: null }
-            }
-        } else {
-            return token.verifys(parms.token)
-        }
+                return  {'code':200, 'token': token.verifys(parms.token) } 
+            }            
+        } catch (error) {
+            return {'code':400,'token':error} 
+        }        
     }
     return CheckPwsBySql();
 }
@@ -63,7 +66,7 @@ loginUser.Crypt = (parms) => {
 
 
 
-function unique (arr) {
+function unique(arr) {
     return Array.from(new Set(arr))
 }
 /**
@@ -78,16 +81,16 @@ loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
             let usrRight = await ResUsersDB.Query(`select * from dbo.getUserRight(${tmpUser.userid})`)
             let tmplistarry = []
             let tmpPartIds = []
-            let imgurl =null
+            let imgurl = null
             usrRight.forEach(el => {
-                if(el.length>0){
+                if (el.length > 0) {
                     let elRoleIds = el[0].roleids
-                    let defUserList = elRoleIds.substr(1,elRoleIds.length-1).split(',')
-                    tmplistarry= [] = unique(defUserList)   
+                    let defUserList = elRoleIds.substr(1, elRoleIds.length - 1).split(',')
+                    tmplistarry = [] = unique(defUserList)
                     let elDepart = el[0].departids
-                    tmpPartIds = [] = unique(elDepart.substr(1,elDepart.length-1).split(','))
+                    tmpPartIds = [] = unique(elDepart.substr(1, elDepart.length - 1).split(','))
                     imgurl = el[0].imgurl
-                }        
+                }
             });
             tmpUser.roles = tmplistarry
             tmpUser.avatar = imgurl;
@@ -96,39 +99,39 @@ loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
                 select roleid from sys_user_right where userid='${tmpUser.userid}')`)
             let tmpModelActive = {}
             filterArr[0].forEach(el => {
-                if(tmpModelActive[el.router]){
-                    tmpModelActive[el.router] = []=unique(tmpModelActive[el.router].concat(el.activeid.split(',')))
-                }else{
-                    tmpModelActive[el.router]=[] = unique(el.activeid.split(','))
-                }           
-            });   
+                if (tmpModelActive[el.router]) {
+                    tmpModelActive[el.router] = [] = unique(tmpModelActive[el.router].concat(el.activeid.split(',')))
+                } else {
+                    tmpModelActive[el.router] = [] = unique(el.activeid.split(','))
+                }
+            });
             tmpUser.rights = tmpModelActive;  //权限
             tmpUser.partids = tmpPartIds;  //部门权限
-            return {code:200,msg:tmpUser}             
+            return { code: 200, msg: tmpUser }
         } catch (error) {
-            return {code:400,msg:error}            
-        }        
+            return { code: 400, msg: error }
+        }
     }
     return UserInfo()
 }
 
-loginUser.GetBeasBata = ()=>{
+loginUser.GetBeasBata = () => {
     async function GetUserBaseData() {
         try {
             let dataBase = {};
             let resUser = await ResUsersDB.SelectAll();
             let resUserTimes = await ResUserTimesDB.SelectAll();
             let resUserJob = await resUserjobDB.SelectAll();
-            let resDepartment = await ResDepartmentDB.SelectAll({where:{isDel:false}});
-            dataBase.resUsers  = resUser.filter(users => { return users.dataValues });
-            dataBase.resTimes  = resUserTimes.filter(times => { return times.dataValues });
-            dataBase.resJobs  = resUserJob.filter(jobs => { return jobs.dataValues });
-            dataBase.resDepartments = resDepartment.filter(deps => { return deps.dataValues });        
-            return {code:200,msg:dataBase}            
+            let resDepartment = await ResDepartmentDB.SelectAll({ where: { isDel: false } });
+            dataBase.resUsers = resUser.filter(users => { return users.dataValues });
+            dataBase.resTimes = resUserTimes.filter(times => { return times.dataValues });
+            dataBase.resJobs = resUserJob.filter(jobs => { return jobs.dataValues });
+            dataBase.resDepartments = resDepartment.filter(deps => { return deps.dataValues });
+            return { code: 200, msg: dataBase }
         } catch (error) {
-            return {code:400,msg:error}
+            return { code: 400, msg: error }
         }
-        
+
     }
     return GetUserBaseData();
 }
