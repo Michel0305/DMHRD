@@ -70,11 +70,17 @@ LeaveStaticFn.BaseData = (parms) => {
 }
 
 LeaveStaticFn.ApplyFor = (parms) => {
-    let tmpLeaveData = qs.parse(parms)
-    console.log(moment(tmpLeaveData.freedate[0]).format('YYYY-MM-DD HH:mm:ss'))
+    let tmpLeaveData =parms
     async function SaveLeave() {
-        let leaveSaveStatus = await ResLeaveDB.Query('exec LeaveForDB @id = ' + tmpLeaveData.id + ', @userid=' + tmpLeaveData.userid + ',@startDate="' + moment(tmpLeaveData.freedate[0]).format('YYYY-MM-DD HH:mm:ss') + '", @endDate="' + moment(tmpLeaveData.freedate[1]).format('YYYY-MM-DD HH:mm:ss') + '",@remark="' + tmpLeaveData.remark + '",@leavetype=' + tmpLeaveData.leavetype + ',@applovestatus=' + tmpLeaveData.applovestatus + ',@curuser="1580";')
-        return leaveSaveStatus[0][0]
+        let leaveSaveStatus = await ResLeaveDB.Query(`exec LeaveForDB @id = ${tmpLeaveData.id},
+         @userid=${tmpLeaveData.userid},
+         @startDate="${moment(tmpLeaveData.freedate[0]).format('YYYY-MM-DD HH:mm:ss')}", 
+         @endDate="${moment(tmpLeaveData.freedate[1]).format('YYYY-MM-DD HH:mm:ss')}",
+         @remark="${tmpLeaveData.remark}",
+         @leavetype=${tmpLeaveData.leavetype},
+         @applovestatus=${tmpLeaveData.applovestatus},
+         @curuser=${tmpLeaveData.createUser} ;`)
+       return leaveSaveStatus[0][0]
     }
     return SaveLeave()
 }

@@ -33,7 +33,7 @@ ReqBusiness = () => { }
  ReqBusiness.infoBusinessData = (params) =>{
     async function infoData() {        
         try {
-            if(params.id >0){ //Update
+            if(params.id >0){ //Update                
                 await ResBusinessDB.Update({userid:params.userid,
                     checkdate:params.checkdate,
                     toaddressids:`${params.toaddressids}`,
@@ -44,8 +44,10 @@ ReqBusiness = () => { }
                     remark:params.remark,
                     actfiles:params.actfiles,
                     appstatus:0,
-                    createuser:'1580'                
+                    createuser:params.createUser                
                 },{where:{id:params.id}})
+                await ResBusinessDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
+                                           select 'business',${params.id},${params.createUser},'更新送出','',0`)
                 return {code:200,msg:params}
             }else{//Insert
                 let tmpWorkDate = await ResBusinessDB.Insert({userid:params.userid,
@@ -57,7 +59,9 @@ ReqBusiness = () => { }
                     isapply:params.isapply,
                     remark:params.remark,
                     actfiles:params.actfiles,
-                    createuser:'1580'})
+                    createuser:params.createUser})
+                await ResBusinessDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
+                                           select 'business',${tmpWorkDate.dataValues.id},${params.createUser},'送出申请','',0`)    
                 return {code:200,msg:tmpWorkDate}
             }
         } catch (error) {

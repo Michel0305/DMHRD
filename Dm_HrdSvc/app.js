@@ -28,7 +28,7 @@ var app = express();
 // app.use(cors());
 app.use((req, res, next) => {//解决跨域问题
   res.header("Access-Control-Allow-Credentials", "true");
-  var allowedOrigins = ['http://10.83.50.18:8080','http://10.83.50.18:9527', 'http://localhost:9527', 'http://127.0.0.1:9527'];
+  var allowedOrigins = ['http://10.83.77.44:8080','http://10.83.77.44:9527', 'http://localhost:9527', 'http://127.0.0.1:9527'];
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', origin || '*');

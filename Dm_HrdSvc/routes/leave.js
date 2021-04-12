@@ -21,7 +21,9 @@ router.get('/base', function (req, res, next) {
  * 提交数据
  */
 router.post('/apply', (req, res, next) => {
-    leaveControl.ApplyFor(req.body).then((reback) => {
+    let infoData = qs.parse(req.body)
+    infoData.createUser = req.user.param.userid
+    leaveControl.ApplyFor(infoData).then((reback) => {
         res.send({ code: 20000, data: reback })
     }).catch((err) => {
         res.send({ code: 50014, data: err })

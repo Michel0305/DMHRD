@@ -43,6 +43,8 @@
                                 </el-table-column>
                                 <el-table-column prop="remark" label="简介">
                                 </el-table-column>
+                                <el-table-column prop="statusMsg" label="状态" width="90">
+                                </el-table-column>
                                 <el-table-column label="查看" width="80">
                                     <template slot-scope="scope">
                                         <el-link type="primary" @click="setRowData(scope.row)">查看<i class="el-icon-view el-icon--right"></i> </el-link>
@@ -58,7 +60,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="个人表单">
                     <span slot="label">
-                        <el-badge :value="7" :max="30" class="item">
+                        <el-badge class="item">
                             <i class="el-icon-notebook-1"></i></el-badge>个人表单
                     </span>
                     <userforms/>
@@ -101,8 +103,17 @@ export default {
                return;
             }
             this.lockApplove = true;
-            BatchApplove({dataList:this.selectedList,apploveUser:this.$store.getters.account}).then((rs)=>{
-                console.log(rs)
+            BatchApplove({dataList:this.selectedList,apploveUser:this.$store.getters.account,types:types}).then((rs)=>{                
+                if(rs.data.code == 200){
+                    console.log(rs.data.msg)
+                    rs.data.msg.forEach((el)=>{
+                        this.signData.filter((vl)=>{ return el.model == vl.model && parseInt(el.id) == parseInt(vl.id) })[0].reApplove = true;
+                    })                    
+                    this.$message.success('审核完毕');
+                }else{
+                    console.log(rs.data.msg)
+                    this.$message.error('审核失败,请刷新后再试');
+                }
                 this.lockApplove = false;
             })
         },
@@ -130,10 +141,11 @@ export default {
         setRowData(row) {
             ApploveForm(row).then((rs) => {
                 if (rs.data.code == 200) {
-                    this.curIds = rs.data.msg;
+                    this.curIds.SignData = rs.data.msg.SignData;
                     this.curIds.model = row.model
                     this.curIds.modelname = row.modelname
                     this.curIds.apploveid = row.apploveid
+                    this.curIds.ApploveLog = rs.data.msg.apploveLog
                     this.dlgShow = true;
                 } else {
                     console.log(rs.data.msg)

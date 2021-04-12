@@ -5,7 +5,8 @@ var Op = require("sequelize").Op;
 var ResLeaveDB = require('../dbconn/dbmodel/res_leave');
 var ResOverWork = require('../dbconn/dbmodel/res_overwork');
 var ResBusiness = require('../dbconn/dbmodel/res_business');
-var ResSwitchDay = require('../dbconn/dbmodel/res_switchwork')
+var ResSwitchDay = require('../dbconn/dbmodel/res_switchwork');
+var ResApploveLog = require('../dbconn/dbmodel/res_applovelog');
 var token = require('./token');
 var Sequelize = require('sequelize');
 var moment = require('moment');
@@ -36,20 +37,28 @@ SignForm.ApploveForm = (parms) => {
         try {
             switch (tmpSignData.model) {
                 case 'leave':
-                    let leaveSign = await ResLeaveDB.SelectAll({ where: { id: tmpSignData.id } })
-                    return { code: 200, msg: leaveSign }
+                    let leaveSignData = await ResLeaveDB.SelectAll({ where: { id: tmpSignData.id } })
+                    let leaveapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                                                                  from res_applovelog a where formid=${tmpSignData.id} and modelname='leave'  order by createtime desc `)
+                    return { code: 200, msg:{SignData:leaveSignData,apploveLog:leaveapploveLog[0] }}
                     break;
                 case 'work':
-                    let overWorkSign = await ResOverWork.SelectAll({ where: { id: tmpSignData.id } })
-                    return { code: 200, msg: overWorkSign }
+                    let workSignData = await ResOverWork.SelectAll({ where: { id: tmpSignData.id } })
+                    let workapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                                                                from res_applovelog a where formid=${tmpSignData.id} and modelname='work'  order by createtime desc `)
+                    return { code: 200, msg:{SignData:workSignData,apploveLog:workapploveLog[0] }}
                     break;
                 case 'switchdays':
-                    let switchDaySign = await ResSwitchDay.SelectAll({ where: { id: tmpSignData.id } })
-                    return { code: 200, msg: switchDaySign }
+                    let daySignData = await ResSwitchDay.SelectAll({ where: { id: tmpSignData.id } })
+                    let dayapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                                                                from res_applovelog a where formid=${tmpSignData.id} and modelname='switchdays'  order by createtime desc `)
+                    return { code: 200, msg:{SignData:daySignData,apploveLog:dayapploveLog[0] }}
                     break;
                 case 'business':
-                    let businessSign = await ResBusiness.SelectAll({ where: { id: tmpSignData.id } })
-                    return { code: 200, msg: businessSign }
+                    let businessSignData = await ResBusiness.SelectAll({ where: { id: tmpSignData.id } })
+                    let busapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                                                                from res_applovelog a where formid=${tmpSignData.id} and modelname='business'  order by createtime desc `)
+                    return { code: 200, msg:{SignData:businessSignData,apploveLog:busapploveLog[0] }}
                     break;
                 default:
                     break;
@@ -64,7 +73,7 @@ SignForm.ApploveForm = (parms) => {
 SignForm.OnlyApplove = (parms) =>{
     async function applove() {
         try {
-            let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${parms.apploveid},${parms.id},${parms.model}`)
+            let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${parms.apploveid},${parms.id},${parms.model},${parms.apploveType}`)
             return {code:200,msg:backMsg}
         } catch (error) {
             return {code:400,msg:error}
@@ -78,15 +87,28 @@ SignForm.BatchApplove =(parms) =>{
         try {
             let tmpSelectedData = [];
             for (const el of parms.dataList) {
-                let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${el.apploveid},${el.id},${el.model}`)
+                let backMsg = await ResLeaveDB.Query(`exec ApploveSign ${parms.apploveUser},${el.apploveid},${el.id},${el.model},${parms.types}`)
                 tmpSelectedData.push(backMsg)
-            }          
-            return {code:200,msg:tmpSelectedData}
+            }   
+            console.log(tmpSelectedData)       
+            return {code:200,msg:parms.dataList}
         } catch (error) {
             return {code:400,msg:error}
         }
     }
     return checkApplove();
+}
+
+SignForm.UserBoxData = (parms) =>{
+    async function userBox() {
+        try {
+          let usersData = await ResLeaveDB.Query(`select * from  dmUserBox(${parms.userid})`)
+          return {code:200,msg:usersData[0]}
+        } catch (error) {
+            return {code:200,msg:error}  
+        }        
+    }
+    return userBox();
 }
 
 

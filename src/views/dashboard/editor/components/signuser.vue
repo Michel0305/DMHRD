@@ -16,15 +16,16 @@
                 <el-button type="primary" icon="el-icon-arrow-left" size="mini" @click="changeData(0)" :disabled="lockBtn || lockzero"></el-button>
             </div>
             <div class="formmsg">
-                <component :is="curIds.model == 'leave'?'signleave':curIds.model == 'work'?'signoverwork':curIds.model == 'switchdays'?'switchday':curIds.model=='business'?'signbusiness':'signleave'" :defData="curIds" />
+                <component :is="curIds.model == 'leave'?'signleave':curIds.model == 'work'?'signoverwork':curIds.model == 'switchdays'?'switchday':curIds.model=='business'?'signbusiness':'signleave'" :defData="curIds.SignData" />
                 <el-col :span="23" :offset="1">
                     <el-input type="textarea" rows="3" v-model="signmsg" placeholder="意见"></el-input>
                 </el-col>
             </div>
             <div class="flowmsg">
                 <el-timeline>
-                    <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp">
-                        {{activity.content}}
+                    <el-timeline-item v-for="(activity, index) in curIds.ApploveLog" :key="index" :timestamp="$moment(activity.createtime).format('YYYY-MM-DD HH:mm:ss') ">
+                        {{activity.statusMsg}} <br/>
+                        {{activity.appremart}}
                     </el-timeline-item>
                 </el-timeline>
             </div>
@@ -44,9 +45,9 @@ import {
 } from '@/api/signform';
 
 import signleave from "./leave";
-import signoverwork from "./overwork"
-import switchday from "./switchday"
-import signbusiness from "./business"
+import signoverwork from "./overwork";
+import switchday from "./switchday";
+import signbusiness from "./business";
 export default ({
     name: 'signuser',
     components: {
@@ -88,7 +89,7 @@ export default ({
             })     
             tmpList.length == 1? this.lockzero =true : this.lockzero =false
             let indexId = tmpList.findIndex((el) => {
-                return parseInt(el.id) == parseInt(this.curIds[0].id) && el.model == this.curIds.model
+                return parseInt(el.id) == parseInt(this.curIds.SignData[0].id) && el.model == this.curIds.model
             })            
             let listData
             if (types == 0) {
@@ -101,10 +102,12 @@ export default ({
         async getDBdata(info) {
             let datas = await ApploveForm(info)
             if (datas.data.code == 200) {
-                let tmpcurids = datas.data.msg
+                let tmpcurids = {}
+                tmpcurids.SignData = datas.data.msg.SignData
                 tmpcurids.model = info.model;
                 tmpcurids.modelname = info.modelname;
-                tmpcurids.apploveid = info.apploveid
+                tmpcurids.apploveid = info.apploveid;
+                tmpcurids.ApploveLog = datas.data.msg.apploveLog
                 this.$emit('changeIds', tmpcurids) 
                 this.lockApplove = false;  
                 this.lockBtn = false;            
@@ -119,13 +122,13 @@ export default ({
             let indoData = {}
             indoData.apploveUser = this.$store.getters.account
             indoData.apploveid = this.curIds.apploveid
-            indoData.id = this.curIds[0].id
+            indoData.id = this.curIds.SignData[0].id
             indoData.model = this.curIds.model
             indoData.apploveType = types
             ApploveOnly(indoData).then((rs) => {
                 if(rs.data.code==200){
                       let indexID = this.infoData.findIndex((el) => {
-                                    return parseInt(el.id) == parseInt(this.curIds[0].id) && el.model == this.curIds.model})
+                                    return parseInt(el.id) == parseInt(this.curIds.SignData[0].id) && el.model == this.curIds.model})
                     this.infoData[indexID].reApplove = true;
                     this.$message.success(`审核完成`)
                     if (this.infoData.filter((el) => {
@@ -139,7 +142,9 @@ export default ({
             })
         }
     },
-    mounted() {}
+    mounted() {
+        console.log(this.curIds)
+    }
 })
 </script>
 

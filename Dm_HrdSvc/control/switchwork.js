@@ -35,10 +35,14 @@ SwitchWork.infoSwitchData = (params) =>{
     async function infoData() {
         try {
             if(params.id >0){ //Update
-                await ResSwitChworkDB.Update({userid:params.userid,freedate:params.freedate,workdate:params.workdate,remark:params.remark,createuser:'1580'},{where:{id:params.id}})
+                await ResSwitChworkDB.Update({userid:params.userid,freedate:params.freedate,workdate:params.workdate,remark:params.remark,createuser:params.createUser},{where:{id:params.id}})
+                await ResSwitChworkDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
+                                           select 'business',${params.id},${params.createUser},'更新送出','',0`)
                 return {code:200,msg:params}
             }else{//Insert
-                let tmpWorkDate = await ResSwitChworkDB.Insert({userid:params.userid,freedate:params.freedate,workdate:params.workdate,remark:params.remark,createuser:'1580'})
+                let tmpWorkDate = await ResSwitChworkDB.Insert({userid:params.userid,freedate:params.freedate,workdate:params.workdate,remark:params.remark,createuser:params.createUser})
+                await ResSwitChworkDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
+                                           select 'business',${tmpWorkDate.dataValues.id},${params.createUser},'申请送出','',0`)
                 return {code:200,msg:tmpWorkDate}
             }
         } catch (error) {

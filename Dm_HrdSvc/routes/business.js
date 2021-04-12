@@ -15,6 +15,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/infobusiness', (req, res, next)=> {
   let infoData = Qs.parse(req.body)
+  infoData.createUser = req.user.param.userid
   ReqBusiness.infoBusinessData(infoData).then((rs)=>{
     res.send({code:20000,data:rs});
   })  

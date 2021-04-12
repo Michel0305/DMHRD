@@ -20,7 +20,7 @@ router.get('/base', function (req, res, next) {
 router.post('/infodb',(req,res,next)=>{
     let xToken = req.headers['x-token']
     let  tmpBody= qs.parse(req.body)
-    tmpBody.token = xToken; 
+    tmpBody.createUser = req.user.param.userid
     overWorkControl.SaveDB(tmpBody).then((rs)=>{
         res.send({code:20000,data:rs})
     }).catch((err)=>{

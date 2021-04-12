@@ -57,6 +57,7 @@ router.post('/infouser',(req,res,next)=>{
  */
 router.post('/infodepart',(req,res,next)=>{
   let tmpDepartment = qs.parse(req.body)
+  tmpDepartment.createUser = req.user.param.userid
   ResDepartment.InfoDepartmentData(tmpDepartment).then((rs)=>{
     res.send({code:20000,data:rs})
   }).catch((err)=>{
@@ -81,6 +82,7 @@ router.post('/deptremove',(req,res,next)=>{
  */
 router.post('/infojob',(req,res,next)=>{
   let tmpJob = qs.parse(req.body)
+  tmpJob.createUser = req.user.param.userid
   ResDepartment.InfoJob(tmpJob).then((rs)=>{
     res.send({code:20000,data:rs})
   }).catch((err)=>{

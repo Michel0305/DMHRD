@@ -42,3 +42,12 @@ export function BatchApplove(data) {
     data: Qs.stringify(data)
   })
 }
+
+
+export function UserBoxData (params) {
+  return request({
+    url: '/sign/userbox',
+    method: 'get',
+    params: params
+  })  
+}
