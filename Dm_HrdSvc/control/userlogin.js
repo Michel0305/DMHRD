@@ -8,6 +8,7 @@ var ResUsersDB = require('../dbconn/dbmodel/cms_resusers'); //用户列表
 var ResUserTimesDB = require('../dbconn/dbmodel/cms_resusertimes'); //班次
 var resUserjobDB = require('../dbconn/dbmodel/res_userjob'); //岗位列表
 var ResDepartmentDB = require('../dbconn/dbmodel/res_department'); //部门列表 
+var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus'); //签核状态表
 
 loginUser = () => { }
 
@@ -123,10 +124,12 @@ loginUser.GetBeasBata = () => {
             let resUserTimes = await ResUserTimesDB.SelectAll();
             let resUserJob = await resUserjobDB.SelectAll();
             let resDepartment = await ResDepartmentDB.SelectAll({ where: { isDel: false } });
+            let resApploveStatus = await ResApploveStatusDB.SelectAll(); 
             dataBase.resUsers = resUser.filter(users => { return users.dataValues });
             dataBase.resTimes = resUserTimes.filter(times => { return times.dataValues });
             dataBase.resJobs = resUserJob.filter(jobs => { return jobs.dataValues });
             dataBase.resDepartments = resDepartment.filter(deps => { return deps.dataValues });
+            dataBase.resStatus = resApploveStatus.filter(statuss => { return statuss.dataValues } )
             return { code: 200, msg: dataBase }
         } catch (error) {
             return { code: 400, msg: error }

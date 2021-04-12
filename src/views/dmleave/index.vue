@@ -188,14 +188,23 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     leaveapply(this.tmpleaveData).then((rs) => {
+                        console.log(rs)
                         if (rs.data.code == 200) {
-                            this.repaceCurFormDate(rs.data);
-                            this.notifyMsg(
-                                "提交成功",
-                                "success",
-                                `${this.tmpleaveData.userid} -- 请假单提交成功`
-                            );
-                            this.resetForm("leaveData");
+                            if(rs.data.msg.code == 200){
+                                this.repaceCurFormDate(rs.data.msg);
+                                this.notifyMsg(
+                                    "提交成功",
+                                    "success",
+                                    `${this.tmpleaveData.userid} -- 请假单提交成功`
+                                );
+                                this.resetForm("leaveData");
+                            }else{
+                                this.$message.error(`${rs.data.msg.msg}`)
+                                this.loading.close();
+                                return;
+                                // return;
+                            }
+                            
                         } else {
                             this.notifyMsg(
                                 "提交失败",

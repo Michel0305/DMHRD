@@ -9,7 +9,7 @@ var Qs = require('qs');
 router.get('/', function (req, res, next) {
     SwitchWork.BaseData().then((rs)=>{
         res.send({code:20000,data:rs});
-    })  
+    })      
 });
 
 

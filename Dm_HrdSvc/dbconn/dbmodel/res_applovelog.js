@@ -14,6 +14,7 @@ var resApplovelog = sequelizeConn.define('res_applovelog', {
     appuser: { type: Sequelize.CHAR },//签核人
     appremart: { type: Sequelize.STRING },//签核人意见
     statusid: { type: Sequelize.NUMBER },//流程ID
+    apploveid:{type:Sequelize.NUMBER },
     createtime: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {
     createdAt: false,                   // 禁止添加 createdAt 字段

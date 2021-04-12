@@ -16,6 +16,7 @@ const getters = {
   departmentjob_departs: state => state.departmentjob.departs,
   departmentjob_jobs: state => state.departmentjob.jobs,
   departmentjob_times: state => state.departmentjob.times,
+  applovestatus:state => state.departmentjob.statuss,
   locheight: state => state.settings.winHeight,
   language: state => state.app.language,
   rights:state=>state.user.right,

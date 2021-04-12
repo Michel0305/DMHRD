@@ -63,7 +63,7 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">
                 </el-table-column>
-                <el-table-column prop="appstatus" label="单据状态" width="120">
+                <el-table-column prop="appstatus" label="单据状态" :formatter="formatStatus" width="120">
                 </el-table-column>
             </el-table>
         </el-col>
@@ -128,7 +128,7 @@ export default {
             }
         },
         editDays() {
-            if (this.baseForm.id == 0) return;
+            if (this.baseForm.id == 0 || this.baseForm.appstatus>0) return;
             this.isEdit = true;
         },
         submitDays(forms) {
@@ -183,7 +183,12 @@ export default {
                 indexID < 0 ? 0 : 1,
                 info
             );
-        }
+        },
+        formatStatus(row){
+            let tmps = this.$store.getters.applovestatus.filter((el)=>{
+                return el.model.replace(/(^\s*)|(\s*$)/g,'') == 'switchdays' && el.statusid == row.appstatus
+            })
+            return tmps.length == 0?'未知':tmps[0].msg }
     }
 }
 </script>

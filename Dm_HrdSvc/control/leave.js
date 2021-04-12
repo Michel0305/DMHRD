@@ -8,10 +8,7 @@ var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus')
 var ResLeaveTypeDB = require('../dbconn/dbmodel/res_leavetype')
 
 var token = require('./token');
-var Sequelize = require('sequelize');
 var moment = require('moment');
-
-var qs = require('qs');
 
 LeaveStaticFn = () => { }
 
@@ -57,7 +54,7 @@ LeaveStaticFn.BaseData = (parms) => {
                 tmpLeaveType.push(el.dataValues)
             })
             leaveBaseData.leaveBase = [] = leaveBase;
-            leaveBaseData.leaveLog =[] = leaveLog;
+            leaveBaseData.leaveLog = [] = leaveLog;
             leaveBaseData.leaveStatus = [] = leaveStatus;
             leaveBaseData.leaveType = [] = tmpLeaveType;
             return { code: 200, msg: leaveBaseData }
@@ -69,19 +66,23 @@ LeaveStaticFn.BaseData = (parms) => {
     return GetLeaveBaseData();
 }
 
-LeaveStaticFn.ApplyFor = (parms) => {
-    let tmpLeaveData =parms
+LeaveStaticFn.ApplyFor = (parms) => {  
     async function SaveLeave() {
-        let leaveSaveStatus = await ResLeaveDB.Query(`exec LeaveForDB @id = ${tmpLeaveData.id},
-         @userid=${tmpLeaveData.userid},
-         @startDate="${moment(tmpLeaveData.freedate[0]).format('YYYY-MM-DD HH:mm:ss')}", 
-         @endDate="${moment(tmpLeaveData.freedate[1]).format('YYYY-MM-DD HH:mm:ss')}",
-         @remark="${tmpLeaveData.remark}",
-         @leavetype=${tmpLeaveData.leavetype},
-         @applovestatus=${tmpLeaveData.applovestatus},
-         @curuser=${tmpLeaveData.createUser} ;`)
-       return leaveSaveStatus[0][0]
+        try {            
+            let leaveSaveStatus = await ResLeaveDB.Query(`exec LeaveForDB @id = ${parms.id},
+                                                            @userid=${parms.userid},
+                                                            @startDate="${moment(parms.freedate[0]).format('YYYY-MM-DD HH:mm:ss')}", 
+                                                            @endDate="${moment(parms.freedate[1]).format('YYYY-MM-DD HH:mm:ss')}",
+                                                            @remark="${parms.remark}",
+                                                            @leavetype=${parms.leavetype},
+                                                            @applovestatus=${parms.applovestatus},
+                                                            @curuser=${parms.createUser} ;`)
+            return { code: 200, msg: leaveSaveStatus[0][0] }
+        } catch (error) {
+            return { code: 400, msg: error }
+        }
     }
+
     return SaveLeave()
 }
 

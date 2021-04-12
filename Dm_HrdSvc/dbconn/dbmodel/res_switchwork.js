@@ -13,6 +13,7 @@ var resSwitChwork = sequelizeConn.define('res_switchwork', {
     freedate: { type: Sequelize.DATE },//请假日期
     workdate: { type: Sequelize.DATE },//开始时间    
     remark: { type: Sequelize.STRING },//备注信息
+    apploveid:{type: Sequelize.NUMBER },
     appstatus: { type: Sequelize.NUMBER },//签核状态
     createuser:{type: Sequelize.NUMBER},//操作人
     createdate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间

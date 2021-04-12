@@ -17,6 +17,7 @@ var resBusiness = sequelizeConn.define('res_business', {
     carplate: { type: Sequelize.STRING },//车牌
     isapply: { type: Sequelize.BOOLEAN },//是否报销
     remark: { type: Sequelize.STRING },//备注
+    apploveid:{type: Sequelize.NUMBER},
     appstatus: { type: Sequelize.NUMBER },//审核状态
     actfiles:{type:Sequelize.STRING},
     createuser: { type: Sequelize.NUMBER },//申请人

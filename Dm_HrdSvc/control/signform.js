@@ -33,7 +33,7 @@ SignForm.BaseData = (parms) => {
 SignForm.ApploveForm = (parms) => {
     let tmpSignData = qs.parse(parms)
     async function SignById() {
-        // console.log(tmpSignData)
+        console.log(tmpSignData)
         try {
             switch (tmpSignData.model) {
                 case 'leave':
@@ -58,6 +58,7 @@ SignForm.ApploveForm = (parms) => {
                     let businessSignData = await ResBusiness.SelectAll({ where: { id: tmpSignData.id } })
                     let busapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='business'  order by createtime desc `)
+                    console.log(busapploveLog[0]) 
                     return { code: 200, msg:{SignData:businessSignData,apploveLog:busapploveLog[0] }}
                     break;
                 default:
@@ -103,7 +104,12 @@ SignForm.UserBoxData = (parms) =>{
     async function userBox() {
         try {
           let usersData = await ResLeaveDB.Query(`select * from  dmUserBox(${parms.userid})`)
-          return {code:200,msg:usersData[0]}
+          let apploveIds = [0];
+          usersData[0].forEach(el => {
+            apploveIds.push(el.id)
+          }); 
+          let signBox = await ResApploveLog.SelectAll({where:{formid:{[Op.in]:apploveIds}},order:[['createtime','DESC']]})           
+          return {code:200,msg:{'usersData':usersData[0],'signBox':signBox } }
         } catch (error) {
             return {code:200,msg:error}  
         }        

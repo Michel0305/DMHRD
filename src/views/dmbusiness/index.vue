@@ -99,7 +99,7 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">
                 </el-table-column>
-                <el-table-column prop="appstatus" label="状态" width="80">
+                <el-table-column prop="appstatus" label="状态" :formatter="formatStatus" width="80">
                 </el-table-column>
             </el-table>
         </el-col>
@@ -215,7 +215,7 @@ export default {
             this.isEdit = true;
         },
         editDays() {
-            if (this.businessBase.id <= 0) return
+            if ( this.businessBase.id == 0 || this.businessBase.appstatus>0) return
             this.isEdit = true;
         },
         submitDays(forms) {
@@ -299,6 +299,11 @@ export default {
             });
             return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
         },
+        formatStatus(row){
+            let tmps = this.$store.getters.applovestatus.filter((el)=>{
+                return el.model.replace(/(^\s*)|(\s*$)/g,'') == 'business' && el.statusid == row.appstatus
+            })
+            return tmps.length == 0?'未知':tmps[0].msg }
     }
 }
 </script>

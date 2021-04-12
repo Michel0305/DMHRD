@@ -2,7 +2,8 @@ const state = {
     personals: [],
     departs: [],
     jobs: [],
-    times: []
+    times: [],
+    statuss:[],
 }
 const mutations = {
     UPDATE_PERSONAL: (state, data) => {//第一次提交赋值
@@ -16,6 +17,9 @@ const mutations = {
     },
     UPDATE_TIMES: (state, data) => {
         state.times = data;
+    },
+    UPDATE_STATUS:(state,data)=>{
+        state.statuss = data;
     },
     REPLACE_TIME: (state, data) => {
         let indexID = state.times.findIndex((el) => el.id == data.id)
@@ -50,6 +54,9 @@ const actions = {
     },
     delTimes({ commit }, data){
         commit('REMOVE_TIME', data)
+    },
+    defstatus({ commit }, data){
+        commit('UPDATE_STATUS', data)
     }
 }
 

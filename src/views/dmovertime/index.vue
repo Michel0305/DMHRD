@@ -262,9 +262,9 @@ export default {
                                 });
                             }
                             this.resetForm(formName);
-                        }else{
+                        } else {
                             console.log(resback.data.msg)
-                           this.$message.error(`数据保存失败请刷新后再试`) 
+                            this.$message.error(`数据保存失败请刷新后再试`)
                         }
                     })
                     this.isEdit = false;

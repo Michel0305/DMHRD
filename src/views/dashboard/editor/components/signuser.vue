@@ -23,7 +23,7 @@
             </div>
             <div class="flowmsg">
                 <el-timeline>
-                    <el-timeline-item v-for="(activity, index) in curIds.ApploveLog" :key="index" :timestamp="$moment(activity.createtime).format('YYYY-MM-DD HH:mm:ss') ">
+                    <el-timeline-item v-for="(activity, index) in curIds.ApploveLog" :key="index" :timestamp="$moment(activity.createtime).utc().format('YYYY-MM-DD HH:mm:ss') ">
                         {{activity.statusMsg}} <br/>
                         {{activity.appremart}}
                     </el-timeline-item>
@@ -62,17 +62,7 @@ export default ({
             lockBtn:false,
             lockApplove:false,
             lockzero:false,  //三个设定安全锁,防止死命提交
-            currentRole: 'signleave',
-            activities: [{
-                content: '活动按期开始',
-                timestamp: '2018-04-15'
-            }, {
-                content: '通过审核',
-                timestamp: '2018-04-13'
-            }, {
-                content: '创建成功',
-                timestamp: '2018-04-11'
-            }]
+            currentRole: 'signleave',             
         }
     },
     props: ["dialogStatus", "infoData", "curIds"],
@@ -127,7 +117,7 @@ export default ({
             indoData.apploveType = types
             ApploveOnly(indoData).then((rs) => {
                 if(rs.data.code==200){
-                      let indexID = this.infoData.findIndex((el) => {
+                    let indexID = this.infoData.findIndex((el) => {
                                     return parseInt(el.id) == parseInt(this.curIds.SignData[0].id) && el.model == this.curIds.model})
                     this.infoData[indexID].reApplove = true;
                     this.$message.success(`审核完成`)

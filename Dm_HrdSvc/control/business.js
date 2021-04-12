@@ -33,7 +33,9 @@ ReqBusiness = () => { }
  ReqBusiness.infoBusinessData = (params) =>{
     async function infoData() {        
         try {
-            if(params.id >0){ //Update                
+            let appList = await ResSwitChworkDB.Query(`select * from userSignId(${params.userid})`)
+            let setApplove = appList[0][0]                          
+            if(params.id >0){ //Update
                 await ResBusinessDB.Update({userid:params.userid,
                     checkdate:params.checkdate,
                     toaddressids:`${params.toaddressids}`,
@@ -43,7 +45,8 @@ ReqBusiness = () => { }
                     isapply:params.isapply,
                     remark:params.remark,
                     actfiles:params.actfiles,
-                    appstatus:0,
+                    appstatus:setApplove.applovestatus,
+                    apploveid:setApplove.apploveid,
                     createuser:params.createUser                
                 },{where:{id:params.id}})
                 await ResBusinessDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
@@ -58,6 +61,8 @@ ReqBusiness = () => { }
                     carplate:params.carplate,
                     isapply:params.isapply,
                     remark:params.remark,
+                    appstatus:setApplove.applovestatus,
+                    apploveid:setApplove.apploveid,
                     actfiles:params.actfiles,
                     createuser:params.createUser})
                 await ResBusinessDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)

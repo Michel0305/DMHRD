@@ -3,6 +3,23 @@
     <el-row :gutter="10">
         <el-col :span="22" :offset="1">
             <el-table :data="userData" :style="{width:'100%','height':$store.getters.locheight - 55+'px' }">
+                 <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-timeline>
+                                <el-timeline-item
+                                v-for="(activity, index) in signBoxData.filter((el)=>{ return parseInt(el.formid) == parseInt(props.row.id) 
+                                    && (el.modelname.replace(/(^\s*)|(\s*$)/g,'')) == (props.row.model.replace(/(^\s*)|(\s*$)/g,'')) })"
+                                :key="index"
+                                :timestamp="$moment(activity.createtime).utc().format('YYYY-MM-DD HH:mm:ss')">
+                                {{  $store.getters.applovestatus.filter((el)=>{ return el.model.replace(/(^\s*)|(\s*$)/g,'') == props.row.model.replace(/(^\s*)|(\s*$)/g,'')
+                                  && parseInt(el.statusid) == parseInt(activity.apploveid)})[0].msg }}
+                                <br/>
+                                <br/>
+                                {{`意见:  ${activity.appremart}`}}
+                                </el-timeline-item>
+                            </el-timeline>
+                        </template>
+                </el-table-column>                
                 <el-table-column fixed  prop="modelname" label="表单名称" width="150">                    
                 </el-table-column>
                 <el-table-column  prop="userid" label="姓名" width="120" :formatter="formatUserName">                   
@@ -30,19 +47,22 @@ export default {
     name: 'userforms',
     data() {
         return {
-            userData: []
+            userData: [],
+            signBoxData:[],            
         }
     },
-    created(){        
+    created(){   
+          
     },
     mounted() {
         UserBoxData({userid:this.$store.getters.account}).then((rs)=>{
             if(rs.data.code == 200){
-                this.userData =[] = rs.data.msg;
+                this.userData =[] = rs.data.msg.usersData;
+                this.signBoxData = [] = rs.data.msg.signBox;
             }else{
                 console.log(rs.data.msg);
                 this.$message.error(`个人申请数据错误,请刷新`);
-                return}
+                return}   
         })
     },
     methods:{
