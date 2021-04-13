@@ -21,6 +21,11 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip> -->
         <lang-select class="right-menu-item hover-effect" />
+        <div class="username">
+          <span>
+             {{`用户:${$store.getters.name}`}}
+          </span>
+        </div>       
       </template>
 
       <el-dropdown
@@ -75,13 +80,10 @@ export default {
     LangSelect,
   },
   created(){
-    // console.log(this.$store.getters)
-    // console.log(this.$store.getters.departmentjob_personals.filter((el)=>{return  parseInt(el.user_id) == (this.$store.getters.account) } ))
   },
   computed: {
     ...mapGetters(["sidebar", "avatar", "device"]),
     src:function(){
-      // console.log(this.$store.getters.departmentjob_personals)
       if(this.avatar) return process.env.VUE_APP_BASE_API+this.avatar
     }
   },
@@ -131,11 +133,15 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
-
+    display: flex;
     &:focus {
       outline: none;
     }
-
+    .username{
+      font-weight: bold;
+      font-size: 1.2ex;
+      padding-left: 20px;
+    }
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;

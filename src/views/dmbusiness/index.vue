@@ -26,7 +26,7 @@
                 <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="职员" prop="userid">
-                            <el-select v-model="businessBase.userid" placeholder="请选择" size="mini" :disabled="!isEdit">
+                            <el-select v-model="businessBase.userid" filterable placeholder="请选择" size="mini" :disabled="!isEdit">
                                 <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
                                                 if($store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0  || parseInt(el.user_id) == parseInt($store.getters.account)){
                                                         return el
@@ -224,6 +224,7 @@ export default {
                     this.isEdit = false;
                     this.formatAddressCN()
                     this.businessBase.selectedOptions = this.selectedOptions;
+                    this.businessBase
                     infoBusindessData(this.businessBase).then((rs) => {
                         if (rs.data.code == 200) {
                             this.replaceDefData(rs.data.msg)

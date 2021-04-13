@@ -23,9 +23,12 @@
             </div>
             <div class="flowmsg">
                 <el-timeline>
-                    <el-timeline-item v-for="(activity, index) in curIds.ApploveLog" :key="index" :timestamp="$moment(activity.createtime).utc().format('YYYY-MM-DD HH:mm:ss') ">
-                        {{activity.statusMsg}} <br/>
-                        {{activity.appremart}}
+                    <el-timeline-item v-for="(activity, index) in curIds.ApploveLog" :key="index" :timestamp="$moment(activity.createtime).utc().format('YYYY-MM-DD HH:mm:ss') "
+                    :color="activity.statusid== 1?'#da0000':'#1b6d04' " >
+                        {{activity.statusMsg}} 
+                        <br/>
+                        <br/>
+                        {{`信息: ${activity.appremart}`}}
                     </el-timeline-item>
                 </el-timeline>
             </div>
@@ -115,6 +118,7 @@ export default ({
             indoData.id = this.curIds.SignData[0].id
             indoData.model = this.curIds.model
             indoData.apploveType = types
+            indoData.remark = this.signmsg
             ApploveOnly(indoData).then((rs) => {
                 if(rs.data.code==200){
                     let indexID = this.infoData.findIndex((el) => {

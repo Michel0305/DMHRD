@@ -6,7 +6,6 @@ Uploads = ()=>{}
 Uploads.UsersImg = (files) =>{
     async function filesToSave() {
         try {
-            console.log(path.dirname(__dirname))
             let formName = files.fileds.formname[0]
             let userName = files.fileds.name[0]
             if(!fs.existsSync(`${path.dirname(__dirname)}/public/images/${formName}/`))

@@ -37,7 +37,7 @@ ReqBusiness = () => { }
             let setApplove = appList[0][0]                          
             if(params.id >0){ //Update
                 await ResBusinessDB.Update({userid:params.userid,
-                    checkdate:params.checkdate,
+                    checkdate:`'${moment(params.checkdate),format('YYYY-MM-DD')}'`,
                     toaddressids:`${params.toaddressids}`,
                     toaddress:`${params.toaddress}`,
                     dscaddress:params.dscaddress,
@@ -51,10 +51,11 @@ ReqBusiness = () => { }
                 },{where:{id:params.id}})
                 await ResBusinessDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
                                            select 'business',${params.id},${params.createUser},'更新送出','',0`)
+                params.appstatus = setApplove.applovestatus
                 return {code:200,msg:params}
             }else{//Insert
                 let tmpWorkDate = await ResBusinessDB.Insert({userid:params.userid,
-                    checkdate:params.checkdate,
+                    checkdate:`'${moment(params.checkdate),format('YYYY-MM-DD')}'`,
                     toaddressids:`${params.toaddressids}`,
                     toaddress:`${params.toaddress}`,
                     dscaddress:params.dscaddress,

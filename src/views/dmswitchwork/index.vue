@@ -24,7 +24,7 @@
         <el-col :span="12" :offset="6">
             <el-form ref="days" :model="baseForm" :rules="rules" label-width="80px">
                 <el-form-item label="职员" prop="userid">
-                    <el-select v-model="baseForm.userid" placeholder="请选择" size="mini" :disabled="!isEdit">
+                    <el-select v-model="baseForm.userid" filterable placeholder="请选择" size="mini" :disabled="!isEdit">
                         <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
                                         if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || parseInt(el.user_id) == parseInt($store.getters.account)){
                                          return el}})  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
