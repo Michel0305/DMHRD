@@ -121,7 +121,7 @@ export const constantRoutes = [
         path: 'abnormal',//补卡单
         component: () => import('@/views/dmabnormal/index'),
         name: 'abnormal',
-        meta: { title: '补卡单', icon: 'el-icon-tickets' }
+        meta: { title: '签卡单', icon: 'el-icon-tickets' }
       },
       
     ]

@@ -1,299 +1,314 @@
 <template>
 <div class="app-container-edituser">
     <el-dialog :title="infousers.isEdit && infousers.id !==0? infousers.user_name : '创建'" :visible.sync="dialogStatus" :before-close="dialogForm">
-        <el-form ref="userForm" :model="infousers" :rules="rules" label-width="80px">
-            <div class="dialogClass">
-                <div class="usrandimg">
-                    <div class="user">
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="姓名" prop="user_name">
-                                    <el-input :disabled="infousers.isEdit && infousers.id !==0" v-model="infousers.user_name" size="mini" maxlength="5"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="工号" size="mini" prop="user_id">
-                                    <el-input v-model="infousers.user_id" :disabled="infousers.isEdit && infousers.id !==0" maxlength="6"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="部门" prop="defpartid">
-                                    <el-select v-model="infousers.defpartid" placeholder="请选择" @change="checkDeptName" size="mini">
-                                        <el-option v-for="el in $store.state.departmentjob.departs" :key="el.deptid" :label="el.dept_name" :value="el.deptid">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="部门编码">
-                                    <el-input :readonly="true" v-model="infousers.defpartid" size="mini"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="岗位" prop="job">
-                                    <el-select v-model="infousers.job" placeholder="请选择" size="mini">
-                                        <!-- .filter(items=>{return items.defpartid == infousers.defpartid }) ) -->
-                                        <el-option v-for="el in $store.state.departmentjob.jobs.filter(
+        <div class="bodys">
+            <div class="cleft"> <el-button type="primary" class="el-icon-d-arrow-left" size="mini" @click="nextData(0)"></el-button> </div>
+            <div class="cbody">
+                <el-form ref="userForm" :model="infousers" :rules="rules" label-width="80px">
+                    <div class="dialogClass">
+                        <div class="usrandimg">
+                            <div class="user">
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="姓名" prop="user_name">
+                                            <el-input :disabled="infousers.isEdit && infousers.id !==0" v-model="infousers.user_name" size="mini" maxlength="5"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="工号" size="mini" prop="user_id">
+                                            <el-input v-model="infousers.user_id" :disabled="infousers.isEdit && infousers.id !==0" maxlength="6"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="部门" prop="defpartid">
+                                            <el-select v-model="infousers.defpartid" placeholder="请选择" @change="checkDeptName" size="mini">
+                                                <el-option v-for="el in $store.state.departmentjob.departs" :key="el.deptid" :label="el.dept_name" :value="el.deptid">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="部门编码">
+                                            <el-input :readonly="true" v-model="infousers.defpartid" size="mini"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="岗位" prop="job">
+                                            <el-select v-model="infousers.job" placeholder="请选择" size="mini">
+                                                <!-- .filter(items=>{return items.defpartid == infousers.defpartid }) ) -->
+                                                <el-option v-for="el in $store.state.departmentjob.jobs.filter(
                           (items) => {
                             return items.defpartid == infousers.defpartid;
                           }
                         )" :key="el.job" :label="el.job" :value="el.job" :disabled="el.job == infousers.job">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="班次" prop="timestype">
-                                    <el-select v-model="infousers.timestype" placeholder="请选择" size="mini">
-                                        <el-option v-for="el in $store.state.departmentjob.times" :key="el.id" :label="el.timesname" :value="el.id" :disabled="!el.ischeck">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="15">
-                                <el-form-item label="身份ID" prop="cardid">
-                                    <el-input v-model="infousers.cardid" size="mini" minlength="18" maxlength="18"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="9">
-                                <el-form-item label="性别">
-                                    <el-select v-model="infousers.sex" placeholder="请选择" size="mini">
-                                        <el-option v-for="el in optionsSex" :key="el.id" :label="el.label" :value="el.id">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item label="教育">
-                                    <el-select v-model="infousers.education" placeholder="请选择" size="mini">
-                                        <el-option v-for="el in optionsEducation" :key="el.id" :label="el.label" :value="el.id">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="联系方式" size="mini">
-                                    <el-input v-model="infousers.phone" maxlength="11"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                    </div>
-                    <div class="userimg">
-                        <el-form-item>
-                            <div>
-                                <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="UploadPIC">
-                                    <img v-if="infousers.imgurl" :src="src" class="avatar">
-                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                </el-upload>
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="班次" prop="timestype">
+                                           <el-popover
+                                                placement="bottom-start"
+                                                title="刷卡明细"
+                                                width="200"
+                                                trigger="hover"
+                                                >
+                                                <!-- :content="timesList" -->
+                                                <div v-html="timesList"></div>
+                                                <el-select v-model="infousers.timestype" placeholder="请选择" size="mini" slot="reference">
+                                                    <el-option v-for="el in $store.state.departmentjob.times" :key="el.id" :label="el.timesname" :value="el.id" :disabled="!el.ischeck" >
+                                                    </el-option>
+                                                </el-select>
+                                            </el-popover>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="15">
+                                        <el-form-item label="身份ID" prop="cardid">
+                                            <el-input v-model="infousers.cardid" size="mini" minlength="18" maxlength="18"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="9">
+                                        <el-form-item label="性别">
+                                            <el-select v-model="infousers.sex" placeholder="请选择" size="mini">
+                                                <el-option v-for="el in optionsSex" :key="el.id" :label="el.label" :value="el.id">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="教育">
+                                            <el-select v-model="infousers.education" placeholder="请选择" size="mini">
+                                                <el-option v-for="el in optionsEducation" :key="el.id" :label="el.label" :value="el.id">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="联系方式" size="mini">
+                                            <el-input v-model="infousers.phone" maxlength="11"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
                             </div>
-                        </el-form-item>
-                    </div>
-                </div>
-
-                <el-tabs tab-position="left" style="height: 200px">
-                    <el-tab-pane label="用户管理">
-                        <div class="userother">
-                            <el-row>
-                                <el-col :span="22">
-                                    <el-form-item label="户籍" prop="address">
-                                        <el-input v-model="infousers.address" size="mini"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="10">
-                                    <el-form-item label="上级部门" prop="mastpartid">
-                                        <el-select v-model="infousers.mastpartid" placeholder="请选择" size="mini">
-                                            <el-option v-for="el in $store.state.departmentjob.departs" :key="el.deptid" :label="el.dept_name" :value="el.deptid" :disabled="el.deptid == infousers.defpartid">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="12">
-                                    <el-form-item label="邮箱">
-                                        <el-input v-model="infousers.email" size="mini"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="10">
-                                    <el-form-item label="门禁">
-                                        <el-input v-model="infousers.cdnumber" size="mini" placeholder="门禁卡号"></el-input>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="12">
-                                    <el-form-item label="婚姻">
-                                        <el-select v-model="infousers.position" placeholder="婚姻状态" size="mini">
-                                            <el-option v-for="el in optionsMarital" :key="el.id" :label="el.id" :value="el.id">
-                                            </el-option>
-                                        </el-select>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="9">
-                                    <el-form-item label="入职日期" prop="indate">
-                                        <el-date-picker :editable="false" v-model="infousers.indate" type="date" placeholder="选择日期" size="mini" value-format="yyyy-MM-DD" :disabled="infousers.isEdit  && infousers.id !==0" class="rq">
-                                        </el-date-picker>
-                                    </el-form-item>
-                                </el-col>
-                                <el-col :span="12" :offset="2">
-                                    <el-form-item label="生日">
-                                        <el-date-picker :disabled="true" v-model="infousers.birthday" type="date" placeholder="选择日期" size="mini" class="rq" value-format="yyyy-MM-DD">
-                                        </el-date-picker>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-                            <el-row>
-                                <el-col :span="2">
-                                    <el-form-item>
-                                        <el-checkbox v-model="infousers.isline" :disabled="true">在职</el-checkbox>
-                                    </el-form-item>
-                                </el-col>
-                            </el-row>
-
+                            <div class="userimg">
+                                <el-form-item>
+                                    <div>
+                                        <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="UploadPIC">
+                                            <img v-if="infousers.imgurl" :src="src" class="avatar">
+                                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                        </el-upload>
+                                    </div>
+                                </el-form-item>
+                            </div>
                         </div>
-                    </el-tab-pane>
-                    <!-- ​	指纹录入	​	工衣	​	培训	​  合同	​	公司手机	​	文具	​	宿舍钥匙	 -->
 
-                    <el-tab-pane label="入职">
-                        <el-form-item>
-                            <el-checkbox-group v-model="infousers.documents">
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="门禁工号"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="应聘登记表"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="入职登记表"></el-checkbox>
-                                    </el-col>
-                                </el-col>
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="身份证复印件"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="银行卡复印件"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="彩色照片(2张)"></el-checkbox>
-                                    </el-col>
-                                </el-col>
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="体检报告"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="证书"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="弃保声明书"></el-checkbox>
-                                    </el-col>
-                                </el-col>
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="员工外住责任声明书"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="职员保密/竞业协议"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="员工宿舍管理制度"></el-checkbox>
-                                    </el-col>
-                                </el-col>
+                        <el-tabs tab-position="left" style="height: 200px">
+                            <el-tab-pane label="用户管理">
+                                <div class="userother">
+                                    <el-row>
+                                        <el-col :span="22">
+                                            <el-form-item label="户籍" prop="address">
+                                                <el-input v-model="infousers.address" size="mini"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="10">
+                                            <el-form-item label="上级部门" prop="mastpartid">
+                                                <el-select v-model="infousers.mastpartid" placeholder="请选择" size="mini">
+                                                    <el-option v-for="el in $store.state.departmentjob.departs" :key="el.deptid" :label="el.dept_name" :value="el.deptid" :disabled="el.deptid == infousers.defpartid">
+                                                    </el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="邮箱">
+                                                <el-input v-model="infousers.email" size="mini"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="10">
+                                            <el-form-item label="门禁">
+                                                <el-input v-model="infousers.cdnumber" size="mini" placeholder="门禁卡号"></el-input>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-form-item label="婚姻">
+                                                <el-select v-model="infousers.position" placeholder="婚姻状态" size="mini">
+                                                    <el-option v-for="el in optionsMarital" :key="el.id" :label="el.id" :value="el.id">
+                                                    </el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="9">
+                                            <el-form-item label="入职日期" prop="indate">
+                                                <el-date-picker :editable="false" v-model="infousers.indate" type="date" placeholder="选择日期" size="mini" value-format="yyyy-MM-DD" :disabled="infousers.isEdit  && infousers.id !==0" class="rq">
+                                                </el-date-picker>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col :span="12" :offset="2">
+                                            <el-form-item label="生日">
+                                                <el-date-picker :disabled="true" v-model="infousers.birthday" type="date" placeholder="选择日期" size="mini" class="rq" value-format="yyyy-MM-DD">
+                                                </el-date-picker>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row>
+                                        <el-col :span="2">
+                                            <el-form-item>
+                                                <el-checkbox v-model="infousers.isline" :disabled="true">在职</el-checkbox>
+                                            </el-form-item>
+                                        </el-col>
+                                    </el-row>
 
-                            </el-checkbox-group>
-                        </el-form-item>​
-                    </el-tab-pane>
+                                </div>
+                            </el-tab-pane>
+                            <!-- ​	指纹录入	​	工衣	​	培训	​  合同	​	公司手机	​	文具	​	宿舍钥匙	 -->
 
-                    <el-tab-pane label="物品领用">
-                        <el-form-item>
-                            <el-checkbox-group v-model="infousers.goods">
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="工牌"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="指纹"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="工衣"></el-checkbox>
-                                    </el-col>
-                                </el-col>
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="培训"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="公司手机"></el-checkbox>
-                                    </el-col>
-                                    <el-col :span="8">
-                                        <el-checkbox label="文具"></el-checkbox>
-                                    </el-col>
-                                </el-col>
-                                <el-col :span="24">
-                                    <el-col :span="8">
-                                        <el-checkbox label="合同"></el-checkbox>
-                                    </el-col>
-                                </el-col>
-                            </el-checkbox-group>
-                        </el-form-item>
+                            <el-tab-pane label="入职">
+                                <el-form-item>
+                                    <el-checkbox-group v-model="infousers.documents">
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="门禁工号"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="应聘登记表"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="入职登记表"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="身份证复印件"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="银行卡复印件"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="彩色照片(2张)"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="体检报告"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="证书"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="弃保声明书"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="员工外住责任声明书"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="职员保密/竞业协议"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="员工宿舍管理制度"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
 
-                    </el-tab-pane>
+                                    </el-checkbox-group>
+                                </el-form-item>​
+                            </el-tab-pane>
 
-                    <el-tab-pane label="银行/社保">
-                        <el-form-item label="社保分类">
-                            <el-checkbox-group v-model="infousers.social">
-                                <el-checkbox label="社保"></el-checkbox>
-                                <el-checkbox label="商保"></el-checkbox>
-                                <el-checkbox label="公积金"></el-checkbox>
-                            </el-checkbox-group>
-                        </el-form-item>
-                        <el-form-item label="开户银行">
-                            <el-input v-model="infousers.bankname" placeholder="开户行" maxlength="15" size="mini"></el-input>
-                        </el-form-item>
-                        <el-form-item label="分支行">
-                            <el-input v-model="infousers.bankson" placeholder="分支" maxlength="10" size="mini"></el-input>
-                        </el-form-item>
-                        <el-form-item label="卡号">
-                            <el-input v-model="infousers.bankcard" placeholder="银行账号" maxlength="32" size="mini"></el-input>
-                        </el-form-item>
-                    </el-tab-pane>
-
-                    <el-tab-pane label="考勤">
-                        <el-row :gutter="10">
-                            <el-col :span="12">
-                                <el-form-item label="周工作" prop="workday">
-                                    <el-select v-model="infousers.workday" clearable placeholder="请选择" size="mini">
-                                        <el-option v-for="item in dayOptions" :key="item.label" :label="item.label" :value="item.label"></el-option>
-                                    </el-select>
+                            <el-tab-pane label="物品领用">
+                                <el-form-item>
+                                    <el-checkbox-group v-model="infousers.goods">
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="工牌"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="指纹"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="工衣"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="培训"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="公司手机"></el-checkbox>
+                                            </el-col>
+                                            <el-col :span="8">
+                                                <el-checkbox label="文具"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
+                                        <el-col :span="24">
+                                            <el-col :span="8">
+                                                <el-checkbox label="合同"></el-checkbox>
+                                            </el-col>
+                                        </el-col>
+                                    </el-checkbox-group>
                                 </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item label="工作时数" prop="workhour">
-                                    <el-select v-model="infousers.workhour" clearable placeholder="请选择" size="mini">
-                                        <el-option v-for="item in hoursOptions" :key="item.label" :label="item.label" :value="item.label"></el-option>
-                                    </el-select>
+
+                            </el-tab-pane>
+
+                            <el-tab-pane label="银行/社保">
+                                <el-form-item label="社保分类">
+                                    <el-checkbox-group v-model="infousers.social">
+                                        <el-checkbox label="社保"></el-checkbox>
+                                        <el-checkbox label="商保"></el-checkbox>
+                                        <el-checkbox label="公积金"></el-checkbox>
+                                    </el-checkbox-group>
                                 </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-form-item label="责任制">
-                            <el-checkbox v-model="infousers.accountability"></el-checkbox>
-                        </el-form-item>
-                    </el-tab-pane>
-                </el-tabs>
+                                <el-form-item label="开户银行">
+                                    <el-input v-model="infousers.bankname" placeholder="开户行" maxlength="15" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="分支行">
+                                    <el-input v-model="infousers.bankson" placeholder="分支" maxlength="10" size="mini"></el-input>
+                                </el-form-item>
+                                <el-form-item label="卡号">
+                                    <el-input v-model="infousers.bankcard" placeholder="银行账号" maxlength="32" size="mini"></el-input>
+                                </el-form-item>
+                            </el-tab-pane>
+
+                            <el-tab-pane label="考勤">
+                                <el-row :gutter="10">
+                                    <el-col :span="12">
+                                        <el-form-item label="周工作" prop="workday">
+                                            <el-select v-model="infousers.workday" clearable placeholder="请选择" size="mini">
+                                                <el-option v-for="item in dayOptions" :key="item.label" :label="item.label" :value="item.label"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-form-item label="工作时数" prop="workhour">
+                                            <el-select v-model="infousers.workhour" clearable placeholder="请选择" size="mini">
+                                                <el-option v-for="item in hoursOptions" :key="item.label" :label="item.label" :value="item.label"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-form-item label="责任制">
+                                    <el-checkbox v-model="infousers.accountability"></el-checkbox>
+                                </el-form-item>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </el-form>
             </div>
-        </el-form>
+            <div class="cright"><el-button type="primary" class="el-icon-d-arrow-right" size="mini" @click="nextData(1)"></el-button></div>
+        </div>
         <div class="footer">
             <el-button type="primary" @click="dialogForm(0)" size="mini" class="btnsave">保存</el-button>
             <el-button @click="dialogForm(1)" size="mini">取消</el-button>
@@ -306,6 +321,7 @@
 import { createusers } from '@/api/user';
 import { userpicupload } from '@/api/upload'
 import { mapGetters } from "vuex";
+import { isString } from '@/utils/validate';
 
 export default {
     name: "edituser",
@@ -380,17 +396,17 @@ export default {
                     if (valid) {
                         if (val == 0) {
                             createusers(tmpUser).then((rs) => {
-                                if(rs.data.code == 200){
+                                if (rs.data.code == 200) {
                                     this.notifyMsg(
-                                    "提交成功",
-                                    "success",
-                                    `人员资料已经创建/更新成功`
+                                        "提交成功",
+                                        "success",
+                                        `人员资料已经创建/更新成功`
                                     );
-                                    this.$emit("dialogFormStatus",rs.data.msg);
-                                }else{
+                                    this.$emit("dialogFormStatus", rs.data.msg);
+                                } else {
                                     console.log(rs.data.msg);
                                     this.$message.error(`数据保存失败,请刷新重试`);
-                                }                                
+                                }
                             })
                         } else { //取消退出
                             this.$emit("dialogFormStatus", tmpUser);
@@ -451,11 +467,38 @@ export default {
                     this.$message.error(`图片上传失败,请刷新重试`)
                 }
             })
+        },
+        nextData(types){         
+          let IndexID =  this.$store.getters.departmentjob_personals.findIndex((el)=>{return parseInt(el.id) == parseInt(this.infousers.id) }) 
+          if(types == 0){
+             IndexID = IndexID == 0?(this.$store.getters.departmentjob_personals.length)-1:IndexID-1;               
+          }else{
+             IndexID=  IndexID == (this.$store.getters.departmentjob_personals.length)-1?0:IndexID+1;
+          }     
+          this.$emit("emitData",this.$store.getters.departmentjob_personals[IndexID])
         }
+
     },
     computed: {
         src: function () {
             if (this.infousers.imgurl) return process.env.VUE_APP_BASE_API + this.infousers.imgurl
+        },
+        timesList: function(){
+            let reback = ''
+            if(this.infousers.timestype) {
+               let tmptimes = this.$store.getters.departmentjob_times.filter((el)=> {return el.id == this.infousers.timestype})
+               if(tmptimes.length == 0) return '';
+            reback=`
+                      类别  ：${tmptimes[0].timestype == 0   ?'白班':'夜班'}
+                      <br/>
+                      时间1 : ${tmptimes[0].timesfirst}<br/>
+                      时间2 : ${tmptimes[0].timessecond}<br/>
+                      时间3 : ${tmptimes[0].timesthird}<br/>
+                      时间4 : ${tmptimes[0].timesfourth}<br/>
+                      时间5 : ${tmptimes[0].timesfifth}<br/>
+                      时间6 : ${tmptimes[0].thimessixth}` 
+           }
+           return reback
         }
     },
     watch: {}
@@ -530,5 +573,18 @@ export default {
     width: 178px;
     height: 178px;
     display: block;
+}
+.bodys{
+    display: flex;
+}
+.cleft{
+    width: 5%;
+}
+.cbody{
+    width: 90%;
+}
+.cright{
+    width: 5%;
+    text-align: end;
 }
 </style>

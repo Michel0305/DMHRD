@@ -39,6 +39,9 @@ var resWorkRecords = sequelizeConn.define('res_workrecords', {
     freezeTableName: true,        // 禁止修改标明为复数
 })
 
+
+ResWorkRecordsDB.DBModel = resWorkRecords;
+
 ResWorkRecordsDB.SelectAll = async (...swhere) => {
     // console.log(swhere)
     if (swhere.length == 0) {

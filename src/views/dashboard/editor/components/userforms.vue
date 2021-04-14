@@ -53,18 +53,10 @@ export default {
         }
     },
     created(){   
-          
+       this.getbaseData();   
     },
     mounted() {
-        UserBoxData({userid:this.$store.getters.account}).then((rs)=>{
-            if(rs.data.code == 200){
-                this.userData =[] = rs.data.msg.usersData;
-                this.signBoxData = [] = rs.data.msg.signBox;
-            }else{
-                console.log(rs.data.msg);
-                this.$message.error(`个人申请数据错误,请刷新`);
-                return}   
-        })
+        
     },
     methods:{
         formatUserName(row, colum) {
@@ -79,6 +71,17 @@ export default {
             });
             return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
         },
+        async getbaseData(){
+              let rsBackData = await  UserBoxData({userid:this.$store.getters.account})
+            if(rsBackData.data.code == 200){
+                let fliterUser = this.$store.getters.departmentjob_personals.filter((el) => { if (this.$store.getters.partids.findIndex((es) => { return el.defpartid == es }) >= 0) { return el.user_id } })
+                this.userData = [] = rsBackData.data.msg.usersData.filter((el) => { if (fliterUser.findIndex((evl) => { return parseInt(evl.user_id) == parseInt(el.userid) }) >= 0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account) return el })
+                this.signBoxData = [] = rsBackData.data.msg.signBox;
+            }else{
+                console.log(rsBackData.data.msg);
+                this.$message.error(`个人申请数据错误,请刷新`);                
+            }      
+        }
     }
 }
 </script>

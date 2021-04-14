@@ -13,3 +13,27 @@ export function getworkrecords(data) {
         params: data
     })
 }
+
+export function infoRegistrationCard(data) {
+    return request({
+        url: '/attendance/infoqk',
+        method: 'post',
+        data: Qs.stringify(data)
+    })
+}
+
+export function getRegistrationCard() {
+    return request({
+        url: '/attendance/baseqk',
+        method: 'get'
+    })
+}
+
+export function updateRegistrationCard(data) {
+    return request({
+        url: '/attendance/upgradeqk',
+        method: 'post',
+        data:Qs.stringify(data)
+    })
+}
+

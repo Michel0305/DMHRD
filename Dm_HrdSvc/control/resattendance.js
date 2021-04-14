@@ -9,7 +9,7 @@ ZkData = () => { }
  * 数据下载
  */
 ZkData.download = () => {
-    let tmpDate = moment(new Date()).subtract(7, 'days').calendar();
+    let tmpDate = moment(new Date()).subtract(10, 'days').calendar();
     async function DataDownload() {
         let logData = await ZkDevice.GetAttendanceData();
         if (logData.code === 404) return logData
@@ -30,5 +30,5 @@ ZkData.download = () => {
     return DataDownload()
 }
 
-// ZkData.download(); //测试函数
+//ZkData.download(); //测试函数
 module.exports = ZkData;

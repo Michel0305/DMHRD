@@ -16,7 +16,9 @@
                 <el-button type="primary" icon="el-icon-arrow-left" size="mini" @click="changeData(0)" :disabled="lockBtn || lockzero"></el-button>
             </div>
             <div class="formmsg">
-                <component :is="curIds.model == 'leave'?'signleave':curIds.model == 'work'?'signoverwork':curIds.model == 'switchdays'?'switchday':curIds.model=='business'?'signbusiness':'signleave'" :defData="curIds.SignData" />
+                <component :is="curIds.model == 'leave'?'signleave':curIds.model == 'work'?'signoverwork'
+                           :curIds.model == 'switchdays'?'switchday'
+                           :curIds.model=='business'?'signbusiness':curIds.model=='regcard'?'regcard':'signleave'" :defData="curIds.SignData" />
                 <el-col :span="23" :offset="1">
                     <el-input type="textarea" rows="3" v-model="signmsg" placeholder="意见"></el-input>
                 </el-col>
@@ -51,13 +53,15 @@ import signleave from "./leave";
 import signoverwork from "./overwork";
 import switchday from "./switchday";
 import signbusiness from "./business";
+import regcard from "./regcard";
 export default ({
     name: 'signuser',
     components: {
         signleave,
         signoverwork,
         switchday,
-        signbusiness
+        signbusiness,
+        regcard
     },
     data() {
         return {
@@ -137,7 +141,7 @@ export default ({
         }
     },
     mounted() {
-        console.log(this.curIds)
+        // console.log(this.curIds)
     }
 })
 </script>

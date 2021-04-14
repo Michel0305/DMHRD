@@ -87,7 +87,7 @@
             </el-table>
         </el-col>
     </el-row>
-    <edituser :infousers="rowData" :dialogStatus="showstatus" @dialogFormStatus="cdialogFormStatus" />
+    <edituser :infousers="rowData" :dialogStatus="showstatus" @dialogFormStatus="cdialogFormStatus" @emitData="chageemitData" />
     <resignation :infousers="rowData" :LdialogStatus="showResignDlg" @dialogFormStatus="dialogResignStatus" />
 </div>
 </template>
@@ -137,11 +137,20 @@ export default {
                 this.rowData.documents == null ? [] : isArray(this.rowData.documents) ? this.rowData.documents:this.rowData.documents.split(",") ;
             this.rowData.social =
                 this.rowData.social == null ? [] : isArray(this.rowData.social) ? this.rowData.social:this.rowData.social.split(",") ;
-            
         },
         handleResign(index, row) {
             this.rowData = row;
             this.showResignDlg = true;
+        },
+
+        chageemitData(val){
+            this.rowData = val;
+            this.rowData.isEdit = true;
+            this.rowData.goods = this.rowData.goods == null ? [] : isArray(this.rowData.goods) ?  this.rowData.goods:this.rowData.goods.split(",");
+            this.rowData.documents =
+                this.rowData.documents == null ? [] : isArray(this.rowData.documents) ? this.rowData.documents:this.rowData.documents.split(",") ;
+            this.rowData.social =
+                this.rowData.social == null ? [] : isArray(this.rowData.social) ? this.rowData.social:this.rowData.social.split(",") ;
         },
 
         cdialogFormStatus(val) {

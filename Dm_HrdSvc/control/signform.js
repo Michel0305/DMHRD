@@ -7,6 +7,7 @@ var ResOverWork = require('../dbconn/dbmodel/res_overwork');
 var ResBusiness = require('../dbconn/dbmodel/res_business');
 var ResSwitchDay = require('../dbconn/dbmodel/res_switchwork');
 var ResApploveLog = require('../dbconn/dbmodel/res_applovelog');
+var ResRegistrationCardDB = require('../dbconn/dbmodel/res_registration_card');
 var token = require('./token');
 var Sequelize = require('sequelize');
 var moment = require('moment');
@@ -33,7 +34,6 @@ SignForm.BaseData = (parms) => {
 SignForm.ApploveForm = (parms) => {
     let tmpSignData = qs.parse(parms)
     async function SignById() {
-        console.log(tmpSignData)
         try {
             switch (tmpSignData.model) {
                 case 'leave':
@@ -60,6 +60,12 @@ SignForm.ApploveForm = (parms) => {
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='business'  order by createtime desc `)
                     console.log(busapploveLog[0]) 
                     return { code: 200, msg:{SignData:businessSignData,apploveLog:busapploveLog[0] }}
+                    break;
+                case 'regcard':
+                    let regcardSignData = await ResRegistrationCardDB.SelectAll({ where: { id: tmpSignData.id } })
+                    let regcardapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                                                                from res_applovelog a where formid=${tmpSignData.id} and modelname='regcard'  order by createtime desc `)                    
+                    return { code: 200, msg:{SignData:regcardSignData,apploveLog:regcardapploveLog[0] }}
                     break;
                 default:
                     break;
@@ -99,6 +105,11 @@ SignForm.BatchApplove =(parms) =>{
     return checkApplove();
 }
 
+/**
+ * 个人表单数据
+ * @param {*} parms 
+ * @returns 
+ */
 SignForm.UserBoxData = (parms) =>{
     async function userBox() {
         try {
