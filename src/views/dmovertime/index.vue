@@ -26,7 +26,7 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="申请人" prop="userid">
-                            <el-select multiple :collapse-tags="!checked" v-model="tmpworkData.userid" placeholder="加班人" size="mini" :disabled="!isEdit">
+                            <el-select multiple filterable :collapse-tags="!checked" v-model="tmpworkData.userid" placeholder="加班人" size="mini" :disabled="!isEdit">
                                 <el-option v-for="item in $store.state.departmentjob.personals.filter(el => {
                                         if(this.$store.getters.partids.findIndex((es)=>{ return el.defpartid == es} )>=0 || parseInt(el.user_id) == parseInt($store.getters.account)){
                                          return el}})  " :key="item.user_id" :label="item.user_name" :value="item.user_id"></el-option>
@@ -205,7 +205,6 @@ export default {
     methods: {
         NewUserwork() {
             this.isEdit = true;
-            // this.$refs["leaveData"].resetFields();
             this.tmpworkData = {
                 id: 0,
                 userid: "",

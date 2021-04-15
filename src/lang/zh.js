@@ -197,7 +197,12 @@ export default {
     password: '密码',
     any: '随便填',
     thirdparty: '第三方登录',
-    thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
+    thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！',
+    email:'登录邮件账户',
+    cardid:'证件ID',
+    pwd:'新密码',
+    repwd:'再输一次',
+    oldpwd:'原密码'
   },
   documentation: {
     documentation: '文档',

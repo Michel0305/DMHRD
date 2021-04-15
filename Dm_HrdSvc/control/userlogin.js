@@ -4,12 +4,13 @@ var ResUserLoginDB = require('../dbconn/dbmodel/cms_resuserlogin');
 
 var fs = require("fs");
 
+var Op = require('sequelize').Op;
+
 var ResUsersDB = require('../dbconn/dbmodel/cms_resusers'); //用户列表
 var ResUserTimesDB = require('../dbconn/dbmodel/cms_resusertimes'); //班次
 var resUserjobDB = require('../dbconn/dbmodel/res_userjob'); //岗位列表
 var ResDepartmentDB = require('../dbconn/dbmodel/res_department'); //部门列表 
 var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus'); //签核状态表
-
 loginUser = () => { }
 
 /**
@@ -137,6 +138,45 @@ loginUser.GetBeasBata = () => {
 
     }
     return GetUserBaseData();
+}
+
+
+/**
+ * 用户注册及修改密码
+ * @param {*} params 
+ * @returns 
+ */
+loginUser.RegisterAccount = (params) =>{
+  async function registerUser() {
+      try {
+        if(params.regData.istype == 0){ //注册新用户
+          let tmpUsertb = await ResUserLoginDB.SelectAll({where :{account:{ [Op.like]: '%' + params.regData.email + '%' }}})
+          let usertb = await ResUsersDB.SelectAll({ where:{
+            [Op.and]: [{ cardid: { [Op.like]: '%' + params.regData.cardid + '%' } }, //like和or连用
+                      { email: { [Op.like]: '%' + params.regData.email + '%' } }, ]}})
+          if(tmpUsertb.length !==0) return {code:400,msg:'注册失败,请核实账号信息'}  //登录表已存在 
+          if(usertb.length ==0 ){
+            return {code:400,msg:'非法账户注册'}  //用户表不存在
+          } else{ //人事资料核对成功
+            let userbase = usertb[0].dataValues
+            let cashPwd = sha.crypt(params.regData.pwd)
+            await ResUserLoginDB.Insert({userid:userbase.user_id,pwd:cashPwd,account:params.regData.email,username:userbase.user_name })
+            return {code:200,msg:'注册成功,请登录用户'}
+          }
+        }else{
+            let cashPwd = sha.crypt(params.regData.pwd)
+            let tmpUsertb = await ResUserLoginDB.SelectAll({where :{account:{ [Op.like]: '%' + params.regData.email + '%' }}})
+            if(tmpUsertb.length == 0) return {code:400,msg:'请确认账户及密码信息'} 
+            let oldPwd = sha.decode(params.regData.oldpwd,tmpUsertb[0].dataValues.pwd)
+            if(!oldPwd) return {code:400,msg:'请确认账户及密码信息'}            
+            await ResUserLoginDB.Update({pwd:cashPwd},{where :{account:{ [Op.like]: '%' + params.regData.email + '%' }}})
+            return {code:200,msg:'密码修改完成,请登录'}
+        }
+      } catch (error) {
+        return {code:400,msg:error}
+      }
+  }
+  return registerUser();
 }
 
 module.exports = loginUser;

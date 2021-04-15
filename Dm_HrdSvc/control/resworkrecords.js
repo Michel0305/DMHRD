@@ -48,8 +48,8 @@ ResWorkRecords.InfoRegistrationCard = (parms)=>{
             if(parms.styf == 4)  tmps.push(parms.styf)
             if(parms.styfi == 5)  tmps.push(parms.styfi)
             if(parms.stys == 6)  tmps.push(parms.stys)
-            let appList = await ResWorkRecordsDB.Query(`select * from userSignId(${parms.userid})`)
-            let setApplove = appList[0][0]  
+           // let appList = await ResWorkRecordsDB.Query(`select * from userSignId(${parms.userid})`)
+           // let setApplove = appList[0][0]  
             await ResRegistrationCardDB.Insert({
                 userid:parms.userid,
                 checkdate:`'${moment(parms.checkdate).utc().format('YYYY-MM-DD')}'` ,

@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 var userlogin = require('../control/userlogin');
-
+var Qs = require('qs');
 
 router.get('/test',(req,res,next)=>{
   res.send({code:20000,msg:'测试API'})
@@ -38,6 +38,16 @@ router.get('/info', function (req, res, next) {
 router.get('/basedata', (req, res, next) => {
   userlogin.GetBeasBata().then((base) => {
     res.send({ code: 20000, 'data': base })
+  })
+})
+
+/**
+ *登录注册 
+ */
+router.post('/register',(req,res,next)=>{
+  let userData = Qs.parse(req.body)
+  userlogin.RegisterAccount(userData).then((rs)=>{
+    res.send({code:20000,data:rs})
   })
 })
 

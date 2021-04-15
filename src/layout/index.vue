@@ -25,7 +25,6 @@ import { AppMain, Navbar, Settings, Sidebar, TagsView } from "./components";
 import ResizeMixin from "./mixin/ResizeHandler";
 import { mapState } from "vuex";
 import { basedata } from "@/api/user";
-import store from "@/store";
 
 export default {
   name: "Layout",
@@ -49,7 +48,7 @@ export default {
   created() {
     window.addEventListener("resize", this.getHeight);
     this.getHeight();
-    this.getBaseData();
+    this.getBaseData();    
   },
   computed: {
     ...mapState({
@@ -105,6 +104,14 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.getHeight);
   },
+  mounted(){
+    this.$message({
+          type: 'success',
+          message: `欢迎您回来 ${this.$store.getters.name}`,
+          center: true,
+          duration:3000
+        });
+  }
 };
 </script>
 

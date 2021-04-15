@@ -60,7 +60,7 @@ app.use(expressJWT({
   secret: Buffer.from(secretOrPrivateKey),
   algorithms: ['RS256']
 }).unless({//过滤验证URL
-  path: ['/api/user/login', '/api/user/logout','/api/user/test','/api/upload/def', '/api/public/images/*']
+  path: ['/api/user/login','/api/user/register','/api/user/logout','/api/user/test','/api/upload/def', '/api/public/images/*']
 }));
 
 app.use((err, req, res, next) => {

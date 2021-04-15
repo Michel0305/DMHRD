@@ -34,7 +34,7 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">                   
                 </el-table-column>
-                <el-table-column prop="formstatus" label="表单状态" width="120">                   
+                <el-table-column prop="formstatus" sortable :sort-by="['formstatus', 'leavedate','userid','modelname']" label="表单状态" width="120">                   
                 </el-table-column>
             </el-table>
         </el-col>
@@ -53,11 +53,8 @@ export default {
         }
     },
     created(){   
-       this.getbaseData();   
-    },
-    mounted() {
-        
-    },
+        this.getbaseData();  
+    },    
     methods:{
         formatUserName(row, colum) {
             let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {

@@ -5,14 +5,12 @@
             <h3 class="title">{{ $t("login.title") }}</h3>
             <lang-select class="set-language" />
         </div>
-
         <el-form-item prop="username">
             <span class="svg-container">
                 <svg-icon icon-class="user" />
             </span>
             <el-input ref="username" v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" tabindex="1" autocomplete="on" />
         </el-form-item>
-
         <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
             <el-form-item prop="password">
                 <span class="svg-container">
@@ -26,10 +24,11 @@
         </el-tooltip>
         <div class="chkremb">
             <el-checkbox v-model="rembaccount" size="mini">记住我</el-checkbox>
+            <el-link @click="regist">注册/密码重置</el-link>
         </div>
         <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">{{ $t("login.logIn") }}</el-button>
-
     </el-form>
+    <register :dialogStatus="registerShow" @commitFormData = "commitData" />
 </div>
 </template>
 
@@ -37,14 +36,14 @@
 import {
     validUsername
 } from "@/utils/validate";
-import SocialSign from "./components/SocialSignin";
+// import SocialSign from "./components/SocialSignin";
 import LangSelect from "@/components/LangSelect";
-
+import register from './components/register' 
 export default {
     name: "Login",
     components: {
         LangSelect,
-        SocialSign
+        register
     },
     data() {
         const validateUsername = (rule, value, callback) => {
@@ -62,10 +61,11 @@ export default {
             }
         };
         return {
+            registerShow:false,
             rembaccount: true,
             loginForm: {
-                username: "", //min.xiang@maxmore.asia
-                password: "", //123456
+                username: "", 
+                password: "",
             },
             loginRules: {
                 password: [{
@@ -79,7 +79,7 @@ export default {
             loading: false,
             showDialog: false,
             redirect: undefined,
-            otherQuery: {},
+            otherQuery: {},            
         };
     },
     watch: {
@@ -119,7 +119,7 @@ export default {
             });
         },
         handleLogin() {
-            this.$refs.loginForm.validate((valid) => {
+            this.$refs['loginForm'].validate((valid) => {
                 if (valid) {
                     if (this.rembaccount) {
                         this.setCookie(this.loginForm.username, this.loginForm.password, 7);
@@ -131,13 +131,18 @@ export default {
                         .dispatch("user/login", this.loginForm)
                         .then(() => {
                             this.$router.push({
-                                path: this.redirect || "/",
+                                path: "/", //this.redirect ||
                                 query: this.otherQuery,
-                            });
+                            });                             
                             this.loading = false;
                         })
-                        .catch(() => {
+                        .catch((err) => {
                             this.loading = false;
+                            this.$refs.username.focus();
+                             this.$message({
+                                    type: 'error',
+                                    message: '输入账户及密码验证错误'
+                            });
                         });
                 } else {
                     console.log("error submit!!");
@@ -179,7 +184,13 @@ export default {
         },
         clearCookie: function () {
             this.setCookie("", "", -1);
-        }       
+        },
+        regist(){
+            this.registerShow =true;
+        },
+        commitData(val){
+            this.registerShow =false;
+        }   
     },
 };
 </script>
@@ -197,9 +208,6 @@ $cursor: #fff;
     }
 }
 
-.chkremb {
-    padding: 0px 0px 10px 0px;
-}
 
 /* reset element-ui css */
 .login-container {
@@ -208,7 +216,7 @@ $cursor: #fff;
         height: 47px;
         width: 85%;
 
-        input {
+    input {
             background: transparent;
             border: 0px;
             -webkit-appearance: none;
@@ -232,10 +240,24 @@ $cursor: #fff;
         color: #454545;
     }
 }
-</style><style lang="scss" scoped>
+</style><style lang="scss" scoped >
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
+
+.chkremb {
+    padding: 0px 0px 10px 0px;
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+}
+.el-checkbox__label{
+   color: #bdb7b7;
+}
+
+.el-link--inner{
+    color: #bdb7b7;
+}
 
 .login-container {
     min-height: 100%;

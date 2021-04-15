@@ -31,6 +31,11 @@ SignForm.BaseData = (parms) => {
     return GetSignBaseData();
 }
 
+/**
+ * 表单明细
+ * @param {*} parms 
+ * @returns 
+ */
 SignForm.ApploveForm = (parms) => {
     let tmpSignData = qs.parse(parms)
     async function SignById() {
@@ -76,6 +81,11 @@ SignForm.ApploveForm = (parms) => {
     }
     return SignById()
 }
+/**
+ * 明细审核
+ * @param {*} parms 
+ * @returns 
+ */
 
 SignForm.OnlyApplove = (parms) =>{
     async function applove() {
@@ -89,6 +99,11 @@ SignForm.OnlyApplove = (parms) =>{
     return applove();
 }
 
+/**
+ * 批量审批单据
+ * @param {*} parms 
+ * @returns 
+ */
 SignForm.BatchApplove =(parms) =>{
     async function checkApplove(){      
         try {

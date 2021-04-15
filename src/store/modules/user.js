@@ -46,14 +46,13 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ 'username': username.trim(), 'password': password }).then(response => {
-        const data = {} = response
-        console.log(data)
+        const data = {} = response         
         if (data.data.code == 200) {
           commit('SET_TOKEN', data.data.token.token)
           setToken(data.data.token.token)
           resolve()
         } else {
-          console.log(res.data.token.token)
+          console.log(res.data.token.token)         
           reject('请确认登录用户信息重新登录')
         }
       }).catch(error => {
@@ -65,7 +64,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo(state.token).then(response => {        
         if (response.data.code == 200) {
           const data = {} = response
           const userData = data.data.msg
@@ -99,8 +98,6 @@ const actions = {
         commit('SET_ROLES', [])
         removeToken()
         resetRouter()
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true })
         resolve()
       }).catch(error => {

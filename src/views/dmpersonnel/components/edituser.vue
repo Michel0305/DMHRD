@@ -321,7 +321,6 @@
 import { createusers } from '@/api/user';
 import { userpicupload } from '@/api/upload'
 import { mapGetters } from "vuex";
-import { isString } from '@/utils/validate';
 
 export default {
     name: "edituser",

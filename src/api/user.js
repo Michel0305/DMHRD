@@ -16,12 +16,32 @@ export function getInfo(token) {
   })
 }
 
+/**
+ * 等出
+ * @returns 
+ */
 export function logout() {
   return request({
     url: '/user/logout',
     method: 'post'
   })
 }
+
+
+/**
+ * 用户注册
+ * @param {*} data 
+ * @returns 
+ */
+export function userReguster(data) {
+  return request({
+    url: '/user/register',
+    method: 'post',
+    data:Qs.stringify(data)
+  })
+}
+
+
 
 /**
  * 获取人事资料数据
