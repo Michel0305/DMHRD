@@ -148,6 +148,10 @@ export default {
                     id: 2,
                     label: "节假日"
                 },
+                {
+                    id: 3,
+                    label: "连班"
+                },
             ],
             rules: {
                 userid: [{

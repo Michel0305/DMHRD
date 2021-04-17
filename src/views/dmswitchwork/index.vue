@@ -35,7 +35,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="调休日期" prop="freedate">
-                    <el-date-picker v-model="baseForm.freedate" align="right" type="date" placeholder="选择日期" size="mini" :disabled="!isEdit">
+                    <el-date-picker v-model="baseForm.freedate" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptionsEnd" size="mini" :disabled="!isEdit">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="备注" size="mini">
@@ -89,6 +89,11 @@ export default {
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() <new Date(new Date().setDate(new Date().getDate()-1));
+                },
+            },
+            pickerOptionsEnd: {
+                disabledDate(time) {
+                    return time.getTime() <new Date(new Date().setDate(new Date().getDate()));
                 },
             },
             rules: {

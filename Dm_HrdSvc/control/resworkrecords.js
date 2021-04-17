@@ -117,5 +117,17 @@ ResWorkRecords.getRegistrationCard = () =>{
 }
 
 
+ResWorkRecords.getVGateCard = (params) =>{
+  async function GateCardData() {
+      try {
+        let reCardData = await ResRegistrationCardDB.Query(`select * from v_gate_card where tjmonth='${moment(params.cdate).format('YYYYMM')}'`) 
+        return {code:200,msg:reCardData[0]} 
+      } catch (error) {
+        return {code:400,msg:error} 
+      }      
+  }
+  return GateCardData()
+}
+
 
 module.exports = ResWorkRecords;

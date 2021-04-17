@@ -50,7 +50,7 @@
                 element-loading-text="拼命加载中"
                 element-loading-spinner="el-icon-loading"
                 :data="
-                  recordsData.filter(
+                  recordsData.filter( //status 默认显示0，已补卡  1， 请假 2 
                     (data) =>data.status == 0 &&  (!swhere.dept || data.partid == swhere.dept)
                   )
                 "

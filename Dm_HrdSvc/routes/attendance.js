@@ -53,5 +53,11 @@ router.get('/baseqk',(req,res,next)=>{
     })
 })
 
+router.get('/vgatecard',(req,res,next)=>{
+    ResWorkRecords.getVGateCard(req.query).then((rs)=>{
+        res.send({code:20000,data:rs})
+    })
+})
+
 
 module.exports = router;

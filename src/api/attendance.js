@@ -37,3 +37,14 @@ export function updateRegistrationCard(data) {
     })
 }
 
+
+export function getVGateCard(data) {
+    console.log(data)
+    return request({
+        url: '/attendance/vgatecard',
+        method: 'get',
+        params:{cdate:data}
+    })
+}
+
+

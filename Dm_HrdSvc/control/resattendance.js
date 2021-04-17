@@ -11,21 +11,27 @@ ZkData = () => { }
 ZkData.download = () => {
     let tmpDate = moment(new Date()).subtract(10, 'days').calendar();
     async function DataDownload() {
-        let logData = await ZkDevice.GetAttendanceData();
-        if (logData.code === 404) return logData
-        let dbData = [];
-        for (let i = 0; i < logData.data.data.length; i++) {
-            const el = logData.data.data[i];
-            if (moment(el.recordTime).isAfter(new Date(`${tmpDate} 00:00:00`).toISOString())) {
-                let tmpDeviceData = {
-                    deviceuserId: el.deviceUserId,
-                    recordtime: moment(el.recordTime).format('YYYY-MM-DD HH:mm:ss.SSS'),
-                    ip: el.ip
+        try {
+            let logData = await ZkDevice.GetAttendanceData();
+            if (logData.code === 404) return logData
+            let dbData = [];
+            for (let i = 0; i < logData.data.data.length; i++) {
+                const el = logData.data.data[i];
+                if (moment(el.recordTime).isAfter(new Date(`${tmpDate} 00:00:00`).toISOString())) {
+                    let tmpDeviceData = {
+                        deviceuserId: el.deviceUserId,
+                        recordtime: moment(el.recordTime).format('YYYY-MM-DD HH:mm:ss.SSS'),
+                        ip: el.ip
+                    }
+                    dbData.push(tmpDeviceData)
                 }
-                dbData.push(tmpDeviceData)
             }
+            return await ResAttendanceDB.BulkCreate(dbData)
+        } catch (error) {
+           console.log(error) 
+           return error 
         }
-        return await ResAttendanceDB.BulkCreate(dbData)
+        
     }
     return DataDownload()
 }

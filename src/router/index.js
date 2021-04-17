@@ -192,7 +192,18 @@ export const asyncRoutes = [
         meta: {
           title: '出勤报表',
           roles: ['1','5'], // or you can only set roles in sub nav
-          icon: 'el-icon-document-delete'
+          icon: 'el-icon-date'
+          // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'gatecard',
+        component: () => import('@/views/dmreport/gatecard'),
+        name: 'gatecard',
+        meta: {
+          title: '月考勤报表',
+          roles: ['1','5'], // or you can only set roles in sub nav
+          icon: 'el-icon-document'
           // if do not set roles, means: this page does not require permission
         }
       },
