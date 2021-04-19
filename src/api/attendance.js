@@ -39,7 +39,6 @@ export function updateRegistrationCard(data) {
 
 
 export function getVGateCard(data) {
-    console.log(data)
     return request({
         url: '/attendance/vgatecard',
         method: 'get',
@@ -47,4 +46,10 @@ export function getVGateCard(data) {
     })
 }
 
-
+export function employeeeval(data){
+    return request({
+        url: '/attendance/employeeeval',
+        method: 'get',
+        params:{cdate:data}
+    })
+}

@@ -201,7 +201,7 @@ export const asyncRoutes = [
         component: () => import('@/views/dmreport/gatecard'),
         name: 'gatecard',
         meta: {
-          title: '月考勤报表',
+          title: '月考勤表',
           roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-document'
           // if do not set roles, means: this page does not require permission
@@ -209,10 +209,10 @@ export const asyncRoutes = [
       },
       {
         path: 'abnormalcheck',
-        component: () => import('@/views/permission/directive'),
+        component: () => import('@/views/dmreport/abnormal'),
         name: 'abnormalcheck',
         meta: {
-          title: '考勤异常',
+          title: '月考核表',
           roles: ['1','5'], // or you can only set roles in sub nav
           icon: 'el-icon-document-delete'
           // if do not set roles, means: this page does not require permission
@@ -330,6 +330,16 @@ export const asyncRoutes = [
           roles: ['1'],
           icon: 'lock'
           // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'hiprint',
+        component: () => import('@/views/dmreport/hiprint'),
+        name: 'hiprint',
+        meta: {
+          title: '报表设计',
+          roles: ['1'],
+          icon: 'el-icon-box'
         }
       },
       {

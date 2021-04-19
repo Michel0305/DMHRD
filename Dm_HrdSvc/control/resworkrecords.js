@@ -9,6 +9,11 @@ var ResRegistrationCardDB = require('../dbconn/dbmodel/res_registration_card')
 ResWorkRecords = () => { }
 
 
+/**
+ * 获取每天的刷卡考勤数据
+ * @param  {...any} parms 
+ * @returns 
+ */
 ResWorkRecords.GetDataByParms = (...parms) => {
     async function GetWorkRecordsDase() {
         try {
@@ -116,11 +121,15 @@ ResWorkRecords.getRegistrationCard = () =>{
 
 }
 
-
+/**
+ * 获取月出勤数据
+ * @param {*} params 
+ * @returns 
+ */
 ResWorkRecords.getVGateCard = (params) =>{
   async function GateCardData() {
       try {
-        let reCardData = await ResRegistrationCardDB.Query(`select * from v_gate_card where tjmonth='${moment(params.cdate).format('YYYYMM')}'`) 
+        let reCardData = await ResRegistrationCardDB.Query(`select * from res_gate_card where tjmonth='${moment(params.cdate).format('YYYYMM')}'`) 
         return {code:200,msg:reCardData[0]} 
       } catch (error) {
         return {code:400,msg:error} 
@@ -128,6 +137,33 @@ ResWorkRecords.getVGateCard = (params) =>{
   }
   return GateCardData()
 }
+
+ResWorkRecords.getUserAttendance = (params)=>{
+    async function GateAttendanceData() {
+        try {
+          let reCardData = await ResRegistrationCardDB.Query(`select * from v_user_attendance where ycmonth='${moment(params.cdate).format('YYYYMM')}'`) 
+          return {code:200,msg:reCardData[0]} 
+        } catch (error) {
+          return {code:400,msg:error} 
+        }      
+    }
+    return GateAttendanceData()
+}
+
+
+ResWorkRecords.getEmployeeEval = (params)=>{
+    async function EmployeeEvaluation() {
+        try {
+          let reCardData = await ResRegistrationCardDB.Query(`select * from v_employee_evaluation where tjmonth='${moment(params.cdate).format('YYYYMM')}'`) 
+          return {code:200,msg:reCardData[0]} 
+        } catch (error) {
+          return {code:400,msg:error} 
+        }      
+    }
+    return EmployeeEvaluation()
+}
+
+
 
 
 module.exports = ResWorkRecords;

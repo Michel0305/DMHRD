@@ -6,7 +6,7 @@ ZkDevice = () => { }
 ZkDevice.GetAttendanceData = () => {
     async function ZkDevice() {
         try {
-            let zkInstance = new ZKLib('10.83.34.12', 4370, 10000, 4000);//10.83.34.12  10.83.34.11
+            let zkInstance = new ZKLib('10.83.34.11', 4370, 10000, 4000);//10.83.34.12  10.83.34.11
             try {
                 await zkInstance.createSocket()
             } catch (error) {

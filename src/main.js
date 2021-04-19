@@ -2,6 +2,8 @@ import Vue from 'vue'
 
 import Cookies from 'js-cookie'
 
+import jquery from 'jquery'
+
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
@@ -53,5 +55,6 @@ new Vue({
   router,
   store,
   i18n,
+  jquery,
   render: h => h(App)
 })

@@ -53,8 +53,20 @@ router.get('/baseqk',(req,res,next)=>{
     })
 })
 
+/**
+ * 月考勤
+ */
 router.get('/vgatecard',(req,res,next)=>{
     ResWorkRecords.getVGateCard(req.query).then((rs)=>{
+        res.send({code:20000,data:rs})
+    })
+})
+
+/**
+ * 月绩效
+ */
+router.get('/employeeeval',(req,res,next)=>{
+    ResWorkRecords.getEmployeeEval(req.query).then((rs)=>{
         res.send({code:20000,data:rs})
     })
 })
