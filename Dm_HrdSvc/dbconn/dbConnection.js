@@ -1,7 +1,8 @@
 
 var Sequelize = require('sequelize');
 
-var config = require('../conf/config');
+var fs = require('fs');
+var config =fs.existsSync('../conf/config-template.js')?require('../conf/config-template.js'): require('../conf/config');
 /**
  * 创建连接池
  */

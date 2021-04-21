@@ -5,7 +5,7 @@ Dm_HrdSvc/node_modules/
 Dm_HrdSvc/dbback/
 Dm_HrdSvc/public/images/user
 Dm_HrdSvc/demoTemplate/
-
+Dm_HrdSvc/conf/config-template.js
 
 DMClock/node_modules/
 DMClock/config-template.js

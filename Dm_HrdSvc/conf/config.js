@@ -21,4 +21,5 @@ module.exports = {
         // },     
     },
     tokentime: 300 * 60,//5分鐘過期
+    allowedOrigins : ['http://10.83.60.63:8080','http://10.83.60.63:9527', 'http://localhost:9527', 'http://127.0.0.1:9527']
 }

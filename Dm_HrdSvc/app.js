@@ -2,7 +2,8 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var conf = require('./conf/config')
+var fs = require('fs');
+var conf =fs.existsSync('./conf/config-template.js')?require('./conf/config-template.js'): require('./conf/config');
 // var logger = require('morgan');
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
@@ -28,7 +29,7 @@ var app = express();
 // app.use(cors());
 app.use((req, res, next) => {//解决跨域问题
   res.header("Access-Control-Allow-Credentials", "true");
-  var allowedOrigins = ['http://10.83.60.63:8080','http://10.83.60.63:9527', 'http://localhost:9527', 'http://127.0.0.1:9527'];
+  var allowedOrigins = conf.allowedOrigins;
   var origin = req.headers.origin;
   if (allowedOrigins.indexOf(origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', origin || '*');
