@@ -5,6 +5,10 @@ Dm_HrdSvc/node_modules/
 Dm_HrdSvc/dbback/
 Dm_HrdSvc/public/images/user
 Dm_HrdSvc/demoTemplate/
+
+
+DMClock/node_modules/
+DMClock/config-template.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

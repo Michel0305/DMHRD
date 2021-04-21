@@ -86,11 +86,15 @@
         </el-table-column>
         <el-table-column prop="d31" label="31号" width="50">
         </el-table-column>
-        <el-table-column prop="allworks" label="出勤数" width="50">
+        <el-table-column prop="cnt" label="应出勤天数" width="80">
         </el-table-column>
-        <el-table-column prop="alloverworks" label="总加班" width="50">
+        <el-table-column prop="rnt" label="实出勤天数" width="80">
         </el-table-column>
-        <el-table-column prop="allleaves" label="总请假" width="50">
+        <el-table-column prop="allworks" label="出勤时数" width="80">
+        </el-table-column>
+        <el-table-column prop="alloverworks" label="总加班时数" width="80">
+        </el-table-column>
+        <el-table-column prop="allleaves" label="总请假时数" width="80" >
         </el-table-column>
     </el-table>
 </div>
@@ -159,8 +163,8 @@ export default ({
                  '8号', '9号', '10号', '11号', '12号', '13号',
                  '14号', '15号', '16号', '17号', '18号', '19号',
                  '20号', '21号', '22号', '23号', '24号', '25号',
-                 '26号', '27号', '28号', '29号', '30号', '31号','总出勤','加班数','请假数']
-                const filterVal = ['username', 'bm', 'tjmonth', 'd1', 'd2','d3','d4','d5','d6','d7','d8','d9','d10','d11', 'd12','d13','d14','d15','d16','d17','d18','d19','d20','d21', 'd22','d23','d24','d25','d26','d27','d28','d29','d30','d31','allworks','alloverworks','allleaves' ]
+                 '26号', '27号', '28号', '29号', '30号', '31号','应出勤天数','实出勤天数','总出勤(小时)','加班数(小时)','请假数(小时)']
+                const filterVal = ['username', 'bm', 'tjmonth', 'd1', 'd2','d3','d4','d5','d6','d7','d8','d9','d10','d11', 'd12','d13','d14','d15','d16','d17','d18','d19','d20','d21', 'd22','d23','d24','d25','d26','d27','d28','d29','d30','d31','cnt','rnt','allworks','alloverworks','allleaves' ]
                 let list = this.cardData
                 let data = this.formatJson(filterVal, list);
                 excel.export_json_to_excel({
