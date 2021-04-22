@@ -157,9 +157,16 @@
                     }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column label="状态" :formatter="formatStatus" 
+                <el-table-column label="异常状态" :formatter="formatStatus" 
                 sortable :sort-by="['styo', 'styt','styth','styf','styfi','stys']"
                 >
+                </el-table-column>
+                <el-table-column prop="station" label="考勤状态" width="90" sortable :sort-by="['station']">                 
+                  <template slot-scope="scope">
+                      <el-tag :type="scope.row.station == 0 ? 'danger' : 'success'">
+                        {{["异常","正常","请假","调休","出差","连班"][scope.row.station]}}
+                      </el-tag>
+                  </template>
                 </el-table-column>
                 <el-table-column align="right" width="90">
                   <template slot-scope="scope">
@@ -269,6 +276,17 @@ export default {
         return parseInt(el.user_id) === parseInt(row.userid);
       });
       return tmpUser.length == 0 ? "未知" : tmpUser[0].dept;
+    },
+    formatStation(row, colum){
+      let status = [
+        "异常",
+        "正常",
+        "请假",
+        "调休",
+        "出差",
+        "连班"
+      ];
+      return status[row.station]
     },
     formatStatus(row, colum) {
       let status = [

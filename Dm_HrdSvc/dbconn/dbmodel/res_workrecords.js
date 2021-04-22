@@ -30,6 +30,7 @@ var resWorkRecords = sequelizeConn.define('res_workrecords', {
     styfi: { type: Sequelize.STRING },
     stys: { type: Sequelize.STRING },
     status: { type: Sequelize.STRING },
+    station:{type: Sequelize.NUMBER},
     // bmid: { type: Sequelize.NUMBER, references: 'res_users', referencesKey: 'user_id' },
     createdate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间    
 }, {

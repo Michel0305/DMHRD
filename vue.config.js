@@ -40,10 +40,10 @@ module.exports = {
     },
     proxy: { //跨域proxy
       '/api': {
-        target: 'http://0.0.0.0:8888',
+        target: 'http://10.83.60.63:8888',
         ws: true,
         changeOrigin: true,
-        pathRewrite: { 'http://0.0.0.0:8888': '' }
+        pathRewrite: { 'http://10.83.60.63:8888': '' }
       }
     },    
     // proxy: {

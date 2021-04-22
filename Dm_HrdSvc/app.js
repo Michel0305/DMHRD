@@ -2,8 +2,11 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+
+var path = require('path');
 var fs = require('fs');
-var conf =fs.existsSync('./conf/config-template.js')?require('./conf/config-template.js'): require('./conf/config');
+let confPath = path.join(__dirname,'/conf/config-template.js')
+var conf =fs.existsSync(confPath)?require('./conf/config-template.js'): require('./conf/config');
 // var logger = require('morgan');
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');

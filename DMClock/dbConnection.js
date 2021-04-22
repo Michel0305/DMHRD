@@ -1,7 +1,9 @@
 
 var Sequelize = require('sequelize');
 var fs = require('fs');
-var config = fs.existsSync('./config-template.js')?require('./config-template.js'):require('./config');
+var path = require('path');
+let confPath = path.join(__dirname,'/conf/config-template.js')
+var config = fs.existsSync(confPath)?require('./config-template.js'):require('./config');
 /**
  * 创建连接池
  */

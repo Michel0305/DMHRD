@@ -1,7 +1,9 @@
 var jwt = require('jsonwebtoken');
 var fs = require('fs');
 var path = require('path');
-var config =fs.existsSync('../conf/config-template.js')?require('../conf/config-template.js'): require('../conf/config');
+
+let confPath = path.join(path.resolve(__dirname,'..'),'/conf/config-template.js')
+var config =fs.existsSync(confPath)?require('../conf/config-template.js'): require('../conf/config');
 
 tokens = () => {
 }
