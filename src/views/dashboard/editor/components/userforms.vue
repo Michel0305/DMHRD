@@ -34,7 +34,12 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">                   
                 </el-table-column>
-                <el-table-column prop="formstatus" sortable :sort-by="['formstatus', 'leavedate','userid','modelname']" label="表单状态" width="120">                   
+                <el-table-column prop="applovestatus" sortable :sort-by="['formstatus', 'leavedate','userid','modelname']" label="表单状态" width="120">
+                    <template slot-scope="scope">
+                        <el-tag :type="scope.row.applovestatus == 20 || scope.row.applovestatus == 15 ?'success':scope.row.applovestatus === -10 ?'danger' : ''" disable-transitions effect="dark" size="mini">
+                            {{formatApploveStatus(scope.row)}}
+                        </el-tag>                        
+                    </template>
                 </el-table-column>
             </el-table>
         </el-col>
@@ -49,13 +54,21 @@ export default {
     data() {
         return {
             userData: [],
-            signBoxData:[],            
+            signBoxData:[],    
+            SingStatus:[]        
         }
     },
     created(){   
         this.getbaseData();  
+        //console.log(this.$store.getters)
     },    
     methods:{
+        formatApploveStatus(row, colum) {
+            let tmpUser = this.$store.getters.applovestatus.filter((el) => {
+                return parseInt(el.statusid) === parseInt(row.applovestatus);
+            });
+            return tmpUser.length == 0 ? "未知" : tmpUser[0].msg;
+        },
         formatUserName(row, colum) {
             let tmpUser = this.$store.state.departmentjob.personals.filter((el) => {
                 return parseInt(el.user_id) === parseInt(row.userid);

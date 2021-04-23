@@ -99,7 +99,12 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">
                 </el-table-column>
-                <el-table-column prop="appstatus" label="状态" :formatter="formatStatus" width="80">
+                <el-table-column prop="appstatus" label="状态" width="110" sortable :sort-by="['appstatus']">
+                     <template slot-scope="scope">
+                        <el-tag :type="scope.row.appstatus == 20 || scope.row.appstatus == 15 ?'success':scope.row.appstatus === -10 ?'danger':scope.row.appstatus === 0 ?'info' : ''" disable-transitions effect="dark" size="mini">
+                            {{formatStatus(scope.row)}}
+                        </el-tag>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-col>

@@ -25,7 +25,7 @@ export default ({
                 { id: 5, type: '丧假' },
                 { id: 6, type: '病假' },
                 { id: 7, type: '陪护' },
-                { id: 7, type: '产假' }
+                { id: 8, type: '产假' }
             ]
         }
     },

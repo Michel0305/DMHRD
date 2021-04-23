@@ -97,7 +97,12 @@
                 <el-table-column label="长度(小时)" width="100" prop="timecount">
                 </el-table-column>
                 <el-table-column label="请假原因" prop="workremark"></el-table-column>
-                <el-table-column prop="applovestatus" label="单据状态" width="80" :formatter="formatworkStatus">
+                <el-table-column prop="applovestatus" label="单据状态" width="120" sortable :sort-by="['applovestatus']">
+                    <template slot-scope="scope">
+                        <el-tag :type="scope.row.applovestatus == 20 || scope.row.applovestatus == 15 ?'success':scope.row.applovestatus === -10 ?'danger' : ''" disable-transitions effect="dark" size="mini">
+                            {{formatworkStatus(scope.row,null)}}
+                        </el-tag>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-col>
@@ -222,7 +227,7 @@ export default {
         },
         EditUserwork() {
             if (this.tmpworkData.userid == "" || this.tmpworkData.applovestatus > 0)
-                return;
+                return this.$message.warning(`当前状态不可进行编辑`);
             this.isEdit = true;
         },
         cancelUserwork() {

@@ -13,7 +13,7 @@ ZkData = () => { }
  * 数据下载 取前一天数据
  */
 ZkData.download = () => {
-    let tmpDate = moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss'); 
+    let tmpDate = moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'); 
     async function DataDownload() {
         try {
             let dbData = [];
@@ -21,7 +21,7 @@ ZkData.download = () => {
                 let logData = await ZkDevice.GetAttendanceData(ip);
                 if (logData.code === 400) continue;
                 logData.data.data.forEach(el => {
-                    if (moment(el.recordTime).isAfter(new Date(`${tmpDate}`).toISOString())){
+                    if (moment(el.recordTime).isAfter(new Date(`${tmpDate} 00:00:00`).toISOString())){
                         let tmpDeviceData = {
                             deviceuserId: el.deviceUserId,
                             recordtime: moment(el.recordTime).format('YYYY-MM-DD HH:mm:ss.SSS'),

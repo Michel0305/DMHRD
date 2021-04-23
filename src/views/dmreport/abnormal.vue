@@ -24,14 +24,16 @@
                 </el-table-column>
                 <el-table-column prop="userid" label="部门" width="180" :formatter="formatUserDept">
                 </el-table-column>
-                <el-table-column prop="assess" label="考核" width="60">
+                <el-table-column prop="lateCnt" label="迟到" width="80">
                 </el-table-column>
-                <el-table-column prop="lateCnt" label="迟到" width="60">
+                <el-table-column prop="earlyCnt" label="早退" width="80">
                 </el-table-column>
-                <el-table-column prop="cardCnt" label="补卡" width="60">
+                <el-table-column prop="nocartCnt" label="漏卡" width="80">
                 </el-table-column>
-                <el-table-column label="签名">
+                <el-table-column prop="leaveCnt" label="请假" width="80">
                 </el-table-column>
+                <el-table-column prop="cardCnt" label="签卡" width="80">
+                </el-table-column>                
             </el-table>
         </el-col>
     </el-row>

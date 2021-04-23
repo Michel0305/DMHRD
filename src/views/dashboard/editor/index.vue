@@ -105,7 +105,6 @@ export default {
             this.lockApplove = true;
             BatchApplove({dataList:this.selectedList,apploveUser:this.$store.getters.account,types:types}).then((rs)=>{                
                 if(rs.data.code == 200){
-                    console.log(rs.data.msg)
                     rs.data.msg.forEach((el)=>{
                         this.signData.filter((vl)=>{ return el.model == vl.model && parseInt(el.id) == parseInt(vl.id) })[0].reApplove = true;
                     })                    

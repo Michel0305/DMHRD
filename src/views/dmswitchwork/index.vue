@@ -63,7 +63,12 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="备注">
                 </el-table-column>
-                <el-table-column prop="appstatus" label="单据状态" :formatter="formatStatus" width="120">
+                <el-table-column prop="appstatus" label="单据状态" width="120" sortable :sort-by="['appstatus']">
+                    <template slot-scope="scope">
+                        <el-tag :type="scope.row.appstatus == 20 || scope.row.appstatus == 15 ?'success':scope.row.appstatus === -10 ?'danger' : ''" disable-transitions effect="dark" size="mini">
+                            {{formatStatus(scope.row)}}
+                        </el-tag>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-col>
@@ -133,7 +138,7 @@ export default {
             }
         },
         editDays() {
-            if (this.baseForm.id == 0 || this.baseForm.appstatus>0) return;
+            if (this.baseForm.id == 0 || this.baseForm.appstatus>0) return this.$message.warning(`当前状态不可进行编辑`);
             this.isEdit = true;
         },
         submitDays(forms) {

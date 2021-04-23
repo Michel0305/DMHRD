@@ -69,7 +69,7 @@
         </el-col>
 
         <el-col :span="22" :offset="1">
-            <el-table :data="leaveData" :max-height="$store.getters.locheight - 260" border @row-click="setRowData" style="width: 100%">
+            <el-table :data="leaveData" :max-height="$store.getters.locheight - 280" border @row-click="setRowData" style="width: 100%">
                 <el-table-column prop="id" label="编号" width="100" v-show="false">
                 </el-table-column>
                 <el-table-column prop="userid" label="姓名" :formatter="formatUserName" width="100">
@@ -88,13 +88,15 @@
               $moment(scope.row.endtime).utc().format("YYYY-MM-DD HH:mm:ss")
             }}</template>
                 </el-table-column>
-
                 <el-table-column label="天数" width="50" prop="days"></el-table-column>
-
                 <el-table-column label="小时" width="50" prop="timetotal" :formatter="formatHours"></el-table-column>
-
                 <el-table-column label="请假原因" prop="remark"></el-table-column>
-                <el-table-column prop="applovestatus" label="单据状态" width="80" :formatter="formatLeaveStatus">
+                <el-table-column prop="applovestatus" label="单据状态" width="120" sortable :sort-by="['applovestatus']" class="statsmsg">
+                    <template slot-scope="scope">
+                        <el-tag :type="scope.row.applovestatus == 20 || scope.row.applovestatus == 15 ?'success':scope.row.applovestatus === -10 ?'danger' : ''" disable-transitions effect="dark" size="mini">
+                            {{formatLeaveStatus(scope.row)}}
+                        </el-tag>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-col>
@@ -130,11 +132,8 @@ export default {
                     // console.log(time);
                 },
                 disabledDate(time) {
-                    return time.getTime() < new Date(new Date().setDate(new Date().getDate()-3));
+                    return time.getTime() < new Date(new Date().setDate(new Date().getDate() - 3));
                 },
-                // disabledDate(time) {
-                //     return time.getTime() > new Date(new Date().setDate(new Date().getDate()+3));
-                // }
             },
             rules: {
                 userid: [{ required: true, message: "请输入申请人", trigger: "blur" }],
@@ -150,18 +149,18 @@ export default {
         };
     },
     created() {
-        this.openFullScreen2();        
+        this.openFullScreen2();
         leavebase().then((baseData) => {
-            if(baseData.data.code == 200){
-                let fliterUser = this.$store.getters.departmentjob_personals.filter((el)=>{if(this.$store.getters.partids.findIndex((es)=>{return el.defpartid == es})>=0 ){ return el.user_id }})
-                this.leaveData = [] = baseData.data.msg.leaveBase.filter((el)=>{if(fliterUser.findIndex((evl)=>{ return parseInt(evl.user_id) == parseInt(el.userid) } )>=0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account ) return el })
+            if (baseData.data.code == 200) {
+                let fliterUser = this.$store.getters.departmentjob_personals.filter((el) => { if (this.$store.getters.partids.findIndex((es) => { return el.defpartid == es }) >= 0) { return el.user_id } })
+                this.leaveData = [] = baseData.data.msg.leaveBase.filter((el) => { if (fliterUser.findIndex((evl) => { return parseInt(evl.user_id) == parseInt(el.userid) }) >= 0 || el.userid == this.$store.getters.account || el.createuser == this.$store.getters.account) return el })
                 this.leaveLog = [] = baseData.data.msg.leaveLog;
-                this.leaveStatus = [] =baseData.data.msg.leaveStatus;
-                this.leaveTypes = [] =baseData.data.msg.leaveType;
-            }else{
+                this.leaveStatus = [] = baseData.data.msg.leaveStatus;
+                this.leaveTypes = [] = baseData.data.msg.leaveType;
+            } else {
                 console.log(baseData.data.msg)
                 this.$message.error(`数据初始化失败,请关闭当前页面,刷新试试`)
-            }            
+            }
             this.loading.close();
         });
     },
@@ -175,7 +174,7 @@ export default {
         },
         EditUserleave() {
             if (this.tmpleaveData.userid == "" || this.tmpleaveData.applovestatus > 0)
-                return;
+                return this.$message.warning(`当前状态不可修改`);
             this.isEdit = true;
         },
         cancelUserleave() {
@@ -190,7 +189,7 @@ export default {
                     leaveapply(this.tmpleaveData).then((rs) => {
                         console.log(rs)
                         if (rs.data.code == 200) {
-                            if(rs.data.msg.code == 200){
+                            if (rs.data.msg.code == 200) {
                                 this.repaceCurFormDate(rs.data.msg);
                                 this.notifyMsg(
                                     "提交成功",
@@ -198,13 +197,13 @@ export default {
                                     `${this.tmpleaveData.userid} -- 请假单提交成功`
                                 );
                                 this.resetForm("leaveData");
-                            }else{
+                            } else {
                                 this.$message.error(`${rs.data.msg.msg}`)
                                 this.loading.close();
                                 return;
                                 // return;
                             }
-                            
+
                         } else {
                             this.notifyMsg(
                                 "提交失败",

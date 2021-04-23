@@ -161,10 +161,10 @@
                 sortable :sort-by="['styo', 'styt','styth','styf','styfi','stys']"
                 >
                 </el-table-column>
-                <el-table-column prop="station" label="考勤状态" width="90" sortable :sort-by="['station']">                 
+                <el-table-column prop="station" label="考勤状态" width="110" sortable :sort-by="['station']">                 
                   <template slot-scope="scope">
                       <el-tag :type="scope.row.station == 0 ? 'danger' : 'success'">
-                        {{["异常","正常","请假","调休","出差","连班"][scope.row.station]}}
+                        {{["异常","正常","请假","调休","出差","连班","补卡"][scope.row.station]}}
                       </el-tag>
                   </template>
                 </el-table-column>
@@ -235,6 +235,9 @@ export default {
         { id: 8, label: "缺晚上上班卡" },
         { id: 9, label: "缺晚班上班卡" },
         { id: 10, label: "晚班上班迟到" },
+        { id: 11, label: "早上上班早退" },
+        { id: 12, label: "中午上班早退" },
+        { id: 13, label: "晚班上班早退" },
       ],      
       recordsData: [],
       search: "",
@@ -284,7 +287,8 @@ export default {
         "请假",
         "调休",
         "出差",
-        "连班"
+        "连班",
+        "补卡"
       ];
       return status[row.station]
     },
@@ -300,6 +304,9 @@ export default {
         "早迟到",
         "下迟到",
         "晚迟到",
+        "早上早退",
+        "下午早退",
+        "晚上早退"
       ];
       let tmp = [];
       tmp.push(row.styo ? row.styo : "");

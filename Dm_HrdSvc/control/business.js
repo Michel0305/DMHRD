@@ -16,7 +16,7 @@ ReqBusiness = () => { }
  ReqBusiness.BaseData = () => {
     async function getBusinessData() {
         try {
-           let tmpBaseData = await ResBusinessDB.SelectAll({ where: { createdate: { [Op.gt]:moment().subtract(360, 'days').format('YYYY/MM/DD')} }})
+           let tmpBaseData = await ResBusinessDB.SelectAll({ where: { createdate: { [Op.gt]:moment().subtract(30, 'days').format('YYYY/MM/DD')}},order: [['apploveid']] } )
            return { code: 200, msg: tmpBaseData}
         } catch (error) {
             return { code: 400, msg: error }            

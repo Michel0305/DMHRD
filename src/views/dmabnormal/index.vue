@@ -114,7 +114,12 @@
                 </el-table-column>
                 <el-table-column label="异常" :formatter="formatStatus">
                 </el-table-column>
-                <el-table-column label="状态" prop="appstatus" width="80" :formatter="formmatApploveStatus">
+                <el-table-column label="状态" prop="appstatus" width="110" sortable :sort-by="['appstatus']">
+                    <template slot-scope="scope">
+                        <el-tag :type="scope.row.appstatus == 20 || scope.row.appstatus == 15 ?'success':scope.row.appstatus === -10 ?'danger':scope.row.appstatus === 0 ?'info':''"  disable-transitions effect="dark" size="mini">
+                            {{formmatApploveStatus(scope.row)}}
+                        </el-tag>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-col>
