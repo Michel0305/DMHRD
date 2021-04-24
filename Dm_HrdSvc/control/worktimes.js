@@ -15,6 +15,7 @@ WorkTimes.InfoTimes = (parms) => {
                     timesfirst: `${parms.timesfirst}`,timessecond: `${parms.timessecond}`,
                     timesthird: `${parms.timesthird}`,timesfourth: `${parms.timesfourth}`,
                     timesfifth: `${parms.timesfifth}`,thimessixth: `${parms.thimessixth}`,
+                    workstart:`${parms.workstart}`,
                     ischeck: parms.ischeck
                 })
                 return { code: 200, backdata: tmpBackData }
@@ -28,6 +29,7 @@ WorkTimes.InfoTimes = (parms) => {
                     timesfirst: `${parms.timesfirst}`,timessecond: `${parms.timessecond}`,
                     timesthird: `${parms.timesthird}`,timesfourth: `${parms.timesfourth}`,
                     timesfifth: `${parms.timesfifth}`,thimessixth: `${parms.thimessixth}`,
+                    workstart:`${parms.workstart}`,
                     ischeck: parms.ischeck},{where:{id:parms.id}})
                 return { code: 200, backdata: {isupdate:true} }
             } catch (err) {

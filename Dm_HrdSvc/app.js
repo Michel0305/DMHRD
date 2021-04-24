@@ -22,6 +22,7 @@ var resSwitchworkRouter = require('./routes/switchwork');
 var resBusinessRouter = require('./routes/business');
 var uploadRouter = require('./routes/upload');
 var SignRouter = require('./routes/signform');
+var SalaryRouter = require('./routes/syssalary');
 // const { hostname } = require('os');
 // const cors = require('cors')
 
@@ -93,7 +94,7 @@ app.use('/api/switchwork',resSwitchworkRouter);
 app.use('/api/business',resBusinessRouter);
 app.use('/api/upload',uploadRouter);
 app.use('/api/sign',SignRouter);
-
+app.use('/api/salary',SalaryRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));

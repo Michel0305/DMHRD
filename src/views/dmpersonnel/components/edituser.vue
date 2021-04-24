@@ -153,7 +153,7 @@
                                     <el-row>
                                         <el-col :span="9">
                                             <el-form-item label="入职日期" prop="indate">
-                                                <el-date-picker :editable="false" v-model="infousers.indate" type="date" placeholder="选择日期" size="mini" value-format="yyyy-MM-DD" :disabled="infousers.isEdit  && infousers.id !==0" class="rq">
+                                                <el-date-picker :editable="false" v-model="infousers.indate" type="date" placeholder="选择日期" size="mini" value-format="yyyy-MM-DD" class="rq">
                                                 </el-date-picker>
                                             </el-form-item>
                                         </el-col>

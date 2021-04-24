@@ -22,13 +22,13 @@
                 <el-time-select placeholder="起始时间" v-model="infoRow.timesfirst" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '21:30',
+              end: '24:00',
             }" size="mini">
                 </el-time-select>
                 <el-time-select placeholder="结束时间" v-model="infoRow.timessecond" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '21:30',
+              end: '24:00',
               minTime: infoRow.timesfirst,
             }" size="mini">
                 </el-time-select>
@@ -37,14 +37,14 @@
                 <el-time-select placeholder="起始时间" v-model="infoRow.timesthird" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '21:30',
+              end: '24:00',
               minTime: infoRow.timestype !== 0 ? '00:00' : infoRow.timessecond,
             }" size="mini">
                 </el-time-select>
                 <el-time-select placeholder="结束时间" v-model="infoRow.timesfourth" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '21:30',
+              end: '24:00',
               minTime: infoRow.timesthird,
             }" size="mini">
                 </el-time-select>
@@ -53,15 +53,24 @@
                 <el-time-select placeholder="起始时间" v-model="infoRow.timesfifth" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '21:30',
+              end: '24:00',
               minTime: infoRow.timestype !== 0 ? '00:00' : infoRow.timessecond,
             }" size="mini">
                 </el-time-select>
                 <el-time-select placeholder="结束时间" v-model="infoRow.thimessixth" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '21:30',
+              end: '24:00',
               minTime: infoRow.thimessixth,
+            }" size="mini">
+                </el-time-select>
+            </el-form-item>
+            <el-form-item label="加班开始">
+             <el-time-select placeholder="加班开始" v-model="infoRow.workstart" :picker-options="{
+              start: '07:30',
+              step: '00:5',
+              end: '24:00',
+              minTime: infoRow.workstart,
             }" size="mini">
                 </el-time-select>
             </el-form-item>

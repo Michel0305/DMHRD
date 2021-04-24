@@ -29,6 +29,7 @@ var resUserTimes = sequelizeConn.define('res_usertimes', {
     thimessixth: {
         type: Sequelize.STRING
     },//第六次刷卡
+    workstart:{ type: Sequelize.STRING},//加班开始
     ischeck: { type: Sequelize.BOOLEAN },//是否启用
     create_time: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {

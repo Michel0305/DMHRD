@@ -296,6 +296,17 @@ export const asyncRoutes = [
           icon: 'el-icon-coffee-cup'
           // if do not set roles, means: this page does not require permission
         }
+      },
+      {
+        path: 'salary',
+        component: () => import('@/views/dmsalary/index'),
+        name: 'salary',
+        meta: {
+          title: '薪资管理',
+          roles: ['99','1'], // 默认给一个权限 如果赋值给固定角色就直接对角色ID
+          icon: 'money'
+          // if do not set roles, means: this page does not require permission
+        }
       }
     ]
   },

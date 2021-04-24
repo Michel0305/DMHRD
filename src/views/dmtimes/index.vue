@@ -129,6 +129,7 @@ export default {
                 timessecond: "",
                 timesthird: "",
                 timestype: 0,
+                workstart:""
             };
             this.dlgShow = true;
             this.rowData = templateData;
