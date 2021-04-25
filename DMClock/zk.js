@@ -11,10 +11,11 @@ ZkDevice.GetAttendanceData = (ip) => {
             try {
                 await zkInstance.createSocket()
             } catch (error) {
-                return ({ code: 400, data: error })
+                return { code: 400, data: error }
             }
             const logs = await zkInstance.getAttendances()
             //zkInstance.clearAttendanceLog()
+            console.log(logs)
             await zkInstance.disconnect()
             return { code: 200, data: logs }
         } catch (error) {             

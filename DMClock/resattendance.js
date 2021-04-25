@@ -13,14 +13,14 @@ ZkData = () => { }
  * 数据下载 取前一天数据
  */
 ZkData.download = () => {
-    let tmpDate = moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'); 
+    let tmpDate = moment(new Date()).subtract(2, 'days').format('YYYY-MM-DD'); 
     async function DataDownload() {
         try {
             let dbData = [];
             for (const ip of config.zkIPs) {                
                 let logData = await ZkDevice.GetAttendanceData(ip);
                 if (logData.code === 400) continue;
-                logData.data.data.forEach(el => {
+                logData.data.data.forEach(el => {                    
                     if (moment(el.recordTime).isAfter(new Date(`${tmpDate} 00:00:00`).toISOString())){
                         let tmpDeviceData = {
                             deviceuserId: el.deviceUserId,
@@ -32,11 +32,12 @@ ZkData.download = () => {
                 });
             }
             if(dbData.length == 0) return {code:'200',msg:'未有刷卡记录进行获取'};
-            await ResAttendanceDB.BulkCreate(dbData)
+            console.log(dbData)
+            //await ResAttendanceDB.BulkCreate(dbData)
             console.log(`${tmpDate} 数据获取完毕`)
             return {code:'200',msg:'考勤数据获取完毕'}
         } catch (error) {
-            console.log(error)
+           console.log(error)
            return {code:400,msg:'考勤记录获取失败'} 
         }        
     }
