@@ -2,13 +2,12 @@
 var Sequelize = require('sequelize');
 var fs = require('fs');
 var path = require('path');
-let confPath = path.join(__dirname,'/conf/config-template.js')
+let confPath = path.join(__dirname,'/config-template.js')
 var config = fs.existsSync(confPath)?require('./config-template.js'):require('./config');
 /**
  * 创建连接池
  */
-var sequelize = new Sequelize(config.sql.database, config.sql.user, config.sql.password, {
-    logging: console.log,   
+var poolSequelize = new Sequelize(config.sql.database, config.sql.user, config.sql.password, {   
     host: config.sql.host,
     dialect: config.sql.dialect,
     pool: {
@@ -19,15 +18,19 @@ var sequelize = new Sequelize(config.sql.database, config.sql.user, config.sql.p
     },
     port: config.sql.port,
     timezone: '+08:00',
+    options:{
+        "encrypt": true,
+        "enableArithAbort": true
+    },
     logging: false   //输出日志
 });
 (async () => {
     try {
-        await sequelize.authenticate();
+        await poolSequelize.authenticate();
         console.log('Connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
 })();
 
-module.exports = sequelize
+module.exports = poolSequelize

@@ -5,15 +5,16 @@ var moment = require('moment');
 var ResAttendanceDB = require('./res_attendance');
 var fs = require('fs');
 var path = require('path');
-let confPath = path.join(__dirname,'/conf/config-template.js')
+var confPath = path.join(__dirname,'/config-template.js')
 var config = fs.existsSync(confPath)?require('./config-template.js'):require('./config');
+
 
 ZkData = () => { }
 /**
  * 数据下载 取前一天数据
  */
 ZkData.download = () => {
-    let tmpDate = moment(new Date()).subtract(2, 'days').format('YYYY-MM-DD'); 
+    let tmpDate = moment(new Date()).subtract(1, 'days').format('YYYY-MM-DD'); 
     async function DataDownload() {
         try {
             let dbData = [];
@@ -32,7 +33,7 @@ ZkData.download = () => {
                 });
             }
             if(dbData.length == 0) return {code:'200',msg:'未有刷卡记录进行获取'};           
-            await ResAttendanceDB.BulkCreate(dbData)
+            //await ResAttendanceDB.BulkCreate(dbData)
             console.log(`${tmpDate} --总共: ${tmpDate.length} 数据获取完毕`)
             return {code:'200',msg:'考勤数据获取完毕'}
         } catch (error) {
