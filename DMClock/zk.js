@@ -7,6 +7,7 @@ ZkDevice = () => { }
 ZkDevice.GetAttendanceData = (ip) => {
     async function ZkDeviceActive() {
         try {
+            console.log(`开始获取${ip} 卡钟考勤数据`)
             let zkInstance = new ZKLib(ip, 4370, 10000, 4000);//10.83.34.12  10.83.34.11
             try {
                 await zkInstance.createSocket()
@@ -14,9 +15,9 @@ ZkDevice.GetAttendanceData = (ip) => {
                 return { code: 400, data: error }
             }
             const logs = await zkInstance.getAttendances()
-            //zkInstance.clearAttendanceLog()
-            console.log(logs)
+            //zkInstance.clearAttendanceLog()            
             await zkInstance.disconnect()
+            console.log(`获取${ip} 卡钟考勤数据结束`)
             return { code: 200, data: logs }
         } catch (error) {             
             return {code:400,data:error};

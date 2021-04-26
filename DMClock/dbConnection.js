@@ -8,6 +8,7 @@ var config = fs.existsSync(confPath)?require('./config-template.js'):require('./
  * 创建连接池
  */
 var sequelize = new Sequelize(config.sql.database, config.sql.user, config.sql.password, {
+    logging: console.log,   
     host: config.sql.host,
     dialect: config.sql.dialect,
     pool: {
@@ -18,7 +19,7 @@ var sequelize = new Sequelize(config.sql.database, config.sql.user, config.sql.p
     },
     port: config.sql.port,
     timezone: '+08:00',
-    logging: true   //输出日志
+    logging: false   //输出日志
 });
 (async () => {
     try {

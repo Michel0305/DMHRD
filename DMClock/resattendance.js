@@ -31,10 +31,9 @@ ZkData.download = () => {
                     }
                 });
             }
-            if(dbData.length == 0) return {code:'200',msg:'未有刷卡记录进行获取'};
-            console.log(dbData)
-            //await ResAttendanceDB.BulkCreate(dbData)
-            console.log(`${tmpDate} 数据获取完毕`)
+            if(dbData.length == 0) return {code:'200',msg:'未有刷卡记录进行获取'};           
+            await ResAttendanceDB.BulkCreate(dbData)
+            console.log(`${tmpDate} --总共: ${tmpDate.length} 数据获取完毕`)
             return {code:'200',msg:'考勤数据获取完毕'}
         } catch (error) {
            console.log(error)
