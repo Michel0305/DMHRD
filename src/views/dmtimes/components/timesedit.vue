@@ -44,10 +44,10 @@
                 <el-time-select placeholder="结束时间" v-model="infoRow.timesfourth" :picker-options="{
               start: '07:30',
               step: '00:5',
-              end: '24:00',
-              minTime: infoRow.timesthird,
+              end: '24:00',              
             }" size="mini">
                 </el-time-select>
+                <!-- minTime: infoRow.timesthird, -->
             </el-form-item>
             <el-form-item label="时间点3">
                 <el-time-select placeholder="起始时间" v-model="infoRow.timesfifth" :picker-options="{
@@ -66,8 +66,8 @@
                 </el-time-select>
             </el-form-item>
             <el-form-item label="加班开始">
-             <el-time-select placeholder="加班开始" v-model="infoRow.workstart" :picker-options="{
-              start: '07:30',
+                <el-time-select placeholder="加班开始" v-model="infoRow.workstart" :picker-options="{
+              start: '04:00',
               step: '00:5',
               end: '24:00',
               minTime: infoRow.workstart,
@@ -139,7 +139,7 @@ export default {
                     }
                 })
             } else {
-                this.$emit("commitFormData",null);
+                this.$emit("commitFormData", null);
             }
         },
     },

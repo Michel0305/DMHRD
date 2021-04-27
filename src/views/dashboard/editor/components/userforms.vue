@@ -58,7 +58,7 @@ export default {
     },
     created() {
         this.getbaseData();
-        //console.log(this.$store.getters)
+        console.log(this.signBoxData)
     },
     methods: {
         formatApploveStatus(row, colum) {

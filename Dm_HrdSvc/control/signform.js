@@ -44,38 +44,38 @@ SignForm.ApploveForm = (parms) => {
             switch (tmpSignData.model) {
                 case 'leave':
                     let leaveSignData = await ResLeaveDB.SelectAll({ where: { id: tmpSignData.id } })
-                    let leaveapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                    let leaveapploveLog = await ResLeaveDB.Query(`select *,(select  isnull(msg,'未知') from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                   from res_applovelog a where formid=${tmpSignData.id} and modelname='leave'  order by createtime desc `)
                     return { code: 200, msg:{SignData:leaveSignData,apploveLog:leaveapploveLog[0] }}
                     break;
                 case 'work':
                     let workSignData = await ResOverWork.SelectAll({ where: { id: tmpSignData.id } })
-                    let workapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                    let workapploveLog = await ResLeaveDB.Query(`select *,(select  isnull(msg,'未知') from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='work'  order by createtime desc `)
                     return { code: 200, msg:{SignData:workSignData,apploveLog:workapploveLog[0] }}
                     break;
                 case 'switchdays':
                     let daySignData = await ResSwitchDay.SelectAll({ where: { id: tmpSignData.id } })
-                    let dayapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                    let dayapploveLog = await ResLeaveDB.Query(`select *,(select  isnull(msg,'未知') from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='switchdays'  order by createtime desc `)
                     return { code: 200, msg:{SignData:daySignData,apploveLog:dayapploveLog[0] }}
                     break;
                 case 'business':
                     let businessSignData = await ResBusiness.SelectAll({ where: { id: tmpSignData.id } })
-                    let busapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                    let busapploveLog = await ResLeaveDB.Query(`select *,(select  isnull(msg,'未知') from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='business'  order by createtime desc `)
                     console.log(busapploveLog[0]) 
                     return { code: 200, msg:{SignData:businessSignData,apploveLog:busapploveLog[0] }}
                     break;
                 case 'regcard':
                     let regcardSignData = await ResRegistrationCardDB.SelectAll({ where: { id: tmpSignData.id } })
-                    let regcardapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                    let regcardapploveLog = await ResLeaveDB.Query(`select *,(select  isnull(msg,'未知') from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='regcard'  order by createtime desc `)                    
                     return { code: 200, msg:{SignData:regcardSignData,apploveLog:regcardapploveLog[0] }}
                     break;
                 case 'leaveof':
                     let leaveofSignData = await ResLeaveOffice.SelectAll({ where: { id: tmpSignData.id } })
-                    let leaveofapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                    let leaveofapploveLog = await ResLeaveDB.Query(`select *,(select  isnull(msg,'未知') from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='leaveof'  order by createtime desc `)                    
                     return { code: 200, msg:{SignData:leaveofSignData,apploveLog:leaveofapploveLog[0] }}
                     break;

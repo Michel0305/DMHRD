@@ -2,112 +2,116 @@
 <div class="app-container-edituser">
     <el-dialog :title="infousers.isEdit && infousers.id !==0? infousers.user_name : '创建'" :visible.sync="dialogStatus" :before-close="dialogForm">
         <div class="bodys">
-            <div class="cleft"> <el-button type="primary" class="el-icon-d-arrow-left" size="mini" @click="nextData(0)"></el-button> </div>
+            <div class="cleft">
+                <el-button type="primary" class="el-icon-d-arrow-left" size="mini" @click="nextData(0)"></el-button>
+            </div>
             <div class="cbody">
                 <el-form ref="userForm" :model="infousers" :rules="rules" label-width="80px">
                     <div class="dialogClass">
                         <div class="usrandimg">
-                            <div class="user">
-                                <el-row>
-                                    <el-col :span="12">
-                                        <el-form-item label="姓名" prop="user_name">
-                                            <el-input :disabled="infousers.isEdit && infousers.id !==0" v-model="infousers.user_name" size="mini" maxlength="5"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-form-item label="工号" size="mini" prop="user_id">
-                                            <el-input v-model="infousers.user_id" :disabled="infousers.isEdit && infousers.id !==0" maxlength="6"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="12">
-                                        <el-form-item label="部门" prop="defpartid">
-                                            <el-select v-model="infousers.defpartid" placeholder="请选择" @change="checkDeptName" size="mini">
-                                                <el-option v-for="el in $store.state.departmentjob.departs" :key="el.deptid" :label="el.dept_name" :value="el.deptid">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-form-item label="部门编码">
-                                            <el-input :readonly="true" v-model="infousers.defpartid" size="mini"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="12">
-                                        <el-form-item label="岗位" prop="job">
-                                            <el-select v-model="infousers.job" placeholder="请选择" size="mini">
-                                                <!-- .filter(items=>{return items.defpartid == infousers.defpartid }) ) -->
-                                                <el-option v-for="el in $store.state.departmentjob.jobs.filter(
-                          (items) => {
-                            return items.defpartid == infousers.defpartid;
-                          }
-                        )" :key="el.job" :label="el.job" :value="el.job" :disabled="el.job == infousers.job">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-form-item label="班次" prop="timestype">
-                                           <el-popover
-                                                placement="bottom-start"
-                                                title="刷卡明细"
-                                                width="200"
-                                                trigger="hover"
-                                                >
-                                                <!-- :content="timesList" -->
-                                                <div v-html="timesList"></div>
-                                                <el-select v-model="infousers.timestype" placeholder="请选择" size="mini" slot="reference">
-                                                    <el-option v-for="el in $store.state.departmentjob.times" :key="el.id" :label="el.timesname" :value="el.id" :disabled="!el.ischeck" >
-                                                    </el-option>
-                                                </el-select>
-                                            </el-popover>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="15">
-                                        <el-form-item label="身份ID" prop="cardid">
-                                            <el-input v-model="infousers.cardid" size="mini" minlength="18" maxlength="18"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="9">
-                                        <el-form-item label="性别">
-                                            <el-select v-model="infousers.sex" placeholder="请选择" size="mini">
-                                                <el-option v-for="el in optionsSex" :key="el.id" :label="el.label" :value="el.id">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="12">
-                                        <el-form-item label="教育">
-                                            <el-select v-model="infousers.education" placeholder="请选择" size="mini">
-                                                <el-option v-for="el in optionsEducation" :key="el.id" :label="el.label" :value="el.id">
-                                                </el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-form-item label="联系方式" size="mini">
-                                            <el-input v-model="infousers.phone" maxlength="11"></el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                            <div class="userimg">
-                                <el-form-item>
-                                    <div>
-                                        <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="UploadPIC">
-                                            <img v-if="infousers.imgurl" :src="src" class="avatar">
-                                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                        </el-upload>
+                            <el-row :gutter="10">
+                                <el-col :span="18">
+                                    <div class="user">
+                                        <el-row>
+                                            <el-col :span="12">
+                                                <el-form-item label="姓名" prop="user_name">
+                                                    <el-input :disabled="infousers.isEdit && infousers.id !==0" v-model="infousers.user_name" size="mini" maxlength="5"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="工号" size="mini" prop="user_id">
+                                                    <el-input v-model="infousers.user_id" :disabled="infousers.isEdit && infousers.id !==0" maxlength="6"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="12">
+                                                <el-form-item label="部门" prop="defpartid">
+                                                    <el-select v-model="infousers.defpartid" placeholder="请选择" @change="checkDeptName" size="mini">
+                                                        <el-option v-for="el in $store.state.departmentjob.departs" :key="el.deptid" :label="el.dept_name" :value="el.deptid">
+                                                        </el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="部门编码">
+                                                    <el-input :readonly="true" v-model="infousers.defpartid" size="mini"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="12">
+                                                <el-form-item label="岗位" prop="job">
+                                                    <el-select v-model="infousers.job" placeholder="请选择" size="mini">
+                                                        <!-- .filter(items=>{return items.defpartid == infousers.defpartid }) ) -->
+                                                        <el-option v-for="el in $store.state.departmentjob.jobs.filter(
+                                                    (items) => {
+                                                        return items.defpartid == infousers.defpartid;
+                                                    }
+                                                    )" :key="el.job" :label="el.job" :value="el.job" :disabled="el.job == infousers.job">
+                                                        </el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="班次" prop="timestype">
+                                                    <el-popover placement="bottom-start" title="刷卡明细" width="200" trigger="hover">
+                                                        <!-- :content="timesList" -->
+                                                        <div v-html="timesList"></div>
+                                                        <el-select v-model="infousers.timestype" placeholder="请选择" size="mini" slot="reference">
+                                                            <el-option v-for="el in $store.state.departmentjob.times" :key="el.id" :label="el.timesname" :value="el.id" :disabled="!el.ischeck">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </el-popover>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="15">
+                                                <el-form-item label="身份ID" prop="cardid">
+                                                    <el-input v-model="infousers.cardid" size="mini" minlength="18" maxlength="18"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="9">
+                                                <el-form-item label="性别">
+                                                    <el-select v-model="infousers.sex" placeholder="请选择" size="mini">
+                                                        <el-option v-for="el in optionsSex" :key="el.id" :label="el.label" :value="el.id">
+                                                        </el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row>
+                                            <el-col :span="12">
+                                                <el-form-item label="教育">
+                                                    <el-select v-model="infousers.education" placeholder="请选择" size="mini">
+                                                        <el-option v-for="el in optionsEducation" :key="el.id" :label="el.label" :value="el.id">
+                                                        </el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-form-item label="联系方式" size="mini">
+                                                    <el-input v-model="infousers.phone" maxlength="11"></el-input>
+                                                </el-form-item>
+                                            </el-col>
+                                        </el-row>
                                     </div>
-                                </el-form-item>
-                            </div>
+                                </el-col>
+                                <el-col :span="6">
+                                    <div class="userimg">
+                                        <el-form-item>
+                                            <div>
+                                                <el-upload class="avatar-uploader" :action="actionUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :http-request="UploadPIC">
+                                                    <img v-if="infousers.imgurl" :src="src" class="avatar">
+                                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                                </el-upload>
+                                            </div>
+                                        </el-form-item>
+                                    </div>
+                                </el-col>
+                            </el-row>
+
                         </div>
 
                         <el-tabs tab-position="left" style="height: 200px">
@@ -307,7 +311,9 @@
                     </div>
                 </el-form>
             </div>
-            <div class="cright"><el-button type="primary" class="el-icon-d-arrow-right" size="mini" @click="nextData(1)"></el-button></div>
+            <div class="cright">
+                <el-button type="primary" class="el-icon-d-arrow-right" size="mini" @click="nextData(1)"></el-button>
+            </div>
         </div>
         <div class="footer">
             <el-button type="primary" @click="dialogForm(0)" size="mini" class="btnsave">保存</el-button>
@@ -330,8 +336,8 @@ export default {
             isEdit: false,
             actionUrl: '',
             imageUrl: '',
-            dayOptions: [{ id: '0', label: '5.5' }, { id: '0', label: '6' }, { id: '0', label: '7' }],
-            hoursOptions: [{ id: '0', label: '8' }, { id: '0', label: '10' }, { id: '0', label: '12' }],
+            dayOptions: [{ id: '0', label: '5.5' }, { id: '1', label: '6' }, { id: '2', label: '7' }],
+            hoursOptions: [{ id: '0', label: '8' }, { id: '1', label: '10' }, { id: '2', label: '11' }, { id: '3', label: '12' }],
             optionsEducation: [
                 { label: "博士", id: "博士" },
                 { label: "硕士", id: "硕士" },
@@ -467,14 +473,14 @@ export default {
                 }
             })
         },
-        nextData(types){         
-          let IndexID =  this.$store.getters.departmentjob_personals.findIndex((el)=>{return parseInt(el.id) == parseInt(this.infousers.id) }) 
-          if(types == 0){
-             IndexID = IndexID == 0?(this.$store.getters.departmentjob_personals.length)-1:IndexID-1;               
-          }else{
-             IndexID=  IndexID == (this.$store.getters.departmentjob_personals.length)-1?0:IndexID+1;
-          }     
-          this.$emit("emitData",this.$store.getters.departmentjob_personals[IndexID])
+        nextData(types) {
+            let IndexID = this.$store.getters.departmentjob_personals.findIndex((el) => { return parseInt(el.id) == parseInt(this.infousers.id) })
+            if (types == 0) {
+                IndexID = IndexID == 0 ? (this.$store.getters.departmentjob_personals.length) - 1 : IndexID - 1;
+            } else {
+                IndexID = IndexID == (this.$store.getters.departmentjob_personals.length) - 1 ? 0 : IndexID + 1;
+            }
+            this.$emit("emitData", this.$store.getters.departmentjob_personals[IndexID])
         }
 
     },
@@ -482,12 +488,12 @@ export default {
         src: function () {
             if (this.infousers.imgurl) return process.env.VUE_APP_BASE_API + this.infousers.imgurl
         },
-        timesList: function(){
+        timesList: function () {
             let reback = ''
-            if(this.infousers.timestype) {
-               let tmptimes = this.$store.getters.departmentjob_times.filter((el)=> {return el.id == this.infousers.timestype})
-               if(tmptimes.length == 0) return '';
-            reback=`
+            if (this.infousers.timestype) {
+                let tmptimes = this.$store.getters.departmentjob_times.filter((el) => { return el.id == this.infousers.timestype })
+                if (tmptimes.length == 0) return '';
+                reback = `
                       类别  ：${tmptimes[0].timestype == 0   ?'白班':'夜班'}
                       <br/>
                       时间1 : ${tmptimes[0].timesfirst}<br/>
@@ -495,9 +501,9 @@ export default {
                       时间3 : ${tmptimes[0].timesthird}<br/>
                       时间4 : ${tmptimes[0].timesfourth}<br/>
                       时间5 : ${tmptimes[0].timesfifth}<br/>
-                      时间6 : ${tmptimes[0].thimessixth}` 
-           }
-           return reback
+                      时间6 : ${tmptimes[0].thimessixth}`
+            }
+            return reback
         }
     },
     watch: {}
@@ -569,21 +575,33 @@ export default {
 }
 
 .avatar {
-    width: 178px;
-    height: 178px;
+    width: 128px;
+    height: 128px;
     display: block;
 }
-.bodys{
+
+.bodys {
     display: flex;
 }
-.cleft{
+
+.cleft {
     width: 5%;
 }
-.cbody{
+
+.cbody {
     width: 90%;
 }
-.cright{
+
+.cright {
     width: 5%;
     text-align: end;
+}
+.userimg>>>.el-form-item__content{
+    margin-left: 10px !important;
+}
+.avatar-uploader>>>.el-icon-plus{
+     width: 128px;
+    height: 128px;
+    display: block;
 }
 </style>

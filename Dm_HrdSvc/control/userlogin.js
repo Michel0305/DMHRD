@@ -121,7 +121,7 @@ loginUser.GetBeasBata = () => {
     async function GetUserBaseData() {
         try {
             let dataBase = {};
-            let resUser = await ResUsersDB.SelectAll();
+            let resUser = await ResUsersDB.SelectAll({where:{isline:1}}); //排除离职人员显示
             let resUserTimes = await ResUserTimesDB.SelectAll();
             let resUserJob = await resUserjobDB.SelectAll();
             let resDepartment = await ResDepartmentDB.SelectAll({ where: { isDel: false } });

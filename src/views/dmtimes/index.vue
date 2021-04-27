@@ -10,7 +10,7 @@
             <el-col :span="24">
                 <el-table :data="timesType" style="width: 100%" :max-height="$store.getters.locheight">
                     <!-- .filter( (data) =>  !search ||  data.name.toLowerCase().includes(search.toLowerCase())) -->
-                    <el-table-column label="班次" prop="timesname" width="150">
+                    <el-table-column label="班次" prop="timesname" width="150" sortable :sort-by="['id']" >
                     </el-table-column>
                     <el-table-column label="类别" prop="timestype" :formatter="timesTypeFormat" width="100">
                     </el-table-column>
