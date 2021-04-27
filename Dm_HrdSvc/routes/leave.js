@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-var leaveControl = require('../control/leave');
+var leaveControl = require('../control/leave');//请假单
+
+var leaveOffice = require('../control/res_leaveoffice'); //离职单
+
 var Qs = require('qs');
 
 /**
@@ -28,5 +31,16 @@ router.post('/apply', (req, res, next) => {
         res.send({ code: 20000, data: reback })
     })
 })
+
+
+router.post('/infobase',(req,res,next)=>{
+    let infoData = Qs.parse(req.body)
+    infoData.createUser = req.user.param.userid 
+    leaveOffice.infoBaseData(infoData).then((rs)=>{
+        res.send({code:20000,data:rs})
+    })
+})
+
+
 
 module.exports = router;

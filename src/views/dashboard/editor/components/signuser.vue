@@ -18,7 +18,8 @@
             <div class="formmsg">
                 <component :is="curIds.model == 'leave'?'signleave':curIds.model == 'work'?'signoverwork'
                            :curIds.model == 'switchdays'?'switchday'
-                           :curIds.model=='business'?'signbusiness':curIds.model=='regcard'?'regcard':'signleave'" :defData="curIds.SignData" />
+                           :curIds.model=='business'?'signbusiness':curIds.model=='regcard'?'regcard'
+                           :curIds.model=='leaveof'?'signleaveoff' :'signleave'" :defData="curIds.SignData" />
                 <el-col :span="23" :offset="1">
                     <el-input type="textarea" rows="3" v-model="signmsg" placeholder="意见"></el-input>
                 </el-col>
@@ -27,7 +28,7 @@
                 <el-timeline>
                     <el-timeline-item v-for="(activity, index) in curIds.ApploveLog" :key="index" :timestamp="$moment(activity.createtime).utc().format('YYYY-MM-DD HH:mm:ss') "
                     :color="activity.statusid== 1?'#da0000':'#1b6d04' " >
-                        {{activity.statusMsg}} 
+                        {{`${activity.statusMsg} -- ${$store.getters.departmentjob_personals.filter((el)=>{ return el.user_id == activity.appuser })[0].user_name  } ` }} 
                         <br/>
                         <br/>
                         {{`信息: ${activity.appremart}`}}
@@ -54,6 +55,7 @@ import signoverwork from "./overwork";
 import switchday from "./switchday";
 import signbusiness from "./business";
 import regcard from "./regcard";
+import signleaveoff from './leaveoff'
 export default ({
     name: 'signuser',
     components: {
@@ -61,7 +63,8 @@ export default ({
         signoverwork,
         switchday,
         signbusiness,
-        regcard
+        regcard,
+        signleaveoff
     },
     data() {
         return {
@@ -105,6 +108,7 @@ export default ({
                 tmpcurids.modelname = info.modelname;
                 tmpcurids.apploveid = info.apploveid;
                 tmpcurids.ApploveLog = datas.data.msg.apploveLog
+                console.log(datas.data.msg.apploveLog)
                 this.$emit('changeIds', tmpcurids) 
                 this.lockApplove = false;  
                 this.lockBtn = false;            
@@ -141,7 +145,7 @@ export default ({
         }
     },
     mounted() {
-        // console.log(this.curIds)
+        // console.log(this.$store.getters.departmentjob_personals)
     }
 })
 </script>

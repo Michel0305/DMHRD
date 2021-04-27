@@ -55,7 +55,7 @@ ResWorkRecords.InfoRegistrationCard = (parms)=>{
             if(parms.stys == 6)  tmps.push(parms.stys)
            // let appList = await ResWorkRecordsDB.Query(`select * from userSignId(${parms.userid})`)
            // let setApplove = appList[0][0]  
-            await ResRegistrationCardDB.Insert({
+            let infoTmp = await ResRegistrationCardDB.Insert({
                 userid:parms.userid,
                 checkdate:`'${moment(parms.checkdate).utc().format('YYYY-MM-DD')}'` ,
                 attendid:parms.id,
@@ -65,7 +65,7 @@ ResWorkRecords.InfoRegistrationCard = (parms)=>{
                 appstatus:0})
             await ResWorkRecordsDB.Update({status:1},{where:{id:parms.id}})
             await ResWorkRecordsDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
-                                           select 'regcard',${parms.id},${parms.createUser},'申请送出','',0`)
+                                           select 'regcard',${infoTmp.dataValues.id},${parms.createUser},'人事核实送出','',0`)
             return{code:200,msg:'Success'}
         } catch (error) {
             console.log(error)

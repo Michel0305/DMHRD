@@ -8,6 +8,7 @@ var ResBusiness = require('../dbconn/dbmodel/res_business');
 var ResSwitchDay = require('../dbconn/dbmodel/res_switchwork');
 var ResApploveLog = require('../dbconn/dbmodel/res_applovelog');
 var ResRegistrationCardDB = require('../dbconn/dbmodel/res_registration_card');
+var ResLeaveOffice = require('../dbconn/dbmodel/res_leaveoffice');
 var token = require('./token');
 var Sequelize = require('sequelize');
 var moment = require('moment');
@@ -71,6 +72,12 @@ SignForm.ApploveForm = (parms) => {
                     let regcardapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
                                                                 from res_applovelog a where formid=${tmpSignData.id} and modelname='regcard'  order by createtime desc `)                    
                     return { code: 200, msg:{SignData:regcardSignData,apploveLog:regcardapploveLog[0] }}
+                    break;
+                case 'leaveof':
+                    let leaveofSignData = await ResLeaveOffice.SelectAll({ where: { id: tmpSignData.id } })
+                    let leaveofapploveLog = await ResLeaveDB.Query(`select *,(select msg from res_applovestatus where model = a.modelname and statusid = a.apploveid ) as statusMsg 
+                                                                from res_applovelog a where formid=${tmpSignData.id} and modelname='leaveof'  order by createtime desc `)                    
+                    return { code: 200, msg:{SignData:leaveofSignData,apploveLog:leaveofapploveLog[0] }}
                     break;
                 default:
                     break;

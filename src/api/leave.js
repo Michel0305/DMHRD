@@ -15,3 +15,12 @@ export function leaveapply(data) {
         data: Qs.stringify(data)
     })
 }
+
+
+export function leaveoffice(data) {
+    return request({
+        url: '/leave/infobase',
+        method: 'post',
+        data: Qs.stringify(data)
+    })
+}

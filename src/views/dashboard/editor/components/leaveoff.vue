@@ -3,18 +3,17 @@
     <ul class="leave">
         <li class="leaveli"><span><label>姓名:</label><a class="leave_a">{{$store.getters.departmentjob_personals.filter((el)=>{ return parseInt(el.user_id)== parseInt(defData[0].userid)})[0].user_name}}</a> </span></li>
         <li class="leaveli"><span><label>部门:</label><a class="leave_a">{{$store.getters.departmentjob_personals.filter((el)=>{ return parseInt(el.user_id)== parseInt(defData[0].userid)})[0].dept}}</a> </span> </li>
-        <li class="leaveli"><span><label>请假类型:</label><a class="leave_a">{{leaveTypes.filter((el)=>{return el.id ==defData[0].leavetype})[0].type }}</a> </span> </li>
-        <li class="leaveli"><span><label>开始日期:</label><a class="leave_a">{{$moment(defData[0].starttime).utc().format('YYYY-MM-DD HH:mm') }}</a></span></li>
-        <li class="leaveli"><span><label>结束日期:</label><a class="leave_a">{{$moment(defData[0].endtime).utc().format('YYYY-MM-DD HH:mm')}}</a> </span></li>
-        <li class="leaveli"><span><label>总时长:</label><a class="leave_a">{{defData[0].days?`${defData[0].days} 天`:`${defData[0].timetotal/60.0} 小时`}}</a></span></li>
-        <li class="leaveli"><span><label>请假原因:</label><a class="leave_a">{{defData[0].remark}}</a></span></li>
+        <li class="leaveli"><span><label>期望日期:</label><a class="leave_a">{{$moment(defData[0].expectdate).utc().format('YYYY-MM-DD') }}</a></span></li>
+        <li class="leaveli"><span><label>协商日期:</label><a class="leave_a">{{$moment(defData[0].coordinatedate).utc().format('YYYY-MM-DD')}}</a> </span></li>
+        <li class="leaveli"><span><label>离职原因:</label><a class="leave_a">{{defData[0].lotype}}</a></span></li>
+        <li class="leaveli"><span><label>其他备注:</label><a class="leave_a">{{defData[0].remark}}</a></span></li>
     </ul>    
 </div>
 </template>
 
 <script>
 export default ({
-    name: 'signleave',
+    name: 'signleaveoff',
     data() {
         return {
             leaveTypes: [

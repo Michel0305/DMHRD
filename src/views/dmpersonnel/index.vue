@@ -95,13 +95,14 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 // import { users } from '@/api/user'
-import edituser from "@/views/dmpersonnel/components/edituser";
-import resignation from "@/views/dmpersonnel/components/resignation";
 import store from "@/store";
 import { isArray } from '@/utils/validate';
 export default {
     name: "personnel",
-    components: { edituser, resignation }, //引入需要的模板
+    components: {
+    //:resolve=>require(['./components/salarysetting'],resolve),
+        edituser:resolve=>require(['@/views/dmpersonnel/components/edituser'],resolve),     
+        resignation:resolve=>require(['@/views/dmpersonnel/components/resignation'],resolve)}, //引入需要的模板
     data() {
         return {
             swhere: "",
