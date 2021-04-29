@@ -53,3 +53,30 @@ export function employeeeval(data){
         params:{cdate:data}
     })
 }
+
+
+/**
+ * echart显示数据
+ * @param {*} data 
+ * @returns 
+ */
+export function  eChartAttendance(data) {
+    return request({
+        url: '/attendance/analytical',
+        method: 'get',
+        params:data
+    })
+}
+
+/**
+ * 人事手动签卡
+ * @param {*} data 
+ * @returns 
+ */
+export function PassAttendanceCard(data) {
+    return request({
+        url: '/attendance/passcard',
+        method: 'post',
+        data:Qs.stringify(data)
+    })    
+}

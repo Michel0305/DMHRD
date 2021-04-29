@@ -50,21 +50,21 @@ import {
     ApploveOnly
 } from '@/api/signform';
 
-import signleave from "./leave";
-import signoverwork from "./overwork";
-import switchday from "./switchday";
-import signbusiness from "./business";
-import regcard from "./regcard";
-import signleaveoff from './leaveoff'
+// import signleave from "./leave";
+// import signoverwork from "./overwork";
+// import switchday from "./switchday";
+// import signbusiness from "./business";
+// import regcard from "./regcard";
+// import signleaveoff from './leaveoff'
 export default ({
     name: 'signuser',
     components: {
-        signleave,
-        signoverwork,
-        switchday,
-        signbusiness,
-        regcard,
-        signleaveoff
+        signleave:resolve=>require(['./leave'],resolve),
+        signoverwork:resolve=>require(['./overwork'],resolve),
+        switchday:resolve=>require(['./switchday'],resolve),
+        signbusiness:resolve=>require(['./business'],resolve),
+        regcard:resolve=>require(['./regcard'],resolve),
+        signleaveoff:resolve=>require(['./leaveoff'],resolve)
     },
     data() {
         return {

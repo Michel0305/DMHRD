@@ -8,6 +8,15 @@ var path = require('path');
 var confPath = path.join(__dirname,'/config-template.js')
 var config = fs.existsSync(confPath)?require('./config-template.js'):require('./config');
 
+class ZkData{
+    download(){
+        
+    }
+
+
+} 
+
+
 
 ZkData = () => { }
 /**

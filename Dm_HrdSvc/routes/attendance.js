@@ -71,5 +71,22 @@ router.get('/employeeeval',(req,res,next)=>{
     })
 })
 
+/**
+ * eChart 显示表
+ */
+router.get('/analytical',(req,res,next)=>{
+    ResWorkRecords.eChartAttendance(req.query).then((rs)=>{
+        res.send({code:20000,data:rs})
+    })    
+})
+
+/**
+ * 人事处理异常
+ */
+router.post('/passcard',(req,res,next)=>{
+    ResWorkRecords.PassAttendanceCard(Qs.parse(req.body)).then((rs)=>{
+        res.send({code:20000,data:rs})
+    })    
+})
 
 module.exports = router;

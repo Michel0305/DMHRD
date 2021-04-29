@@ -58,7 +58,6 @@ export default {
     },
     created() {
         this.getbaseData();
-        console.log(this.signBoxData)
     },
     methods: {
         formatApploveStatus(row, colum) {

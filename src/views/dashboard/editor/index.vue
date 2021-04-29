@@ -77,15 +77,18 @@
 
 <script>
 import { mapGetters } from "vuex";
-import PanThumb from "@/components/PanThumb";
-import UserCard from "./components/UserCard";
+// import PanThumb from "@/components/PanThumb";
+// import UserCard from "./components/UserCard";
+// import signuser from "./components/signuser";
+// import userforms from './components/userforms';
 import { getSignBaseData, ApploveForm, BatchApplove } from "@/api/signform";
-import signuser from "./components/signuser";
-import userforms from './components/userforms';
 
 export default {
     name: "DashboardEditor",
-    components: { PanThumb, UserCard, signuser,userforms },
+    components: { PanThumb:resolve=>require(['@/components/PanThumb'],resolve),
+                  UserCard:resolve=>require(['./components/UserCard'],resolve),
+                  signuser:resolve=>require(['./components/signuser'],resolve),
+                  userforms:resolve=>require(['./components/userforms'],resolve) },
     methods: {
         async getSignBase() {
             let tmpSign = await getSignBaseData({ userid: this.$store.getters.account })

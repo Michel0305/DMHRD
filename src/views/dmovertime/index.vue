@@ -55,7 +55,7 @@
                     <el-col :span="24">
                         <el-form-item label="时间" prop="starttime">
                             <el-time-select placeholder="起始时间" v-model="tmpworkData.starttime" :picker-options="{
-                                start: '07:30',
+                                start: '04:30',
                                 step: '00:05',
                                 end: '21:30',
                               }" size="mini" :disabled="!isEdit">

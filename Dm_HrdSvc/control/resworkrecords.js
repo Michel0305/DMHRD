@@ -138,6 +138,11 @@ ResWorkRecords.getVGateCard = (params) =>{
   return GateCardData()
 }
 
+/**
+ * 月出勤报表
+ * @param {*} params 
+ * @returns 
+ */
 ResWorkRecords.getUserAttendance = (params)=>{
     async function GateAttendanceData() {
         try {
@@ -150,7 +155,7 @@ ResWorkRecords.getUserAttendance = (params)=>{
     return GateAttendanceData()
 }
 
-
+//人员异常考核报表
 ResWorkRecords.getEmployeeEval = (params)=>{
     async function EmployeeEvaluation() {
         try {
@@ -163,7 +168,40 @@ ResWorkRecords.getEmployeeEval = (params)=>{
     return EmployeeEvaluation()
 }
 
+/**
+ * echart 显示报表
+ * @param {*} params 
+ * @returns 
+ */
+ResWorkRecords.eChartAttendance = (params)=>{
+    async function getChartData() {
+        try {
+            let chartData = await ResRegistrationCardDB.Query(`select * from attendancechart('${moment(params.startdate).format('YYYY/MM/DD')}',
+                                                                                             '${moment(params.enddate).format('YYYY/MM/DD')}')`) 
+            return {code:200,msg:chartData[0]} 
+          } catch (error) {
+            return {code:400,msg:error} 
+        } 
+    }
+    return getChartData()
+}
 
 
+ResWorkRecords.PassAttendanceCard = (params) =>{
+    async function repassCard() {
+        try {            
+            console.log(params)
+            await ResWorkRecordsDB.Update({station:params.station},{where:{id:params.id}}) 
+            return {code:200,msg:`过滤异常成功`} 
+          } catch (error) {
+              console.log(error)
+            return {code:400,msg:error} 
+        } 
+    }
+    return repassCard();
+
+}
+
+//select * from attendancechart('2021/04/01','2021/04/25')
 
 module.exports = ResWorkRecords;

@@ -195,7 +195,7 @@ export const asyncRoutes = [
           icon: 'el-icon-date'
           // if do not set roles, means: this page does not require permission
         }
-      },
+      },      
       {
         path: 'gatecard',
         component: () => import('@/views/dmreport/gatecard'),
