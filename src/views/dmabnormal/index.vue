@@ -3,17 +3,10 @@
     <el-row :gutter="20">
         <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-                <el-row>
-                    <el-col :span="1" :offset="1">
-                        <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays">保存</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>
-                    </el-col>
-                </el-row>
+                <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
+                <el-button type="warning" icon="el-icon-collection-tag" size="mini" :disabled="!isEdit" @click="submitDays(0)">草稿</el-button>
+                <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays(1)">送出</el-button>
+                <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>                
             </div>
         </el-col>
     </el-row>
@@ -209,10 +202,12 @@ export default {
             }
             return msg;
         },  
-        submitDays(){
-          if(this.qkform.warringData.length == 0) return this.$message.error(`签卡时间段不能为空`)
+        submitDays(types){
+          if(this.qkform.warringData.length == 0) return this.$message.error(`签卡时间段不能为空`);
+          this.qkform.types = types
           updateRegistrationCard(this.qkform).then((rs)=>{
             if(rs.data.code == 200){
+              this.replaceDefData(rs.data.msg)
               this.$message.success(`签卡单提交成功`)
             }else{
               console.log(rs.data.msg)
@@ -220,6 +215,14 @@ export default {
             }
             this.isEdit = false;
           })
+        },
+        replaceDefData(info) {
+            let indexID = this.qkBase.findIndex(val => parseInt(val.id) == parseInt(info.id))
+            this.qkBase.splice(
+                indexID < 0 ? 0 : indexID,
+                indexID < 0 ? 0 : 1,
+                info
+            );
         },
         formmatApploveStatus(row){
           let tmpmsg = this.$store.getters.applovestatus.filter((el) => { return el.model.replace(/(^\s*)|(\s*$)/g,'') == 'regcard' && parseInt(row.appstatus) == parseInt(el.statusid) }) 
@@ -263,6 +266,7 @@ export default {
     padding-top: 12px;
     border-radius: 4px;
     min-height: 50px;
+    padding-left: 20px;
 }
 
 .bg-purple-dark {

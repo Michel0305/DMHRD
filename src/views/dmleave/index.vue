@@ -3,20 +3,11 @@
     <el-row :gutter="20">
         <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-                <el-row>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="NewUserleave" :disabled="isEdit">创建</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button icon="el-icon-edit-outline" size="mini" @click="EditUserleave" :disabled="isEdit">修改</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitLeave('leaveData')">保存</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="info" icon="el-icon-close" size="mini" @click="cancelUserleave" :disabled="!isEdit">取消</el-button>
-                    </el-col>
-                </el-row>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="NewUserleave" :disabled="isEdit">创建</el-button>
+                <el-button icon="el-icon-edit-outline" size="mini" @click="EditUserleave" :disabled="isEdit">修改</el-button>
+                <el-button type="warning" icon="el-icon-collection-tag" size="mini" :disabled="!isEdit" @click="submitLeave(0)">草稿</el-button>
+                <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitLeave(1)">送出</el-button>
+                <el-button type="info" icon="el-icon-close" size="mini" @click="cancelUserleave" :disabled="!isEdit">取消</el-button>                
             </div>
         </el-col>
     </el-row>
@@ -181,35 +172,25 @@ export default {
             this.isEdit = false;
             this.resetForm("leaveData");
         },
-        submitLeave(formName) {
+        submitLeave(types) {
             //提交
             this.openFullScreen2();
-            this.$refs[formName].validate((valid) => {
+            this.$refs['leaveData'].validate((valid) => {
                 if (valid) {
+                    this.tmpleaveData.types=types
                     leaveapply(this.tmpleaveData).then((rs) => {
-                        console.log(rs)
                         if (rs.data.code == 200) {
                             if (rs.data.msg.code == 200) {
                                 this.repaceCurFormDate(rs.data.msg);
-                                this.notifyMsg(
-                                    "提交成功",
-                                    "success",
-                                    `${this.tmpleaveData.userid} -- 请假单提交成功`
-                                );
+                                this.$message.success(`请假单提交成功`);                                
                                 this.resetForm("leaveData");
                             } else {
                                 this.$message.error(`${rs.data.msg.msg}`)
                                 this.loading.close();
                                 return;
-                                // return;
                             }
-
                         } else {
-                            this.notifyMsg(
-                                "提交失败",
-                                "error",
-                                `${this.tmpleaveData.userid} -- ${rs.data.msg} `
-                            );
+                            this.$message.error(`请假单提交失败,请刷新后重试`);   
                             this.loading.close();
                             return;
                         }
@@ -360,6 +341,7 @@ export default {
     padding-top: 12px;
     border-radius: 4px;
     min-height: 50px;
+    padding-left: 20px;
 }
 
 .bg-purple-dark {

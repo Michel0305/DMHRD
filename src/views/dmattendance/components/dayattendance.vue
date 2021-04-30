@@ -8,13 +8,16 @@
                         <el-date-picker v-model="downloaddate" type="date" placeholder="选择日期" class="input-with-select" size="mini"></el-date-picker>
                         <el-button class="btndownload" type="warning" icon="el-icon-download" size="mini" :loading="true"></el-button>
                     </el-col> -->
-                    <el-col :span="11" :offset="1">
-                        <el-date-picker v-model="swhere.datewhere" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" size="mini">
-                        </el-date-picker>
-                        <el-select v-model="swhere.dept" placeholder="部门" clearable size="mini">
-                            <el-option v-for="item in $store.getters.departmentjob_departs" :key="item.deptid" :label="item.dept_name" :value="item.deptid">
-                            </el-option>
-                        </el-select>
+                    <el-col :span="14" :offset="1">
+                        <el-col :span="10">
+                            <el-date-picker v-model="swhere.datewhere" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" size="mini">
+                            </el-date-picker>
+                            <el-select v-model="swhere.dept" placeholder="部门" clearable size="mini">
+                                <el-option v-for="item in $store.getters.departmentjob_departs" :key="item.deptid" :label="item.dept_name" :value="item.deptid">
+                                </el-option>
+                            </el-select>
+                        </el-col>                        
+                        <el-col :span="3"><el-input v-model="fullname" placeholder="姓名" size="mini" clearable></el-input></el-col>                        
                         <el-button size="mini" icon="el-icon-search" @click="getworkrecordsdata" :disabled="lockbtn"></el-button>
                     </el-col>
                 </el-row>
@@ -22,7 +25,7 @@
                     <el-col :span="24">
                         <el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" :data="
                   recordsData.filter( //status 默认显示0，已补卡  1， 请假 2 
-                    (data) =>data.status == 0 &&  (!swhere.dept || data.partid == swhere.dept)
+                    (data) =>data.status == 0 &&  (!swhere.dept || data.partid == swhere.dept) && (!fullname || data.username.includes(fullname))
                   )
                 " style="width: 100%" :max-height="$store.getters.locheight-55">
                             <el-table-column label="日期" prop="checkdate" width="110">
@@ -32,7 +35,7 @@
                     }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="姓名" prop="userid" :formatter="formatUsername" width="80">
+                            <el-table-column label="姓名" prop="username" width="80">
                             </el-table-column>
                             <el-table-column label="部门" prop="partid" :formatter="formatUserDept" width="120">
                             </el-table-column>
@@ -158,6 +161,7 @@ export default {
             loading: false,
             lockbtn: false,
             checkid: 0,
+            fullname:'',
             swhere: { datewhere: "", dept: "" },
             downloaddate: "",
             dialogVisible: false,
@@ -329,6 +333,7 @@ export default {
             this.dialogVisible = true;
         },
         changeCardStatus() {
+            if(this.chgstatus =='') return this.$message.error(`选择处理作业类型`)
             PassAttendanceCard({ station: this.chgstatus, id: this.checkid }).then((rs) => {
                 if (rs.data.code == 200) {
                     this.recordsData.filter((el) => { return el.id == this.checkid })[0].station = this.chgstatus

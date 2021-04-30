@@ -76,7 +76,8 @@ LeaveStaticFn.ApplyFor = (parms) => {
                                                             @remark="${parms.remark}",
                                                             @leavetype=${parms.leavetype},
                                                             @applovestatus=${parms.applovestatus},
-                                                            @curuser=${parms.createUser} ;`)
+                                                            @curuser=${parms.createUser},
+                                                            @SaveType=${parms.types} ;`)
             return { code: 200, msg: leaveSaveStatus[0][0] }
         } catch (error) {
             return { code: 400, msg: error }

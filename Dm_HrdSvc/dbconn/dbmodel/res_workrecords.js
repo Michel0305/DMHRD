@@ -11,6 +11,7 @@ ResWorkRecordsDB = () => { }
 var resWorkRecords = sequelizeConn.define('res_workrecords', {
     id: { type: Sequelize.BIGINT, autoIncrement: true },
     userid: { type: Sequelize.NUMBER, primaryKey: true },//编号
+    username:{type:Sequelize.STRING},
     bc: { type: Sequelize.NUMBER },
     partid: { type: Sequelize.NUMBER },
     checktimes: { type: Sequelize.NUMBER },

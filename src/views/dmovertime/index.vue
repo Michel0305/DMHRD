@@ -3,20 +3,11 @@
     <el-row :gutter="20">
         <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-                <el-row>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="NewUserwork" :disabled="isEdit">创建</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button icon="el-icon-edit-outline" size="mini" @click="EditUserwork" :disabled="isEdit">修改</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitwork('workData')">保存</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="info" icon="el-icon-close" size="mini" @click="cancelUserwork" :disabled="!isEdit">取消</el-button>
-                    </el-col>
-                </el-row>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="NewUserwork" :disabled="isEdit">创建</el-button>
+                <el-button icon="el-icon-edit-outline" size="mini" @click="EditUserwork" :disabled="isEdit">修改</el-button>
+                <el-button type="warning" icon="el-icon-collection-tag" size="mini" :disabled="!isEdit" @click="submitwork(0)">草稿</el-button>
+                <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitwork(1)">送出</el-button>
+                <el-button type="info" icon="el-icon-close" size="mini" @click="cancelUserwork" :disabled="!isEdit">取消</el-button>                
             </div>
         </el-col>
     </el-row>
@@ -243,11 +234,12 @@ export default {
                 applovestatus: "",
             };
         },
-        submitwork(formName) {
-            this.$refs[formName].validate((valid) => {
+        submitwork(types) {
+            this.$refs['workData'].validate((valid) => {
                 if (valid) {
                     let htmlmsg = '';
                     let isPass = true;
+                    this.tmpworkData.types = types;
                     workinfodb(this.tmpworkData).then((resback) => {
                         if (resback.data.code == 200) {
                             for (let i = 0; i < resback.data.msg.length; i++) {
@@ -394,6 +386,7 @@ export default {
     padding-top: 12px;
     border-radius: 4px;
     min-height: 50px;
+    padding-left: 20px;
 }
 
 .bg-purple-dark {

@@ -3,20 +3,11 @@
     <el-row :gutter="20">
         <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-                <el-row>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="createNewDays" :disabled="isEdit">创建</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays('days')">保存</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>
-                    </el-col>
-                </el-row>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="createNewDays" :disabled="isEdit">创建</el-button>
+                <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
+                <el-button type="warning" icon="el-icon-collection-tag" size="mini" :disabled="!isEdit" @click="submitDays(0)">草稿</el-button>
+                <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays(1)">送出</el-button>
+                <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>
             </div>
         </el-col>
     </el-row>
@@ -141,14 +132,14 @@ export default {
             if (this.baseForm.id == 0 || this.baseForm.appstatus>0) return this.$message.warning(`当前状态不可进行编辑`);
             this.isEdit = true;
         },
-        submitDays(forms) {
-            this.$refs[forms].validate((valid) => {
+        submitDays(types) {
+            this.$refs['days'].validate((valid) => {
                 if (valid) {
+                    this.baseForm.types = types
                     infoworkdate(this.baseForm).then((rs)=>{
-                        if(rs.data.code == 200){    
-                           console.log(rs)                       
+                        if(rs.data.code == 200){               
                            this.replaceDefData(rs.data.msg);
-                           this.resetForm(forms);
+                           this.resetForm('days');
                            this.baseForm.id = 0;
                            this.baseForm.remark = '';
                            this.$message.success(`数据新增/更新成功`)
@@ -186,7 +177,6 @@ export default {
             this.$refs[formName].resetFields();
         },
         replaceDefData(info){
-            console.log(info)
             let indexID = this.switchWorkData.findIndex(val => parseInt(val.id) == parseInt(info.id))
             this.switchWorkData.splice(
                 indexID < 0 ? 0 : indexID,
@@ -213,6 +203,7 @@ export default {
     padding-top: 12px;
     border-radius: 4px;
     min-height: 50px;
+    padding-left: 20px;
 }
 
 .bg-purple-dark {

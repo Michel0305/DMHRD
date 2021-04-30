@@ -219,6 +219,16 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'annualleave',
+        component: () => import('@/views/dmreport/annualleave'),
+        name: 'annualleave',
+        meta: {
+          title: '年休/余休',
+          roles: ['1','5'], // or you can only set roles in sub nav
+          icon: 'el-icon-moon-night'
+          // if do not set roles, means: this page does not require permission
+        }
+      },{
         path: 'overtimereport',
         component: () => import('@/views/permission/page'),
         name: 'overtimereport',

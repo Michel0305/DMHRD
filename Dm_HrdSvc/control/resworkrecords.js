@@ -85,13 +85,20 @@ ResWorkRecords.UpdateRegistrationCard = (parms)=>{
         try {
             let appList = await ResWorkRecordsDB.Query(`select * from userSignId(${parms.userid})`)
             let setApplove = appList[0][0]
+            let sgMsg =`送出申请`
+            if(parms.types==0){
+                setApplove.apploveid = 0;
+                setApplove.applovestatus = 0;
+                sgMsg=`保存草稿`
+            }
             await ResRegistrationCardDB.Update({ids:`${parms.warringData}`,createuser:parms.createUser,
                                             apploveid:setApplove.apploveid,appstatus:setApplove.applovestatus,
                                             remark:parms.remark },{where:{id:parms.id}})
             await ResWorkRecordsDB.Update({status:1},{where:{id:parms.id}})
             await ResWorkRecordsDB.Query(`insert into res_applovelog(modelname,formid,appuser,appremart,statusid,apploveid)
-                                            select 'regcard',${parms.id},${parms.createUser},'更新送出','',0`)
-            return {code:200,msg:'success'} 
+                                            select 'regcard',${parms.id},${parms.createUser},'${sgMsg}','',0`)
+            parms.appstatus = setApplove.applovestatus;                               
+            return {code:200,msg:parms} 
         } catch (error) {
             return {code:400,msg:error}
         }              

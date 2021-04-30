@@ -3,26 +3,18 @@
     <el-row :gutter="20">
         <el-col :span="24">
             <div class="grid-content bg-purple-dark">
-                <el-row>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @click="createNewDays" :disabled="isEdit">创建</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays('days')">保存</el-button>
-                    </el-col>
-                    <el-col :span="1" :offset="1">
-                        <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>
-                    </el-col>
-                </el-row>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="createNewDays" :disabled="isEdit">创建</el-button>
+                <el-button icon="el-icon-edit-outline" size="mini" @click="editDays" :disabled="isEdit">修改</el-button>
+                <el-button type="warning" icon="el-icon-collection-tag" size="mini" :disabled="!isEdit" @click="submitDays(0)">草稿</el-button>
+                <el-button type="success" icon="el-icon-check" size="mini" :disabled="!isEdit" @click="submitDays(1)">送出</el-button>
+                <el-button type="info" icon="el-icon-close" size="mini" @click="cancelDays" :disabled="!isEdit">取消</el-button>
+                
             </div>
         </el-col>
     </el-row>
     <el-row :gutter="20">
         <el-col :span="12" :offset="6">
-            <el-form ref="days" :model="businessBase" :rules="rules" label-width="80px">
+            <el-form ref="bussiness" :model="businessBase" :rules="rules" label-width="80px">
                 <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="职员" prop="userid">
@@ -223,24 +215,25 @@ export default {
             if ( this.businessBase.id == 0 || this.businessBase.appstatus>0) return
             this.isEdit = true;
         },
-        submitDays(forms) {
-            this.$refs[forms].validate((valid) => {
+        submitDays(types) {
+            this.$refs['bussiness'].validate((valid) => {
                 if (valid) {
                     this.isEdit = false;
                     this.formatAddressCN()
                     this.businessBase.selectedOptions = this.selectedOptions;
-                    this.businessBase
+                    this.businessBase.types = types
                     infoBusindessData(this.businessBase).then((rs) => {
                         if (rs.data.code == 200) {
                             this.replaceDefData(rs.data.msg)
                             this.$message.success(`数据更新保存成功`)
-                            this.resetForm('days');
+                            this.resetForm('bussiness');
                         } else {
                             console.log(rs.data.msg)
                             this.$message.error(`数据更新保存发生异常,请刷新后重试`)
                         }
-
                     })
+                }else{
+                    this.$message.error(`请检查输入信息准确性`)
                 }
             })
         },
@@ -324,6 +317,7 @@ export default {
     padding-top: 12px;
     border-radius: 4px;
     min-height: 50px;
+    padding-left: 20px;
 }
 
 .bg-purple-dark {
