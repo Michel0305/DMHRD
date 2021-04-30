@@ -66,6 +66,11 @@ LeaveStaticFn.BaseData = (parms) => {
     return GetLeaveBaseData();
 }
 
+/**
+ * 提交保存请假单
+ * @param {*} parms 
+ * @returns 
+ */
 LeaveStaticFn.ApplyFor = (parms) => {  
     async function SaveLeave() {
         try {            
@@ -86,5 +91,30 @@ LeaveStaticFn.ApplyFor = (parms) => {
 
     return SaveLeave()
 }
+
+
+/**
+ * 年休余休
+ * @returns 
+ */
+LeaveStaticFn.AnnualLeaveBaseData = ()=>{
+    async function getAnnual(){
+        try {
+            let annualList = await ResLeaveDB.Query(`select * from v_user_annual`)
+            return { code: 200, msg: annualList}
+        } catch (error) {
+            return { code: 400, msg: error } 
+        }
+    }
+    return getAnnual()
+}
+
+LeaveStaticFn.InfoAnnualLeave = (parms)=>{
+    async function infoAnnual() {
+        console.log(parms)
+    }
+    return infoAnnual()
+}
+
 
 module.exports = LeaveStaticFn;

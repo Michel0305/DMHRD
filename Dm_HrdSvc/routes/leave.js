@@ -41,6 +41,22 @@ router.post('/infobase',(req,res,next)=>{
     })
 })
 
+/**
+ * 获取年休/余休
+ */
+router.get('/annual',(req,res,next)=>{
+    leaveControl.AnnualLeaveBaseData().then((rs)=>{
+        res.send({code:20000,data:rs})
+    })
+})
+
+router.post('/infoannual',(req,res,next)=>{
+    let infoData = Qs.parse(req.body)
+    infoData.createUser = req.user.param.userid 
+    leaveControl.InfoAnnualLeave(infoData).then((rs)=>{
+      res.send({code:20000,data:rs})
+    })
+})
 
 
 module.exports = router;
