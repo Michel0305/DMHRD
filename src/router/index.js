@@ -94,36 +94,36 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'leave',//请假单
+        path: 'leave', // 请假单
         component: () => import('@/views/dmleave/index'),
         name: 'leave',
         meta: { title: '请假单', icon: 'skill' }
       },
       {
-        path: 'overtime',//加班单
+        path: 'overtime', // 加班单
         component: () => import('@/views/dmovertime/index'),
         name: 'overtime',
         meta: { title: '加班单', icon: 'el-icon-guide' }
       },
       {
-        path: 'leaveinlieu',//调休单
+        path: 'leaveinlieu', // 调休单
         component: () => import('@/views/dmswitchwork/index'),
         name: 'leaveinlieu',
         meta: { title: '调休单', icon: 'education' }
       },
       {
-        path: 'business',//出差单
+        path: 'business', // 出差单
         component: () => import('@/views/dmbusiness/index'),
         name: 'business',
         meta: { title: '出差单', icon: 'el-icon-truck' }
       },
       {
-        path: 'abnormal',//补卡单
+        path: 'abnormal', // 补卡单
         component: () => import('@/views/dmabnormal/index'),
         name: 'abnormal',
         meta: { title: '签卡单', icon: 'el-icon-tickets' }
-      },
-      
+      }
+
     ]
   },
   // {
@@ -172,7 +172,7 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  //报表管理
+  // 报表管理
   {
     path: '/reports',
     component: Layout,
@@ -181,7 +181,7 @@ export const asyncRoutes = [
     name: 'reports',
     meta: {
       title: '报表管理',
-      icon: 'el-icon-date',
+      icon: 'el-icon-date'
       // roles: ['1','5'] // you can set roles in root nav
     },
     children: [
@@ -191,18 +191,18 @@ export const asyncRoutes = [
         name: 'attendancereport',
         meta: {
           title: '出勤报表',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-date'
           // if do not set roles, means: this page does not require permission
         }
-      },      
+      },
       {
         path: 'gatecard',
         component: () => import('@/views/dmreport/gatecard'),
         name: 'gatecard',
         meta: {
           title: '月考勤表',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-document'
           // if do not set roles, means: this page does not require permission
         }
@@ -213,7 +213,7 @@ export const asyncRoutes = [
         name: 'abnormalcheck',
         meta: {
           title: '月考核表',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-document-delete'
           // if do not set roles, means: this page does not require permission
         }
@@ -224,17 +224,17 @@ export const asyncRoutes = [
         name: 'annualleave',
         meta: {
           title: '年休/余休',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-moon-night'
           // if do not set roles, means: this page does not require permission
         }
-      },{
+      }, {
         path: 'overtimereport',
-        component: () => import('@/views/permission/page'),
+        component: () => import('@/views/dmreport/rptoverwork'),
         name: 'overtimereport',
         meta: {
           title: '加班报表',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-tickets'
         }
       },
@@ -244,7 +244,7 @@ export const asyncRoutes = [
         name: 'tiemsreport',
         meta: {
           title: '休假报表',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-document-checked'
           // if do not set roles, means: this page does not require permission
         }
@@ -252,7 +252,7 @@ export const asyncRoutes = [
     ]
   },
 
-  //人事管理
+  // 人事管理
   {
     path: '/personnelfiles',
     component: Layout,
@@ -261,7 +261,7 @@ export const asyncRoutes = [
     name: 'personnelfiles',
     meta: {
       title: '人事资料',
-      icon: 'peoples'     
+      icon: 'peoples'
     },
     children: [
       {
@@ -270,7 +270,7 @@ export const asyncRoutes = [
         name: 'personnel',
         meta: {
           title: '人员管理',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'people'
         }
       },
@@ -280,7 +280,7 @@ export const asyncRoutes = [
         name: 'organization',
         meta: {
           title: '组织架构',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'tree-table'
           // if do not set roles, means: this page does not require permission
         }
@@ -291,7 +291,7 @@ export const asyncRoutes = [
         name: 'department',
         meta: {
           title: '部门管理',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'list'
           // if do not set roles, means: this page does not require permission
         }
@@ -302,7 +302,7 @@ export const asyncRoutes = [
         name: 'tiemstype',
         meta: {
           title: '考勤班次',
-          roles: ['1','5'], // or you can only set roles in sub nav
+          roles: ['1', '5'], // or you can only set roles in sub nav
           icon: 'el-icon-coffee-cup'
           // if do not set roles, means: this page does not require permission
         }
@@ -313,14 +313,14 @@ export const asyncRoutes = [
         name: 'salary',
         meta: {
           title: '薪资管理',
-          roles: ['99','1'], // 默认给一个权限 如果赋值给固定角色就直接对角色ID
+          roles: ['99', '1'], // 默认给一个权限 如果赋值给固定角色就直接对角色ID
           icon: 'money'
           // if do not set roles, means: this page does not require permission
         }
       }
     ]
   },
-  //系统设定菜单
+  // 系统设定菜单
   {
     path: '/seeting',
     component: Layout,
@@ -329,7 +329,7 @@ export const asyncRoutes = [
     name: 'seeting',
     meta: {
       title: '系统设定',
-      icon: 'el-icon-setting',      
+      icon: 'el-icon-setting'
     },
     children: [
       {
@@ -375,7 +375,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
 
   // {
   //   path: '/permission',

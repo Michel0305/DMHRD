@@ -7,6 +7,9 @@ var ResApplovelogDB = require('../dbconn/dbmodel/res_applovelog')
 var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus')
 var ResLeaveTypeDB = require('../dbconn/dbmodel/res_leavetype')
 
+var ResTakeworkDB = require('../dbconn/dbmodel/res_takework') //调休
+var ResUserannualDB = require('../dbconn/dbmodel/res_userannual') //年休
+
 var token = require('./token');
 var moment = require('moment');
 
@@ -92,7 +95,6 @@ LeaveStaticFn.ApplyFor = (parms) => {
     return SaveLeave()
 }
 
-
 /**
  * 年休余休
  * @returns 
@@ -109,9 +111,28 @@ LeaveStaticFn.AnnualLeaveBaseData = ()=>{
     return getAnnual()
 }
 
+/**
+ * 保存年休/余休
+ * @param {*} parms 
+ * @returns 
+ */
 LeaveStaticFn.InfoAnnualLeave = (parms)=>{
     async function infoAnnual() {
         console.log(parms)
+        try {
+            if(parseInt(parms.txid) == 0 && parseInt(parms.txCnt)>0){
+                await ResTakeworkDB.Insert({userid:`${parms.userid}`,timescount:`${parms.txCnt}`,createuser:`${parms.createUser}`})
+            }else{
+                await ResTakeworkDB.Update({timescount:`${parms.txCnt}`,createuser:`${parms.createUser}`},{where:{id:`${parms.txid}`}})
+            }
+            if(parms.nxid >0){
+               await ResUserannualDB.Update({defdays:`${parms.nxDays}`,usedays:`${parms.yxDays}`,createuser:`${parms.createUser}`} ,{where:{id:parms.nxid }})
+            } 
+            return {code:200,msg:'success'}
+        } catch (error) {
+            console.log(error)
+            return {code:400,msg:error}
+        }
     }
     return infoAnnual()
 }
