@@ -21,6 +21,7 @@ router.get('/', (req, res, next) => {
  */
 router.post('/userrole',(req, res, next) => {
     let userRole = Qs.parse(req.body)
+    userRole.createUser = req.user.param.userid 
     SysRight.UserRoles(userRole).then((rs)=>{
         res.send({code:20000,data:rs})
     }).catch((err)=>{
@@ -29,10 +30,11 @@ router.post('/userrole',(req, res, next) => {
 })
 
 /**
- * 绝对对模块权限
+ * 角色对模块权限
  */
 router.post('/rolemodel',(req, res, next) => {
     let roleModel = Qs.parse(req.body)
+    roleModel.createUser = req.user.param.userid 
     SysRight.RoleToModels(roleModel).then((rs)=>{
         res.send({code:20000,data:rs})
     }).catch((err)=>{

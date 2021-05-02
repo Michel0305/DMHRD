@@ -35,7 +35,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="180">
+          <el-table-column label="操作" width="180" align="center">
             <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"

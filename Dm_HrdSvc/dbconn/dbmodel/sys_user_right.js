@@ -11,6 +11,7 @@ var sysUserRight = sequelizeConn.define('sys_user_right', {
     id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, unique: true },
     userid: { type: Sequelize.NUMBER, primaryKey: true },//用户
     roleid: { type: Sequelize.NUMBER, primaryKey: true },//角色 
+    createuser: { type: Sequelize.NUMBER},//创建人 
     createdate: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },//创建日期时间
 }, {
     createdAt: false,                   // 禁止添加 createdAt 字段

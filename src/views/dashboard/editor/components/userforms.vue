@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="10">
-      <el-col :xl="{span:22,offset:1}" span="24">
+      <el-col :xl="{span:22,offset:1}" :span="24">
         <el-table
           :data="userData.filter((data)=>(!search || data.username.includes(search))|| (!search || data.dept.includes(search))||
             (!search || data.modelname.includes(search)))"

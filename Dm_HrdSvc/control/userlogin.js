@@ -11,6 +11,7 @@ var ResUserTimesDB = require('../dbconn/dbmodel/cms_resusertimes'); //班次
 var resUserjobDB = require('../dbconn/dbmodel/res_userjob'); //岗位列表
 var ResDepartmentDB = require('../dbconn/dbmodel/res_department'); //部门列表 
 var ResApploveStatusDB = require('../dbconn/dbmodel/res_applovestatus'); //签核状态表
+var SysRightDepartDB = require('../dbconn/dbmodel/sys_right_depart')
 loginUser = () => { }
 
 /**
@@ -82,23 +83,21 @@ loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
             tmpUser = {} = token.verifys(xToken);
             let usrRight = await ResUsersDB.Query(`select * from dbo.getUserRight(${tmpUser.userid})`)
             let tmplistarry = []
-            let tmpPartIds = []
             let imgurl = null
             usrRight.forEach(el => {
                 if (el.length > 0) {
                     let elRoleIds = el[0].roleids
                     let defUserList = elRoleIds.substr(1, elRoleIds.length - 1).split(',')
-                    tmplistarry = [] = unique(defUserList)
-                    let elDepart = el[0].departids
-                    tmpPartIds = [] = unique(elDepart.substr(1, elDepart.length - 1).split(','))
+                    tmplistarry = [] = unique(defUserList)                    
                     imgurl = el[0].imgurl
                 }
             });
             tmpUser.roles = tmplistarry
             tmpUser.avatar = imgurl;
             tmpUser.introduction = '当前用户超级用户'
-            let filterArr = await ResUsersDB.Query(`select (select router from sys_model where id=a.modelid ) as router,a.modelid,a.activeid,a.departid from sys_role_model a  where a.roleid in (
-                select roleid from sys_user_right where userid='${tmpUser.userid}')`)
+            let filterArr = await ResUsersDB.Query(`
+                select (select router from sys_model where id=a.modelid ) as router,a.modelid,a.activeid,(select  top 1 dept from sys_right_depart where userid='${tmpUser.userid}') as departid from sys_role_model a  where a.roleid in (
+                    select roleid from sys_user_right where userid='${tmpUser.userid}')`)
             let tmpModelActive = {}
             filterArr[0].forEach(el => {
                 if (tmpModelActive[el.router]) {
@@ -108,7 +107,7 @@ loginUser.GetUserInfo = (xToken) => {//处理登录用户权限
                 }
             });
             tmpUser.rights = tmpModelActive;  //权限
-            tmpUser.partids = tmpPartIds;  //部门权限
+            tmpUser.partids = [] = await SysRightDepartDB.SelectAll({where:{userid:tmpUser.userid}}) ;  //部门权限
             return { code: 200, msg: tmpUser }
         } catch (error) {
             return { code: 400, msg: error }

@@ -55,7 +55,6 @@ export default ({
     created(){
         employeeeval(this.selectMonth).then((rs)=>{
             this.tableData = rs.data.msg
-
         })
     },
     methods: {
